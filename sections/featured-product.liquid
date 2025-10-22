@@ -70,7 +70,7 @@
 
   <section class='color-{{ section.settings.color_scheme }} {% if section.settings.secondary_background %}background-secondary{% else %}gradient{% endif %}'>
     <div class='page-width section-{{ section.id }}-padding{% if section.settings.secondary_background %} isolate{% endif %}'>
-      <div class='featured-product product product--{{ section.settings.media_size }} grid grid--1-col gradient color-{{ section.settings.color_scheme }} product--{{ section.settings.media_position }}{% if section.settings.secondary_background == false %} isolate{% endif %} {% if product.media.size > 0 or section.settings.product == blank %}grid--2-col-tablet{% else %}product--no-media{% endif %}'>
+      <div class='featured-product product product--{{ section.settings.media_size }} tgrid grid--1-col gradient color-{{ section.settings.color_scheme }} product--{{ section.settings.media_position }}{% if section.settings.secondary_background == false %} isolate{% endif %} {% if product.media.size > 0 or section.settings.product == blank %}grid--2-col-tablet{% else %}product--no-media{% endif %}'>
         <div class='grid__item product__media-wrapper'>
           {%- unless placeholder -%}
             {% render 'product-media-gallery', product: product, variant_images: variant_images, limit: 1 %}
@@ -189,7 +189,7 @@
                           <span class='visually-hidden'>
                             {{- 'products.product.quantity.decrease' | t: product: product.title | escape -}}
                           </span>
-                          <span class="svg-wrapper">
+                          <span class='svg-wrapper'>
                             {{- 'icon-minus.svg' | inline_asset_content -}}
                           </span>
                         </button>
@@ -213,7 +213,7 @@
                           <span class='visually-hidden'>
                             {{- 'products.product.quantity.increase' | t: product: product.title | escape -}}
                           </span>
-                          <span class="svg-wrapper">
+                          <span class='svg-wrapper'>
                             {{- 'icon-plus.svg' | inline_asset_content -}}
                           </span>
                         </button>

@@ -1,0 +1,292 @@
+{% comment %}
+  Renders predictive search results for mega menu
+  Specifically designed for mega-menu - does NOT affect predictive-search.liquid
+
+  Accepts:
+  - predictive_search: {Object} Predictive search results object
+
+  Usage:
+  {% render 'predictive-search-mega-menu', predictive_search: predictive_search %}
+{% endcomment %}
+
+{% comment %}theme-check-disable ImgLazyLoading{% endcomment %}
+{%- if predictive_search.performed -%}
+  {% assign first_column_results_size = predictive_search.resources.queries.size
+    | plus: predictive_search.resources.collections.size
+    | plus: predictive_search.resources.pages.size
+    | plus: predictive_search.resources.articles.size
+  %}
+  <div id='predictive-search-results-mega-menu' role='listbox'>
+    {%- comment -%} Loading spinner - solo se muestra cuando está cargando {%- endcomment -%}
+    <div class='mega-menu-predictive-search__loading-state' style='display: none;'>
+      {%- render 'loading-spinner' -%}
+    </div>
+
+    {%- comment -%} Mensaje cuando no hay resultados {%- endcomment -%}
+    {%- unless first_column_results_size > 0 or predictive_search.resources.products.size > 0 -%}
+      <div class='mega-menu-predictive-search__no-results'>
+        <div class='mega-menu-predictive-search__no-results-icon'>
+          <svg fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+            <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'></path>
+          </svg>
+        </div>
+        <h3 class='mega-menu-predictive-search__no-results-title'>No se encontraron resultados</h3>
+        <p class='mega-menu-predictive-search__no-results-message'>Intenta con otros términos de búsqueda</p>
+      </div>
+    {%- endunless -%}
+
+    {%- if first_column_results_size > 0 or predictive_search.resources.products.size > 0 -%}
+      <div
+        id='predictive-search-results-groups-wrapper-mega-menu'
+        class='mega-menu-predictive-search__results-groups-wrapper{% unless predictive_search.resources.products.size > 0 %} mega-menu-predictive-search__results-groups-wrapper--no-products{% endunless %}{% unless predictive_search.resources.queries.size > 0 or predictive_search.resources.collections.size > 0 %} mega-menu-predictive-search__results-groups-wrapper--no-suggestions{% endunless %}'
+      >
+    {%- endif -%}
+    {%- if first_column_results_size > 0 -%}
+      <div class='mega-menu-predictive-search__result-group'>
+    {%- endif -%}
+    {%- if predictive_search.resources.queries.size > 0 or predictive_search.resources.collections.size > 0 -%}
+      <div>
+        <h2
+          id='predictive-search-queries-mega-menu'
+          class='mega-menu-predictive-search__heading text-body caption-with-letter-spacing'
+        >
+          {{- 'templates.search.suggestions' | t -}}
+        </h2>
+        <ul
+          id='predictive-search-results-queries-list-mega-menu'
+          class='mega-menu-predictive-search__results-list list-unstyled'
+          role='group'
+          aria-labelledby='predictive-search-queries-mega-menu'
+        >
+          {%- for query in predictive_search.resources.queries -%}
+            <li
+              id='predictive-search-option-query-mega-menu-{{ forloop.index }}'
+              class='mega-menu-predictive-search__list-item'
+              role='option'
+              aria-selected='false'
+            >
+              <a href='{{ query.url }}' class='mega-menu-predictive-search__item link link--text' tabindex='-1'>
+                <div class='mega-menu-predictive-search__item-content mega-menu-predictive-search__item-content--centered'>
+                  <p
+                    class='mega-menu-predictive-search__item-heading mega-menu-predictive-search__item-query-result h5'
+                    aria-label='{{ query.text }}'
+                  >
+                    {{ query.styled_text }}
+                  </p>
+                </div>
+              </a>
+            </li>
+          {%- endfor -%}
+          {%- for collection in predictive_search.resources.collections -%}
+            <li
+              id='predictive-search-option-collection-mega-menu-{{ forloop.index }}'
+              class='mega-menu-predictive-search__list-item'
+              role='option'
+              aria-selected='false'
+            >
+              <a href='{{ collection.url }}' class='mega-menu-predictive-search__item link link--text' tabindex='-1'>
+                <div class='mega-menu-predictive-search__item-content mega-menu-predictive-search__item-content--centered'>
+                  <p class='mega-menu-predictive-search__item-heading h5'>{{ collection.title | escape }}</p>
+                </div>
+              </a>
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    {%- endif -%}
+    {%- if predictive_search.resources.articles.size > 0 or predictive_search.resources.pages.size > 0 -%}
+      <div class='mega-menu-predictive-search__pages-wrapper'>
+        <h2
+          id='predictive-search-pages-desktop-mega-menu'
+          class='mega-menu-predictive-search__heading text-body caption-with-letter-spacing'
+        >
+          {{- 'templates.search.pages' | t -}}
+        </h2>
+        <ul
+          id='predictive-search-results-pages-list-desktop-mega-menu'
+          class='mega-menu-predictive-search__results-list list-unstyled'
+          role='group'
+          aria-labelledby='predictive-search-pages-desktop-mega-menu'
+        >
+          {%- for page in predictive_search.resources.pages -%}
+            <li
+              id='predictive-search-option-page-desktop-mega-menu-{{ forloop.index }}'
+              class='mega-menu-predictive-search__list-item'
+              role='option'
+              aria-selected='false'
+            >
+              <a href='{{ page.url }}' class='mega-menu-predictive-search__item link link--text' tabindex='-1'>
+                <div class='mega-menu-predictive-search__item-content mega-menu-predictive-search__item-content--centered'>
+                  <p class='mega-menu-predictive-search__item-heading h5'>{{ page.title | escape }}</p>
+                </div>
+              </a>
+            </li>
+          {%- endfor -%}
+          {%- for article in predictive_search.resources.articles -%}
+            <li
+              id='predictive-search-option-article-desktop-mega-menu-{{ forloop.index }}'
+              class='mega-menu-predictive-search__list-item'
+              role='option'
+              aria-selected='false'
+            >
+              <a href='{{ article.url }}' class='mega-menu-predictive-search__item link link--text' tabindex='-1'>
+                <div class='mega-menu-predictive-search__item-content mega-menu-predictive-search__item-content--centered'>
+                  <p class='mega-menu-predictive-search__item-heading h5'>{{ article.title | escape }}</p>
+                </div>
+              </a>
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    {%- endif -%}
+    {%- if first_column_results_size > 0 -%}
+      </div>
+    {%- endif -%}
+    {%- if predictive_search.resources.products.size > 0
+      or predictive_search.resources.articles.size > 0
+      or predictive_search.resources.pages.size > 0
+    -%}
+      <div class='mega-menu-predictive-search__result-group'>
+        {%- if predictive_search.resources.products.size > 0 -%}
+          <div>
+            <h2
+              id='predictive-search-products-mega-menu'
+              class='mega-menu-predictive-search__heading text-body caption-with-letter-spacing'
+            >
+              {{- 'templates.search.products' | t -}}
+            </h2>
+            <ul
+              id='predictive-search-results-products-list-mega-menu'
+              class='mega-menu-predictive-search__results-list '
+              role='group'
+              aria-labelledby='predictive-search-products-mega-menu'
+            >
+              {%- for product in predictive_search.resources.products -%}
+                <li
+                  id='predictive-search-option-product-mega-menu-{{ forloop.index }}'
+                  class='mega-menu-predictive-search__list-item'
+                  role='option'
+                  aria-selected='false'
+                >
+                  <a
+                    href='{{ product.url }}'
+                    class='mega-menu-predictive-search__item mega-menu-predictive-search__item--link-with-thumbnail link link--text'
+                    tabindex='-1'
+                  >
+                    {%- if product.featured_media != blank -%}
+                      <img
+                        class='mega-menu-predictive-search__image'
+                        src='{{ product.featured_media | image_url: width: 150 }}'
+                        alt='{{ product.featured_media.alt | escape }}'
+                        width='80'
+                        height='{{ 80 | divided_by: product.featured_media.preview_image.aspect_ratio }}'
+                      >
+                    {%- endif -%}
+                    <div class='mega-menu-predictive-search__item-content{% unless settings.predictive_search_show_vendor or settings.predictive_search_show_price %} mega-menu-predictive-search__item-content--centered{% endunless %}'>
+                      {%- if settings.predictive_search_show_vendor -%}
+                        <span class='visually-hidden'>{{ 'accessibility.vendor' | t }}</span>
+                        <div class='mega-menu-predictive-search__item-vendor caption-with-letter-spacing'>
+                          {{ product.vendor }}
+                        </div>
+                      {%- endif -%}
+                      <p class='mega-menu-predictive-search__item-heading h5'>{{ product.title | escape }}</p>
+                      {%- if settings.predictive_search_show_price -%}
+                        {% render 'price', product: product, use_variant: true, show_badges: false %}
+                      {%- endif -%}
+                    </div>
+                  </a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+        {%- if predictive_search.resources.articles.size > 0 or predictive_search.resources.pages.size > 0 -%}
+          <div class='mega-menu-predictive-search__pages-wrapper'>
+            <h2
+              id='predictive-search-pages-mobile-mega-menu'
+              class='mega-menu-predictive-search__heading text-body caption-with-letter-spacing'
+            >
+              {{- 'templates.search.pages' | t -}}
+            </h2>
+            <ul
+              id='predictive-search-results-pages-list-mobile-mega-menu'
+              class='mega-menu-predictive-search__results-list list-unstyled'
+              role='group'
+              aria-labelledby='predictive-search-pages-mobile-mega-menu'
+            >
+              {%- for page in predictive_search.resources.pages -%}
+                <li
+                  id='predictive-search-option-page-mobile-mega-menu-{{ forloop.index }}'
+                  class='mega-menu-predictive-search__list-item'
+                  role='option'
+                  aria-selected='false'
+                >
+                  <a href='{{ page.url }}' class='mega-menu-predictive-search__item link link--text' tabindex='-1'>
+                    <div class='mega-menu-predictive-search__item-content mega-menu-predictive-search__item-content--centered'>
+                      <p class='mega-menu-predictive-search__item-heading h5'>{{ page.title | escape }}</p>
+                    </div>
+                  </a>
+                </li>
+              {%- endfor -%}
+              {%- for article in predictive_search.resources.articles -%}
+                <li
+                  id='predictive-search-option-article-mobile-mega-menu-{{ forloop.index }}'
+                  class='mega-menu-predictive-search__list-item'
+                  role='option'
+                  aria-selected='false'
+                >
+                  <a href='{{ article.url }}' class='mega-menu-predictive-search__item link link--text' tabindex='-1'>
+                    <div class='mega-menu-predictive-search__item-content mega-menu-predictive-search__item-content--centered'>
+                      <p class='mega-menu-predictive-search__item-heading h5'>{{ article.title | escape }}</p>
+                    </div>
+                  </a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+    {%- if first_column_results_size > 0 or predictive_search.resources.products.size > 0 -%}
+      </div>
+    {%- endif -%}
+
+    <div id='predictive-search-option-search-keywords-mega-menu' class='mega-menu-predictive-search__search-for-button'>
+      <button
+        class='mega-menu-predictive-search__item mega-menu-predictive-search__item--term link link--text h5 animate-arrow'
+        tabindex='-1'
+        role='option'
+        aria-selected='false'
+      >
+        <span data-predictive-search-search-for-text>
+          {{- 'templates.search.search_for' | t: terms: predictive_search.terms -}}
+        </span>
+        <span class='svg-wrapper'>
+          {{- 'icon-arrow.svg' | inline_asset_content -}}
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <span class='hidden' data-predictive-search-live-region-count-value>
+    {% liquid
+      assign total_results = predictive_search.resources.products.size | plus: first_column_results_size
+      if total_results == 0
+        echo 'templates.search.no_results' | t: terms: predictive_search.terms
+      else
+        echo 'templates.search.results_with_count' | t: count: total_results | append: ': '
+        if predictive_search.resources.queries.size > 0
+          assign count = predictive_search.resources.queries.size | plus: predictive_search.resources.collections.size
+          echo 'templates.search.results_suggestions_with_count' | t: count: count | append: ', '
+        endif
+        if predictive_search.resources.pages.size > 0
+          assign count = predictive_search.resources.pages.size | plus: predictive_search.resources.articles.size
+          echo 'templates.search.results_pages_with_count' | t: count: count | append: ', '
+        endif
+        if predictive_search.resources.products.size > 0
+          echo 'templates.search.results_products_with_count' | t: count: predictive_search.resources.products.size
+        endif
+      endif
+    %}
+  </span>
+{%- endif -%}

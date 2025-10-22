@@ -16,6 +16,8 @@ class SearchForm extends HTMLElement {
   }
 
   toggleResetButton() {
+    if (!this.resetButton) return; // Guard clause to prevent errors
+
     const resetIsHidden = this.resetButton.classList.contains('hidden');
     if (this.input.value.length > 0 && resetIsHidden) {
       this.resetButton.classList.remove('hidden');

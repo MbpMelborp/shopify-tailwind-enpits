@@ -38,6 +38,8 @@
     <script src='{{ 'details-disclosure.js' | asset_url }}' defer='defer'></script>
     <script src='{{ 'details-modal.js' | asset_url }}' defer='defer'></script>
     <script src='{{ 'search-form.js' | asset_url }}' defer='defer'></script>
+    <script src='{{ 'header-search-mega-menu.js' | asset_url }}' defer='defer'></script>
+    <script src='{{ 'predictive-search-mega-menu.js' | asset_url }}' defer='defer'></script>
 
     {%- if settings.animations_reveal_on_scroll -%}
       <script src='{{ 'animations.js' | asset_url }}' defer='defer'></script>
@@ -234,7 +236,7 @@
 
       html {
         box-sizing: border-box;
-        font-size: calc(var(--font-body-scale) * 62.5%);
+        font-size: calc(var(--font-body-scale) * 80%);
         height: 100%;
       }
 
@@ -295,7 +297,6 @@
         onload="this.media='all'"
       >
     {%- endif -%}
-
     <script>
       if (Shopify.designMode) {
         document.documentElement.classList.add('shopify-design-mode');

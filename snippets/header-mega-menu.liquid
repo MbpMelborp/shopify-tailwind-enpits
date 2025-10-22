@@ -1,24 +1,26 @@
 {% comment %}
-  Renders a megamenu for the header.
+  Muestra un megamenú para el header de la tienda.
 
-  Usage:
-  {% render 'header-mega-menu' %}
+  Este snippet genera la estructura navegacional principal desplegable bajo los ítems del menú. Permite hasta tres niveles de enlaces (menú, submenú e hijos), mostrando cada nivel como una lista estructurada.
+
+  Uso:
+    {% render 'header-mega-menu' %}
 {% endcomment %}
 
-<nav class="header__inline-menu">
-  <ul class="list-menu list-menu--inline" role="list">
+<nav class='header__inline-menu'>
+  <ul class='list-menu list-menu--inline' role='list'>
     {%- for link in section.settings.menu.links -%}
       <li>
         {%- if link.links != blank -%}
           <header-menu>
-            <details id="Details-HeaderMenu-{{ forloop.index }}" class="mega-menu">
+            <details id='Details-HeaderMenu-{{ forloop.index }}' class='mega-menu'>
               <summary
-                id="HeaderMenu-{{ link.handle }}"
-                class="header__menu-item list-menu__item link focus-inset"
+                id='HeaderMenu-{{ link.handle }}'
+                class='header__menu-item list-menu__item link focus-inset'
               >
                 <span
                   {%- if link.child_active %}
-                    class="header__active-menu-item"
+                    class='header__active-menu-item'
                   {% endif %}
                 >
                   {{- link.title | escape -}}
@@ -26,36 +28,36 @@
                 {{- 'icon-caret.svg' | inline_asset_content -}}
               </summary>
               <div
-                id="MegaMenu-Content-{{ forloop.index }}"
-                class="mega-menu__content color-{{ section.settings.menu_color_scheme }} gradient motion-reduce global-settings-popup"
-                tabindex="-1"
+                id='MegaMenu-Content-{{ forloop.index }}'
+                class='mega-menu__content color-{{ section.settings.menu_color_scheme }} gradient motion-reduce global-settings-popup'
+                tabindex='-1'
               >
                 <ul
-                  class="mega-menu__list page-width{% if link.levels == 1 %} mega-menu__list--condensed{% endif %}"
-                  role="list"
+                  class='mega-menu__list page-width{% if link.levels == 1 %} mega-menu__list--condensed{% endif %}'
+                  role='list'
                 >
                   {%- for childlink in link.links -%}
                     <li>
                       <a
-                        id="HeaderMenu-{{ link.handle }}-{{ childlink.handle }}"
-                        href="{{ childlink.url }}"
-                        class="mega-menu__link mega-menu__link--level-2 link{% if childlink.current %} mega-menu__link--active{% endif %}"
+                        id='HeaderMenu-{{ link.handle }}-{{ childlink.handle }}'
+                        href='{{ childlink.url }}'
+                        class='mega-menu__link mega-menu__link--level-2 link{% if childlink.current %} mega-menu__link--active{% endif %}'
                         {% if childlink.current %}
-                          aria-current="page"
+                          aria-current='page'
                         {% endif %}
                       >
                         {{ childlink.title | escape }}
                       </a>
                       {%- if childlink.links != blank -%}
-                        <ul class="list-unstyled" role="list">
+                        <ul class='list-unstyled' role='list'>
                           {%- for grandchildlink in childlink.links -%}
                             <li>
                               <a
-                                id="HeaderMenu-{{ link.handle }}-{{ childlink.handle }}-{{ grandchildlink.handle }}"
-                                href="{{ grandchildlink.url }}"
-                                class="mega-menu__link link{% if grandchildlink.current %} mega-menu__link--active{% endif %}"
+                                id='HeaderMenu-{{ link.handle }}-{{ childlink.handle }}-{{ grandchildlink.handle }}'
+                                href='{{ grandchildlink.url }}'
+                                class='mega-menu__link link{% if grandchildlink.current %} mega-menu__link--active{% endif %}'
                                 {% if grandchildlink.current %}
-                                  aria-current="page"
+                                  aria-current='page'
                                 {% endif %}
                               >
                                 {{ grandchildlink.title | escape }}
@@ -72,16 +74,16 @@
           </header-menu>
         {%- else -%}
           <a
-            id="HeaderMenu-{{ link.handle }}"
-            href="{{ link.url }}"
-            class="header__menu-item list-menu__item link link--text focus-inset"
+            id='HeaderMenu-{{ link.handle }}'
+            href='{{ link.url }}'
+            class='header__menu-item list-menu__item link link--text focus-inset'
             {% if link.current %}
-              aria-current="page"
+              aria-current='page'
             {% endif %}
           >
             <span
               {%- if link.current %}
-                class="header__active-menu-item"
+                class='header__active-menu-item'
               {% endif %}
             >
               {{- link.title | escape -}}
@@ -91,4 +93,29 @@
       </li>
     {%- endfor -%}
   </ul>
+  <div class='header__search-mega-menu'>
+    <div class='header__search-mega-menu-search'>
+      {% render 'header-search-mega-menu', input_id: 'Search-In-Line' %}
+    </div>
+    <div class='header__search-mega-menu-help'>
+      <svg viewBox='0 0 22 22' fill='none' xmlns='http://www.w3.org/2000/svg'>
+        <path d="M18.4924 3.16055C16.4581 1.12148 13.7491 0 10.8701 0C4.92773 0 0.0922434 4.83549 0.0922434 10.7779C0.0922434 12.6762 0.587444 14.5307 1.5293 16.1669L0 21.75L5.71423 20.2498C7.28722 21.1092 9.05926 21.5607 10.8653 21.5607H10.8701C16.8077 21.5607 21.75 16.7252 21.75 10.7828C21.75 7.9038 20.5266 5.19961 18.4924 3.16055ZM10.8701 19.7449C9.25831 19.7449 7.68047 19.3128 6.30653 18.4972L5.98125 18.303L2.59252 19.1915L3.49554 15.8853L3.28192 15.5454C2.38376 14.1181 1.91283 12.4723 1.91283 10.7779C1.91283 5.84046 5.9327 1.82059 10.875 1.82059C13.2685 1.82059 15.5163 2.75273 17.2058 4.4471C18.8953 6.14146 19.9343 8.38929 19.9294 10.7828C19.9294 15.7251 15.8076 19.7449 10.8701 19.7449ZM15.7833 13.0354C15.5163 12.8995 14.1909 12.2489 13.9433 12.1616C13.6957 12.0693 13.5161 12.0256 13.3364 12.2975C13.1568 12.5694 12.6422 13.1714 12.482 13.3559C12.3266 13.5355 12.1664 13.5598 11.8994 13.4238C10.3167 12.6325 9.27773 12.011 8.23393 10.2196C7.9572 9.74381 8.51066 9.77779 9.02528 8.74855C9.11267 8.56892 9.06897 8.41356 9.001 8.27762C8.93304 8.14169 8.39414 6.8163 8.17081 6.2774C7.95234 5.75307 7.72902 5.82589 7.56395 5.81618C7.40859 5.80647 7.22896 5.80647 7.04933 5.80647C6.8697 5.80647 6.5784 5.87444 6.3308 6.14146C6.0832 6.41334 5.38895 7.06389 5.38895 8.38929C5.38895 9.71468 6.35508 10.9964 6.48616 11.176C6.6221 11.3556 8.38443 14.0744 11.0886 15.2444C12.7975 15.9824 13.4675 16.0455 14.322 15.9193C14.8415 15.8416 15.9144 15.2687 16.1377 14.6376C16.361 14.0064 16.361 13.4675 16.2931 13.3559C16.23 13.2345 16.0503 13.1665 15.7833 13.0354Z" fill="#32D851"/>
+      </svg>
+
+      <div class='header__search-mega-menu-help-text'>
+        <div class='help-text-title'>¿Tienes dudas?</div>
+        <div class='help-text-content'>
+          Escríbenos a
+          <a
+            href='https://wa.me/573013956872'
+            target='_blank'
+            rel='noopener'
+            class='font-bold text-white no-underline hover:underline'
+          >
+            +57 301 395 68 72
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
 </nav>

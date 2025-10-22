@@ -1,5 +1,5 @@
 module.exports = {
-  prefix: 'twcss-',
+  // prefix: 'twcss-',
   content: [
     './layout/*.liquid',
     './templates/*.liquid',
@@ -19,6 +19,14 @@ module.exports = {
     extend: {
       fontFamily: {
         heading: 'var(--font-heading-family)',
+      },
+      colors: {
+        rojo: '#FA0014',
+        negro: '#0A0A0A',
+        blanco: '#FFFFFF',
+        denim: '#003366',
+        azul: '#0082FF',
+        gris: '#EFEFEF',
       },
     },
   },
