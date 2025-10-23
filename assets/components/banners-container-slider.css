@@ -79,7 +79,11 @@
       }
       
       .banner-subtitle-container {
-        @apply pl-8 border-l-2 border-rojo text-left justify-start;
+        @apply pl-8 border-l-2 border-rojo text-left justify-start flex-row;
+        
+        .banner-subtitle-line {
+          @apply w-1 h-20 bg-rojo mr-6;
+        }
       }
       
       .banner-button {
@@ -99,7 +103,11 @@
       }
       
       .banner-subtitle-container {
-        @apply justify-center text-center;
+        @apply justify-center text-center flex-row;
+        
+        .banner-subtitle-line {
+          @apply w-1 h-20 bg-rojo mx-6;
+        }
       }
       
       .banner-button {
@@ -119,7 +127,11 @@
       }
       
       .banner-subtitle-container {
-        @apply pr-8 border-r-2 border-rojo text-right justify-end;
+        @apply pr-8 border-r-2 border-rojo text-right justify-end flex-row-reverse;
+        
+        .banner-subtitle-line {
+          @apply w-1 h-20 bg-rojo ml-6;
+        }
       }
       
       .banner-button {
@@ -138,7 +150,7 @@
 
       /* Subtítulo con línea */
       .banner-subtitle-container {
-        @apply flex items-center mb-8 max-w-xs;
+        @apply flex items-center mb-8;
 
         .banner-subtitle {
           @apply text-2xl font-light uppercase leading-tight;
