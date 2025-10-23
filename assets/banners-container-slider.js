@@ -300,11 +300,32 @@ class BannersContainerSlider {
   }
 
   /**
-   * Actualizar slides
+   * Actualizar slides con efecto parallax
    */
   updateSlides() {
     this.slides.forEach((slide, index) => {
-      slide.classList.toggle('active', index === this.currentIndex);
+      const isActive = index === this.currentIndex;
+      slide.classList.toggle('active', isActive);
+
+      // Aplicar efecto parallax
+      const backgroundImg = slide.querySelector('.banner-background img');
+      const mainImg = slide.querySelector('.banner-main-image img');
+
+      if (backgroundImg) {
+        if (isActive) {
+          backgroundImg.style.transform = 'scale(1) translateY(0)';
+        } else {
+          backgroundImg.style.transform = 'scale(1.15) translateY(10px)';
+        }
+      }
+
+      if (mainImg) {
+        if (isActive) {
+          mainImg.style.transform = 'scale(1) translateY(0)';
+        } else {
+          mainImg.style.transform = 'scale(1.1) translateY(-10px)';
+        }
+      }
     });
   }
 

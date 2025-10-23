@@ -24,6 +24,7 @@
 
 .banners-container-slider {
   position: relative;
+  z-index: 0;
   height: 720px;
   overflow: hidden;
   --tw-bg-opacity: 1;
@@ -55,6 +56,7 @@
 :is(.banners-container-slider .banner-slide) .banner-background {
   position: absolute;
   inset: 0px;
+  overflow: hidden;
 }
 
 :is(:is(.banners-container-slider .banner-slide) .banner-background) img {
@@ -62,27 +64,60 @@
   width: 100%;
   -o-object-fit: cover;
      object-fit: cover;
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 1000ms;
+  transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+        transform: scale(1.1);
 }
 
-/* Imagen principal */
+/* Imagen principal con efecto parallax - FULL SIZE */
 
 :is(.banners-container-slider .banner-slide) .banner-main-image {
   position: absolute;
-  right: 2rem;
-  top: 50%;
+  inset: 0px;
   z-index: 20;
-  --tw-translate-y: -50%;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  overflow: hidden;
 }
 
 :is(:is(.banners-container-slider .banner-slide) .banner-main-image) img {
-  height: auto;
-  width: 24rem;
-  --tw-rotate: 12deg;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-  --tw-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
-  --tw-shadow-colored: 0 25px 50px -12px var(--tw-shadow-color);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  height: 100%;
+  width: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 1000ms;
+  transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+        transform: scale(1.05) translateY(0);
+}
+
+/* Efecto parallax cuando el slide está activo */
+
+.active:is(.banners-container-slider .banner-slide) .banner-background img {
+        transform: scale(1);
+      }
+
+.active:is(.banners-container-slider .banner-slide) .banner-main-image img {
+        transform: scale(1);
+      }
+
+/* Efecto parallax cuando el slide no está activo */
+
+:is(.banners-container-slider .banner-slide):not(.active) .banner-background img {
+        transform: scale(1.1);
+      }
+
+:is(.banners-container-slider .banner-slide):not(.active) .banner-main-image img {
+        transform: scale(1.05);
+      }
+
+.banners-container-slider .page-width {
+  position: relative;
+  z-index: 20;
+  display: flex;
+  height: 100%;
+  align-items: center;
 }
 
 /* Contenido del banner */
@@ -470,6 +505,31 @@
     --tw-scale-y: 1.05;
     transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
   }
+
+      /* Efecto parallax mejorado */
+      :is(.banners-container-slider .banner-slide) .banner-background img {
+        transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+
+      :is(.banners-container-slider .banner-slide) .banner-main-image img {
+        transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+
+      /* Efecto parallax más pronunciado */
+        .active:is(.banners-container-slider .banner-slide) .banner-background img {
+          transform: scale(1) translateY(0);
+        }
+
+        .active:is(.banners-container-slider .banner-slide) .banner-main-image img {
+          transform: scale(1) translateY(0);
+        }
+        :is(.banners-container-slider .banner-slide):not(.active) .banner-background img {
+          transform: scale(1.15) translateY(10px);
+        }
+
+        :is(.banners-container-slider .banner-slide):not(.active) .banner-main-image img {
+          transform: scale(1.1) translateY(-10px);
+        }
         :is(:is(.banners-container-slider .banner-content) .banner-text-container) .banner-title,:is(:is(.banners-container-slider .banner-content) .banner-text-container) .banner-subtitle,:is(:is(.banners-container-slider .banner-content) .banner-text-container) .banner-button {
     transition-property: all;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -2304,14 +2364,6 @@ predictive-search-mega-menu
   inset: 0px;
 }
 
-.right-8 {
-  right: 2rem;
-}
-
-.top-1\/2 {
-  top: 50%;
-}
-
 .isolate {
   isolation: isolate;
 }
@@ -2340,34 +2392,12 @@ predictive-search-mega-menu
   display: none;
 }
 
-.h-auto {
-  height: auto;
-}
-
 .h-full {
   height: 100%;
 }
 
-.w-96 {
-  width: 24rem;
-}
-
 .w-full {
   width: 100%;
-}
-
-.-translate-y-1\/2 {
-  --tw-translate-y: -50%;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
-.rotate-12 {
-  --tw-rotate: 12deg;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
-.transform {
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
 .flex-wrap {
@@ -2419,12 +2449,6 @@ predictive-search-mega-menu
 .shadow {
   --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
   --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-}
-
-.shadow-2xl {
-  --tw-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
-  --tw-shadow-colored: 0 25px 50px -12px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 

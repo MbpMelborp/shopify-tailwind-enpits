@@ -3,7 +3,7 @@
    ========================================================================== */
 
 .banners-container-slider {
-  @apply relative h-[720px] overflow-hidden bg-negro;
+  @apply z-0 relative h-[720px] overflow-hidden bg-negro;
 
   /* Slides individuales */
   .banner-slide {
@@ -19,23 +19,49 @@
 
     /* Imagen de fondo */
     .banner-background {
-      @apply absolute inset-0;
+      @apply absolute inset-0 overflow-hidden;
 
       img {
-        @apply w-full h-full object-cover;
+        @apply w-full h-full object-cover transition-transform duration-1000 ease-out;
+        transform: scale(1.1);
       }
     }
 
-    /* Imagen principal */
+    /* Imagen principal con efecto parallax - FULL SIZE */
     .banner-main-image {
-      @apply absolute right-8 top-1/2 -translate-y-1/2 z-20;
+      @apply absolute inset-0 z-20 overflow-hidden;
 
       img {
-        @apply w-96 h-auto transform rotate-12 shadow-2xl;
+        @apply w-full h-full object-cover transition-all duration-1000 ease-out;
+        transform: scale(1.05) translateY(0);
+      }
+    }
+
+    /* Efecto parallax cuando el slide está activo */
+    &.active {
+      .banner-background img {
+        transform: scale(1);
+      }
+
+      .banner-main-image img {
+        transform: scale(1);
+      }
+    }
+
+    /* Efecto parallax cuando el slide no está activo */
+    &:not(.active) {
+      .banner-background img {
+        transform: scale(1.1);
+      }
+
+      .banner-main-image img {
+        transform: scale(1.05);
       }
     }
   }
-
+  .page-width {
+    @apply relative z-20 h-full flex items-center;
+  }
   /* Contenido del banner */
   .banner-content {
     @apply relative z-20 h-full flex items-center;
@@ -272,6 +298,36 @@
 
       &:not(.active) {
         @apply transform scale-105;
+      }
+
+      /* Efecto parallax mejorado */
+      .banner-background img {
+        transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+
+      .banner-main-image img {
+        transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+
+      /* Efecto parallax más pronunciado */
+      &.active {
+        .banner-background img {
+          transform: scale(1) translateY(0);
+        }
+
+        .banner-main-image img {
+          transform: scale(1) translateY(0);
+        }
+      }
+
+      &:not(.active) {
+        .banner-background img {
+          transform: scale(1.15) translateY(10px);
+        }
+
+        .banner-main-image img {
+          transform: scale(1.1) translateY(-10px);
+        }
       }
     }
 
