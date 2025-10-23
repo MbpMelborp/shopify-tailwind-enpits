@@ -79,7 +79,7 @@
       }
       
       .banner-subtitle-container {
-        @apply pl-8 border-l-2 border-rojo text-left justify-start flex-row;
+        @apply pl-8 border-l-2 border-rojo text-left justify-start flex-row max-w-xs mr-auto;
         
         .banner-subtitle-line {
           @apply w-1 h-20 bg-rojo mr-6;
@@ -103,7 +103,7 @@
       }
       
       .banner-subtitle-container {
-        @apply justify-center text-center flex-row;
+        @apply justify-center text-center flex-row max-w-xs mx-auto;
         
         .banner-subtitle-line {
           @apply w-1 h-20 bg-rojo mx-6;
@@ -127,7 +127,7 @@
       }
       
       .banner-subtitle-container {
-        @apply pr-8 border-r-2 border-rojo text-right justify-end flex-row-reverse;
+        @apply pr-8 border-r-2 border-rojo text-right justify-end flex-row-reverse max-w-xs ml-auto;
         
         .banner-subtitle-line {
           @apply w-1 h-20 bg-rojo ml-6;
