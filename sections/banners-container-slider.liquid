@@ -1,5 +1,3 @@
-{{ 'components/banners-container-slider.css' | asset_url | stylesheet_tag }}
-
 <div
   class='banners-container-slider'
   data-rotation-speed='{{ section.settings.rotation_speed }}'
@@ -44,7 +42,6 @@
                 <!-- Subtítulo con línea -->
                 {%- if block.settings.subtitle != blank -%}
                   <div class='banner-subtitle-container'>
-                    <div class='banner-subtitle-line'></div>
                     <p
                       class='banner-subtitle'
                       style='color: {{ block.settings.subtitle_color | default: section.settings.default_subtitle_color }};'

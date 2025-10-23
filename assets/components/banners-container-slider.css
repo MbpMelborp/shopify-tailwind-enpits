@@ -3,7 +3,7 @@
    ========================================================================== */
 
 .banners-container-slider {
-  @apply z-0 relative h-[720px] overflow-hidden bg-negro;
+  @apply z-0 relative h-[760px] overflow-hidden bg-negro;
 
   /* Slides individuales */
   .banner-slide {
@@ -60,23 +60,71 @@
     }
   }
   .page-width {
-    @apply relative z-20 h-full flex items-center;
+    @apply relative z-40 h-full flex items-center;
   }
   /* Contenido del banner */
   .banner-content {
-    @apply relative z-20 h-full flex items-center;
+    @apply relative z-30 h-full w-full flex items-center;
 
     /* Alineación de contenido */
-    &--left {
+    &.banner-content--left {
       @apply justify-start pl-16;
+      
+      .banner-text-container {
+        @apply text-left;
+      }
+      
+      .banner-title {
+        @apply text-left;
+      }
+      
+      .banner-subtitle-container {
+        @apply pl-8 border-l-2 border-rojo text-left justify-start;
+      }
+      
+      .banner-button {
+        @apply mr-auto;
+      }
     }
 
-    &--center {
+    &.banner-content--center {
       @apply justify-center;
+      
+      .banner-text-container {
+        @apply text-center;
+      }
+      
+      .banner-title {
+        @apply text-center;
+      }
+      
+      .banner-subtitle-container {
+        @apply justify-center text-center;
+      }
+      
+      .banner-button {
+        @apply mx-auto;
+      }
     }
 
-    &--right {
+    &.banner-content--right {
       @apply justify-end pr-16;
+      
+      .banner-text-container {
+        @apply text-right;
+      }
+      
+      .banner-title {
+        @apply text-right;
+      }
+      
+      .banner-subtitle-container {
+        @apply pr-8 border-r-2 border-rojo text-right justify-end;
+      }
+      
+      .banner-button {
+        @apply ml-auto;
+      }
     }
 
     /* Contenedor de texto */
@@ -86,20 +134,14 @@
       /* Título principal */
       .banner-title {
         @apply text-5xl font-extrabold uppercase leading-tight mb-6;
-        font-family: 'Catamaran', sans-serif;
       }
 
       /* Subtítulo con línea */
       .banner-subtitle-container {
-        @apply flex items-center mb-8;
-
-        .banner-subtitle-line {
-          @apply w-1 h-20 bg-rojo mr-6 flex-shrink-0;
-        }
+        @apply flex items-center mb-8 max-w-xs;
 
         .banner-subtitle {
           @apply text-2xl font-light uppercase leading-tight;
-          font-family: 'Catamaran', sans-serif;
         }
       }
 
@@ -108,15 +150,15 @@
         @apply px-8 py-4 rounded-lg font-semibold uppercase transition-all duration-300 hover:scale-105;
 
         /* Estilos de botón */
-        &--primary {
+        &.banner-button--primary {
           @apply shadow-lg hover:shadow-xl;
         }
 
-        &--secondary {
+        &.banner-button--secondary {
           @apply border-2 border-current bg-transparent hover:bg-current;
         }
 
-        &--outline {
+        &.banner-button--outline {
           @apply border-2 border-current bg-transparent hover:bg-current hover:text-white;
         }
       }
@@ -134,11 +176,11 @@
         @apply w-6 h-6 text-white;
       }
 
-      &--prev {
+      &.slider-controls--prev {
         @apply left-0;
       }
 
-      &--next {
+      &.slider-controls--next {
         @apply right-0;
       }
 
@@ -193,9 +235,9 @@
       }
 
       .banner-content {
-        &--left,
-        &--center,
-        &--right {
+        &.banner-content--left,
+        &.banner-content--center,
+        &.banner-content--right {
           @apply px-6 justify-center;
         }
 
