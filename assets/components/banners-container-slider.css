@@ -150,7 +150,7 @@
 
       /* Subtítulo con línea */
       .banner-subtitle-container {
-        @apply flex items-center mb-8;
+        @apply flex items-center mb-8 max-w-xs;
 
         .banner-subtitle {
           @apply text-2xl font-light uppercase leading-tight;
