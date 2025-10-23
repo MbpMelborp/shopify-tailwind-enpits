@@ -6,6 +6,9 @@
 @import './components/mega-menu-search.css';
 @import './components/predictive-search-mega-menu.css';
 
+/* Banner Rotador Component */
+@import './components/banners-container-slider.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

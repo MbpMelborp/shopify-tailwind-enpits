@@ -1,0 +1,322 @@
+{{ 'components/banners-container-slider.css' | asset_url | stylesheet_tag }}
+
+<div
+  class='banners-container-slider'
+  data-rotation-speed='{{ section.settings.rotation_speed }}'
+  data-auto-play='{{ section.settings.auto_play }}'
+  data-show-controls='{{ section.settings.show_controls }}'
+>
+  {%- for block in section.blocks -%}
+    {%- case block.type -%}
+      {%- when 'banner_slide' -%}
+        <div
+          class='banner-slide{% if forloop.first %} active{% endif %}'
+          {{ block.shopify_attributes }}
+        >
+          <!-- Imagen de fondo -->
+          {%- if block.settings.background_image != blank -%}
+            <div class='banner-background'>
+              {{
+                block.settings.background_image
+                | image_url: width: 1920
+                | image_tag: class: 'absolute inset-0 w-full h-full object-cover', loading: 'lazy'
+              }}
+            </div>
+          {%- endif -%}
+
+          <!-- Overlay de gradiente -->
+          <div class='banner-overlay'></div>
+
+          <!-- Contenido del banner -->
+          <div class='banner-content banner-content--{{ block.settings.text_alignment }}'>
+            <div class='banner-text-container'>
+              <!-- Título -->
+              {%- if block.settings.title != blank -%}
+                <h2
+                  class='banner-title'
+                  style='color: {{ block.settings.title_color | default: section.settings.default_title_color }};'
+                >
+                  {{ block.settings.title }}
+                </h2>
+              {%- endif -%}
+
+              <!-- Subtítulo con línea -->
+              {%- if block.settings.subtitle != blank -%}
+                <div class='banner-subtitle-container'>
+                  <div class='banner-subtitle-line'></div>
+                  <p
+                    class='banner-subtitle'
+                    style='color: {{ block.settings.subtitle_color | default: section.settings.default_subtitle_color }};'
+                  >
+                    {{ block.settings.subtitle }}
+                  </p>
+                </div>
+              {%- endif -%}
+
+              <!-- Botón CTA -->
+              {%- if block.settings.button_text != blank and block.settings.button_url != blank -%}
+                <a
+                  href='{{ block.settings.button_url }}'
+                  class='banner-button banner-button--{{ block.settings.button_style }}'
+                  style='
+                    background-color: {{ block.settings.button_color | default: section.settings.default_button_color }};
+                    color: {{ block.settings.button_text_color | default: section.settings.default_button_text_color }};
+                    {% if block.settings.button_style == 'outline' %}
+                      border-color: {{ block.settings.button_color | default: section.settings.default_button_color }};
+                    {% endif %}
+                  '
+                >
+                  {{ block.settings.button_text }}
+                </a>
+              {%- endif -%}
+            </div>
+          </div>
+
+          <!-- Imagen principal -->
+          {%- if block.settings.main_image != blank -%}
+            <div class='banner-main-image'>
+              {{
+                block.settings.main_image
+                | image_url: width: 800
+                | image_tag:
+                  class: 'absolute right-8 top-1/2 -translate-y-1/2 w-96 h-auto transform rotate-12 shadow-2xl',
+                  loading: 'lazy'
+              }}
+            </div>
+          {%- endif -%}
+        </div>
+    {%- endcase -%}
+  {%- endfor -%}
+
+  <!-- Controles de navegación -->
+  {%- if section.settings.show_controls -%}
+    <div class='slider-controls-container'>
+      <button class='slider-controls slider-controls--prev' aria-label='Banner anterior'>
+        <svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'>
+          <path d="M15 18l-6-6 6-6"/>
+        </svg>
+      </button>
+      <button class='slider-controls slider-controls--next' aria-label='Banner siguiente'>
+        <svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'>
+          <path d="M9 18l6-6-6-6"/>
+        </svg>
+      </button>
+    </div>
+  {%- endif -%}
+
+  <!-- Indicadores -->
+  {%- if section.blocks.size > 1 -%}
+    <div class='slider-indicators'>
+      {%- for block in section.blocks -%}
+        <button
+          class='slider-indicator{% if forloop.first %} active{% endif %}'
+          data-slide='{{ forloop.index0 }}'
+          aria-label='Ir al banner {{ forloop.index }}'
+        ></button>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+</div>
+
+<script src='{{ 'banners-container-slider.js' | asset_url }}' defer></script>
+
+{% schema %}
+{
+  "name": "Banner Rotador",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Configuración de Rotación"
+    },
+    {
+      "type": "range",
+      "id": "rotation_speed",
+      "min": 3000,
+      "max": 9000,
+      "step": 1000,
+      "unit": "ms",
+      "label": "Velocidad de Rotación",
+      "default": 5000
+    },
+    {
+      "type": "checkbox",
+      "id": "auto_play",
+      "label": "Reproducción Automática",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_controls",
+      "label": "Mostrar Controles",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Configuración Global de Colores"
+    },
+    {
+      "type": "color",
+      "id": "default_title_color",
+      "label": "Color por Defecto del Título",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "default_subtitle_color",
+      "label": "Color por Defecto del Subtítulo",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "default_button_color",
+      "label": "Color por Defecto del Botón",
+      "default": "#fa0014"
+    },
+    {
+      "type": "color",
+      "id": "default_button_text_color",
+      "label": "Color por Defecto del Texto del Botón",
+      "default": "#ffffff"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "banner_slide",
+      "name": "Banner",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Imágenes"
+        },
+        {
+          "type": "image_picker",
+          "id": "main_image",
+          "label": "Imagen Principal"
+        },
+        {
+          "type": "image_picker",
+          "id": "background_image",
+          "label": "Imagen de Fondo"
+        },
+        {
+          "type": "header",
+          "content": "Contenido de Texto"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Título",
+          "default": "NACIMOS PARA AYUDARTE"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtítulo",
+          "default": "¿buscas repuestos! AQUÍ lOs ENCUENTRAS"
+        },
+        {
+          "type": "select",
+          "id": "text_alignment",
+          "label": "Alineación del Texto",
+          "options": [
+            {
+              "value": "left",
+              "label": "Izquierda"
+            },
+            {
+              "value": "center",
+              "label": "Centro"
+            },
+            {
+              "value": "right",
+              "label": "Derecha"
+            }
+          ],
+          "default": "left"
+        },
+        {
+          "type": "header",
+          "content": "Colores Personalizados"
+        },
+        {
+          "type": "color",
+          "id": "title_color",
+          "label": "Color del Título",
+          "info": "Dejar vacío para usar color por defecto"
+        },
+        {
+          "type": "color",
+          "id": "subtitle_color",
+          "label": "Color del Subtítulo",
+          "info": "Dejar vacío para usar color por defecto"
+        },
+        {
+          "type": "header",
+          "content": "Botón CTA"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Texto del Botón",
+          "default": "Ver Más"
+        },
+        {
+          "type": "url",
+          "id": "button_url",
+          "label": "URL del Botón"
+        },
+        {
+          "type": "color",
+          "id": "button_color",
+          "label": "Color del Botón",
+          "info": "Dejar vacío para usar color por defecto"
+        },
+        {
+          "type": "color",
+          "id": "button_text_color",
+          "label": "Color del Texto del Botón",
+          "info": "Dejar vacío para usar color por defecto"
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Estilo del Botón",
+          "options": [
+            {
+              "value": "primary",
+              "label": "Primario"
+            },
+            {
+              "value": "secondary",
+              "label": "Secundario"
+            },
+            {
+              "value": "outline",
+              "label": "Contorno"
+            }
+          ],
+          "default": "primary"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Banner Rotador",
+      "blocks": [
+        {
+          "type": "banner_slide"
+        },
+        {
+          "type": "banner_slide"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
