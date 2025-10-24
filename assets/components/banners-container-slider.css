@@ -19,7 +19,7 @@
 
     /* Imagen de fondo */
     .banner-background {
-      @apply absolute inset-0 overflow-hidden;
+      @apply absolute inset-0 z-0 overflow-hidden;
 
       img {
         @apply w-full h-full object-cover transition-transform duration-1000 ease-out;
@@ -29,7 +29,7 @@
 
     /* Imagen principal con efecto parallax - FULL SIZE */
     .banner-main-image {
-      @apply absolute inset-0 z-20 overflow-hidden;
+      @apply absolute inset-0 z-10 overflow-hidden;
 
       img {
         @apply w-full h-full object-cover transition-all duration-1000 ease-out;
@@ -106,7 +106,7 @@
 
       /* Título principal */
       .banner-title {
-        @apply text-5xl font-extrabold uppercase leading-tight mb-6;
+        @apply text-5xl font-extrabold uppercase leading-none mb-6;
       }
 
       /* Subtítulo con línea */
@@ -120,7 +120,7 @@
 
       /* Botón CTA */
       .banner-button {
-        @apply px-8 py-4 rounded-lg font-semibold uppercase transition-all duration-300 hover:scale-105;
+        @apply px-8 py-2 rounded-xl font-semibold uppercase transition-all duration-300 hover:scale-105 text-lg;
 
         /* Estilos de botón */
         &.banner-button--primary {
@@ -128,11 +128,11 @@
         }
 
         &.banner-button--secondary {
-          @apply border-2 border-current bg-transparent hover:bg-current;
+          @apply border border-current bg-transparent hover:bg-current;
         }
 
         &.banner-button--outline {
-          @apply border-2 border-current bg-transparent hover:bg-current hover:text-white;
+          @apply border border-current bg-transparent hover:bg-current hover:text-white;
         }
       }
     }
@@ -140,7 +140,7 @@
 
   /* Controles de navegación */
   .slider-controls-container {
-    @apply absolute inset-y-0 w-full pointer-events-none z-30;
+    @apply absolute inset-y-0 w-full pointer-events-none z-40;
 
     .slider-controls {
       @apply absolute top-1/2 -translate-y-1/2 w-12 h-12 bg-black/30 hover:bg-black/50 transition-colors duration-300 flex items-center justify-center pointer-events-auto;
@@ -186,7 +186,8 @@
 
   /* Overlay de gradiente */
   .banner-slide .banner-overlay {
-    @apply absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-negro opacity-75;
+    @apply !block absolute inset-0 z-20 select-none;
+    /* @apply bg-gradient-to-b from-transparent via-transparent to-negro opacity-75; */
   }
 }
 
@@ -197,11 +198,26 @@
 @media screen and (max-width: 768px) {
   .banners-container-slider {
     @apply h-[500px];
-
+    .banner-slide .banner-overlay {
+      @apply bg-gradient-to-b from-transparent via-negro/55 to-negro/80;
+    }
     .banner-slide {
+      &:has(.banner-content--left) {
+        .banner-main-image {
+          @apply -left-[50%];
+        }
+      }
+      &:has(.banner-content--center) {
+        .banner-main-image {
+          @apply w-full;
+        }
+      }
+      &:has(.banner-content--right) {
+        .banner-main-image {
+          @apply -right-[50%];
+        }
+      }
       .banner-main-image {
-        @apply right-4 w-64;
-
         img {
           @apply w-full;
         }
@@ -222,11 +238,7 @@
           }
 
           .banner-subtitle-container {
-            @apply justify-center mb-6;
-
-            .banner-subtitle-line {
-              @apply h-16 mr-4;
-            }
+            @apply !justify-center mb-6 !mx-auto p-0 border-none;
 
             .banner-subtitle {
               @apply text-xl;
@@ -279,10 +291,6 @@
 
           .banner-subtitle-container {
             @apply mb-4;
-
-            .banner-subtitle-line {
-              @apply h-12 mr-3;
-            }
 
             .banner-subtitle {
               @apply text-lg;
@@ -411,12 +419,12 @@
   /* Estados de hover mejorados */
   .slider-controls:hover,
   .slider-indicator:hover {
-    @apply ring-2 ring-white/50;
+    @apply ring-1 ring-white/50;
   }
 
   /* Contraste mejorado para texto */
   .banner-title,
   .banner-subtitle {
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    /* text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); */
   }
 }
