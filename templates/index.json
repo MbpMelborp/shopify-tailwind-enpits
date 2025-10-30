@@ -45,11 +45,28 @@
             "button_color": "",
             "button_text_color": ""
           }
+        },
+        "banner_slide_BwKCaF": {
+          "type": "banner_slide",
+          "settings": {
+            "background_image": "shopify://shop_images/banner_3_fondo.webp",
+            "title": "NACIMOS PARA AYUDARTE, PARA SER ESE EQUIPO FUERTE Y CONFIABLE. 2",
+            "subtitle": "¿buscas repuestos! AQUÍ lOs ENCUENTRAS",
+            "button_text": "Ver Más",
+            "button_url": "shopify://collections/all",
+            "text_alignment": "center",
+            "button_style": "secondary",
+            "title_color": "",
+            "subtitle_color": "",
+            "button_color": "",
+            "button_text_color": ""
+          }
         }
       },
       "block_order": [
         "banner_slide_gHxhtb",
-        "banner_slide_4AjAe4"
+        "banner_slide_4AjAe4",
+        "banner_slide_BwKCaF"
       ],
       "name": "Banner Rotador",
       "settings": {
