@@ -1,0 +1,162 @@
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+{%- liquid
+  assign brands_count = 0
+  assign brands_collections = blank
+
+  comment
+    Intentar diferentes formas de acceder a las colecciones
+    Shopify puede tener restricciones dependiendo del template
+  endcomment
+
+  if collections.all.size > 0
+    assign all_collections = collections.all
+  elsif collections.size > 0
+    assign all_collections = collections
+  else
+    assign all_collections = blank
+  endif
+
+  comment
+    Filtrar colecciones que tengan el formato "Marcas · [BRAND]"
+    y crear un array de marcas
+  endcomment
+
+  if all_collections != blank
+    assign brands_array = blank
+    for collection in all_collections
+      assign collection_title_upper = collection.title | upcase
+      if collection_title_upper contains 'MARCAS ·'
+        assign brands_count = brands_count | plus: 1
+        if brands_array == blank
+          assign brands_array = collection.title
+        else
+          assign brands_array = brands_array | append: '|||' | append: collection.title
+        endif
+      endif
+    endfor
+  endif
+-%}
+
+<div class='brands-marquee-section section-{{ section.id }}-padding'>
+  {%- if brands_count > 0 -%}
+    {%- if section.settings.title != blank -%}
+      <div class='brands-marquee-title-wrapper'>
+        <h2 class='brands-marquee-title'>{{ section.settings.title }}</h2>
+      </div>
+    {%- endif -%}
+    <div class='brands-marquee-wrapper'>
+      <div
+        class='brands-marquee-container'
+        data-section-id='{{ section.id }}'
+        data-speed='{{ section.settings.speed }}'
+      >
+        <div class='brands-marquee-track'>
+          {%- if brands_array != blank -%}
+            {%- assign brands_split = brands_array | split: '|||' -%}
+            {%- comment -%} Renderizar dos veces para efecto infinito {%- endcomment -%}
+            {%- for i in (1..2) -%}
+              {%- for brand_title in brands_split -%}
+                {%- comment -%} Extraer el nombre de la marca del título "Marcas · BRAND" {%- endcomment -%}
+                {%- assign brand_name = brand_title | remove: 'Marcas · ' | remove: 'MARCAS · ' | strip | upcase -%}
+                {%- comment -%} Buscar la colección correspondiente {%- endcomment -%}
+                {%- assign brand_collection = blank -%}
+                {%- for collection in all_collections -%}
+                  {%- if collection.title == brand_title -%}
+                    {%- assign brand_collection = collection -%}
+                    {%- break -%}
+                  {%- endif -%}
+                {%- endfor -%}
+
+                {%- if brand_collection != blank -%}
+                  <a
+                    href='{{ brand_collection.url }}'
+                    class='brands-marquee-item'
+                    aria-label='Ver productos de {{ brand_name }}'
+                  >
+                    {{ brand_name }}
+                  </a>
+                {%- else -%}
+                  <span class='brands-marquee-item'>{{ brand_name }}</span>
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endfor -%}
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  {%- else -%}
+    <div class='brands-marquee-empty'>
+      <p>No se encontraron colecciones de marcas.</p>
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Marcas Marquee",
+  "tag": "section",
+  "class": "section section-brands-marquee",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Título",
+      "default": "REPUESTOS GÉNERICOS PARA",
+      "info": "El título será visualmente oculto para SEO"
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "unit": "x",
+      "label": "Velocidad de scroll",
+      "info": "1 = más lento, 10 = más rápido",
+      "default": 5
+    },
+    {
+      "type": "header",
+      "content": "Espaciado"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Espaciado superior",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Espaciado inferior",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Marcas Marquee"
+    }
+  ]
+}
+{% endschema %}

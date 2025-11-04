@@ -1,0 +1,602 @@
+# 🎯 Cursor Rules - EnPits Shopify Theme Development
+
+## 📋 Overview
+
+Este archivo contiene reglas y guías para el desarrollo del tema de Shopify EnPits usando Tailwind CSS, Liquid, y JavaScript.
+
+**Tienda**: `enpits.myshopify.com`
+**Tema Base**: Dawn 15.2.0 + Tailwind CSS
+**Repositorio**: `/Users/juanosoriocano/Documents/DEV/ENPITS/shopify-tailwind-enpits`
+
+---
+
+## 🏗️ Estructura del Proyecto
+
+```
+shopify-tailwind-enpits/
+├── assets/              # CSS compilado, JS, imágenes, SVGs
+│   ├── app-tailwind.css    # Fuente de Tailwind (editar aquí)
+│   ├── app.css            # CSS compilado (auto-generado)
+│   └── facets.js          # Lógica de filtros
+├── config/             # Configuración del tema
+│   ├── settings_data.json
+│   └── settings_schema.json
+├── layout/             # Layouts principales
+│   └── theme.liquid
+├── sections/           # Secciones del tema (header, footer, product)
+│   ├── header.liquid
+│   ├── main-collection-product-grid.liquid  # ⭐ Filtros principales
+│   └── facets.liquid (snippet)
+├── snippets/           # Componentes reutilizables
+│   ├── facets.liquid       # ⭐ Componente de filtros
+│   ├── card-product.liquid
+│   └── header-search-mega-menu.liquid
+├── templates/          # Plantillas de páginas
+│   ├── collection.json
+│   └── product.json
+├── locales/            # Traducciones
+└── tailwind.config.js  # Configuración de Tailwind
+```
+
+---
+
+## 🎨 Tailwind CSS - Reglas de Oro
+
+### Clases de Tailwind Directas
+
+**TODAS** las clases Tailwind se usan **directamente**, sin prefijo:
+
+```liquid
+✅ Correcto:
+<div class="flex items-center gap-4">
+  <h1 class="text-2xl font-bold">Título</h1>
+</div>
+
+❌ Incorrecto (prefijo antiguo):
+<div class="twcss-flex twcss-items-center twcss-gap-4">
+```
+
+### Espacios con Tags Liquid
+
+**SIEMPRE** deja un espacio antes/después de tags Liquid:
+
+```liquid
+✅ Correcto:
+<div class="px-4 {% if mobile %}py-8{% endif %}">
+<button class="bg-blue-500 hover:bg-blue-600 ">
+
+❌ Incorrecto (causa errores):
+<div class="px-4{% if mobile %}py-8{% endif %}">
+```
+
+### Breakpoints Disponibles
+
+```css
+sm:   320px   /* Mobile */
+md:   750px   /* Tablet */
+lg:   990px   /* Desktop */
+xlg:  1440px  /* Large Desktop */
+x2lg: 1920px  /* Extra Large */
+```
+
+**Ejemplo:**
+```liquid
+<div class="w-full md:w-1/2 lg:w-1/3">
+```
+
+### Compilar CSS
+
+```bash
+# Desarrollo (con source maps)
+npm run build:css:dev
+
+# Producción (minificado)
+npm run build:css
+
+# Watch mode (desarrollo activo)
+npm run dev:css
+```
+
+---
+
+## 🔍 Filtros y Categorización - Sistema EnPits
+
+### 📚 Documentación Completa
+
+Ver: `/Users/juanosoriocano/Documents/DEV/ENPITS/API/api-access-net/docs/shopify-theme-integration.md`
+
+### Arquitectura de Filtros
+
+```
+Metaobjects (Backend)
+    ↓
+Product Metafields (Shopify)
+    ↓
+Product Tags (Sincronizados automáticamente)
+    ↓
+Shopify Facets API
+    ↓
+Frontend Filters (facets.liquid)
+```
+
+### Tipos de Metaobjetos
+
+#### 1. `compatibilidad_de_moto`
+- **Marca**: `product.metafields.custom.compatibilidad_de_moto.marca`
+- **Modelo**: `product.metafields.custom.compatibilidad_de_moto.modelo` (array)
+- **Tags generados**: `marca:["KAWASAKI"]`, `modelo:["Ninja 250"]`
+
+#### 2. `taxonomia_producto`
+- **Categoría**: `product.metafields.custom.taxonomia_producto.categoria` (repuestos, llantas, neumaticos)
+- **Línea**: `product.metafields.custom.taxonomia_producto.linea`
+- **Sublínea**: `product.metafields.custom.taxonomia_producto.sublinea`
+- **Type** (llantas): `product.metafields.custom.taxonomia_producto.type`
+- **Tube Type** (llantas): `product.metafields.custom.taxonomia_producto.tubetype`
+- **Sizes** (llantas): `product.metafields.custom.taxonomia_producto.sizes` (array)
+- **Tags generados**: 
+  - `categoria:["repuestos"]`
+  - `linea:["Filtros"]`
+  - `sublinea:["Aire"]`
+  - `llantas:type:Pistera`
+  - `llantas:tubetype:TL`
+  - `llantas:size:16"`
+
+### Formato de Tags
+
+Los tags siguen este formato:
+
+```
+marca:["KAWASAKI"]
+modelo:["Ninja 250"]
+categoria:["repuestos"]
+linea:["Filtros"]
+sublinea:["Aire"]
+llantas:type:Pistera
+llantas:tubetype:TL
+llantas:size:16"
+```
+
+### Acceso desde Liquid
+
+#### Obtener Compatibilidad (Marca/Modelo)
+
+```liquid
+{%- assign compatibilidad = product.metafields.custom.compatibilidad_de_moto -%}
+{%- if compatibilidad -%}
+  {%- assign marca = compatibilidad.marca.value -%}
+  {%- assign modelos = compatibilidad.modelo.value -%}
+  
+  <div class="mb-4">
+    <h3 class="font-bold">Compatible con:</h3>
+    <p class="text-sm">
+      Marca: {{ marca }}<br>
+      Modelos: {{ modelos | join: ', ' }}
+    </p>
+  </div>
+{%- endif -%}
+```
+
+#### Obtener Taxonomía
+
+```liquid
+{%- assign taxonomia = product.metafields.custom.taxonomia_producto -%}
+{%- if taxonomia -%}
+  {%- comment -%} Puede ser single reference o list {%- endcomment -%}
+  {%- if taxonomia.reference -%}
+    {%- assign categoria = taxonomia.reference.categoria.value -%}
+    {%- assign linea = taxonomia.reference.linea.value -%}
+    {%- assign sublinea = taxonomia.reference.sublinea.value -%}
+    
+    <div class="flex gap-2 flex-wrap">
+      <span class="px-2 py-1 bg-gray-100 rounded">
+        {{ categoria }}
+      </span>
+      {%- if linea -%}
+        <span class="px-2 py-1 bg-gray-100 rounded">
+          {{ linea }}
+        </span>
+      {%- endif -%}
+      {%- if sublinea -%}
+        <span class="px-2 py-1 bg-gray-100 rounded">
+          {{ sublinea }}
+        </span>
+      {%- endif -%}
+    </div>
+  {%- elsif taxonomia.references -%}
+    {%- comment -%} Lista de referencias {%- endcomment -%}
+    {%- for ref in taxonomia.references -%}
+      <div class="mb-2">
+        Categoría: {{ ref.categoria.value }}
+        Línea: {{ ref.linea.value }}
+      </div>
+    {%- endfor -%}
+  {%- endif -%}
+{%- endif -%}
+```
+
+#### Obtener Tags del Producto
+
+```liquid
+{%- comment -%} Tags ya están sincronizados automáticamente {%- endcomment -%}
+{%- for tag in product.tags -%}
+  {%- if tag contains 'marca:' or tag contains 'categoria:' or tag contains 'linea:' -%}
+    <span class="inline-block px-2 py-1 bg-red-100 rounded text-xs">
+      {{ tag }}
+    </span>
+  {%- endif -%}
+{%- endfor -%}
+```
+
+### Filtros en Colecciones
+
+El tema usa el snippet `facets.liquid` que se renderiza en `main-collection-product-grid.liquid`:
+
+```liquid
+{% render 'facets',
+  results: collection,
+  enable_filtering: section.settings.enable_filtering,
+  enable_sorting: section.settings.enable_sorting,
+  filter_type: section.settings.filter_type,
+  paginate: paginate
+%}
+```
+
+**Tipos de filtros disponibles:**
+- `vertical`: Sidebar de filtros
+- `horizontal`: Filtros en línea
+- `drawer`: Drawer móvil
+
+### JavaScript para Filtros
+
+El archivo `assets/facets.js` contiene la clase `FacetFiltersForm` que maneja:
+- Actualización de URL cuando se selecciona un filtro
+- Fetch de resultados filtrados sin recargar página
+- Manejo de filtros activos
+- Integración con Shopify Facets API
+
+**Uso:**
+```javascript
+// El web component <facet-filters-form> ya está configurado
+// No necesitas código adicional, funciona automáticamente
+```
+
+### Crear Filtros Personalizados
+
+Si necesitas filtros personalizados basados en metaobjetos:
+
+```liquid
+{%- comment -%} En facets.liquid o tu snippet personalizado {%- endcomment -%}
+<div class="mb-4">
+  <h3 class="font-bold mb-2">Filtrar por Marca</h3>
+  <div class="space-y-2">
+    {%- assign marcas = collection.all_tags | where: 'contains', 'marca:' -%}
+    {%- for tag in marcas -%}
+      <label class="flex items-center gap-2">
+        <input type="checkbox" value="{{ tag }}" class="marca-filter">
+        <span>{{ tag | remove: 'marca:["' | remove: '"]' }}</span>
+      </label>
+    {%- endfor -%}
+  </div>
+</div>
+```
+
+---
+
+## 🚀 Desarrollo Workflow
+
+### Setup Inicial
+
+```bash
+# 1. Instalar dependencias
+npm install
+
+# 2. Autenticar con Shopify
+shopify auth login
+
+# 3. Iniciar desarrollo (2 terminales necesarias)
+# Terminal 1: Compilador CSS
+npm run dev:css
+
+# Terminal 2: Servidor Shopify
+npm run dev:shopify
+```
+
+### Flujo Diario
+
+1. Abrir 2 terminales
+2. `npm run dev:css` (Terminal 1 - NO cerrar)
+3. `npm run dev:shopify` (Terminal 2 - NO cerrar)
+4. Copiar URL del preview
+5. Desarrollar con clases de Tailwind directamente (sin prefijo)
+6. Los cambios se reflejan automáticamente
+
+### Antes de Commit
+
+```bash
+# 1. Compilar CSS para producción
+npm run build:css
+
+# 2. Verificar cambios
+git status
+
+# 3. Commit (Prettier formatea automáticamente)
+git add .
+git commit -m "Tipo: Descripción"
+```
+
+---
+
+## 📝 Convenciones de Código
+
+### Liquid
+
+- Usar comillas simples para strings: `{% assign var = 'value' %}`
+- Usar `{%-` y `-%}` para controlar espacios
+- Comentar código complejo con `{% comment %}`
+- Nombres descriptivos para variables
+
+### JavaScript
+
+- Usar clases ES6
+- Web Components para funcionalidad reutilizable
+- Event listeners con `defer` o `async`
+- Nombres en camelCase
+
+### CSS
+
+#### Organización de Estilos
+
+**Principios:**
+- Editar en `assets/app-tailwind.css` o archivos CSS modulares (ej: `repuestos-collections-slider.css`)
+- Usar `@apply` para componentes frecuentes en lugar de clases inline en HTML
+- NO editar `app.css` directamente (auto-generado)
+
+#### Estructura de Archivos CSS
+
+**Organización modular:**
+```css
+/* ==========================================================================
+   NOMBRE DEL COMPONENTE - Descripción breve
+   ========================================================================== */
+
+/* ==========================================================================
+   Sección Principal
+   ========================================================================== */
+.component-main {
+  @apply relative flex items-center;
+}
+
+/* ==========================================================================
+   Subsecciones Agrupadas
+   ========================================================================== */
+.component-header {
+  @apply flex flex-col;
+}
+
+.component-content {
+  @apply relative w-full;
+}
+```
+
+**Reglas de anidamiento:**
+- ✅ Usar anidamiento con `&` para pseudo-clases y pseudo-elementos
+- ✅ Agrupar estilos relacionados con comentarios de sección
+- ✅ Mantener profundidad de anidamiento máxima de 2-3 niveles
+- ✅ Usar comentarios descriptivos para cada sección principal
+
+**Ejemplo correcto:**
+```css
+.button {
+  @apply px-4 py-2 rounded transition-colors;
+
+  &:hover {
+    @apply bg-gray-200;
+  }
+
+  &:disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
+
+  svg {
+    color: var(--color-primary);
+  }
+}
+```
+
+**Evitar:**
+```css
+/* ❌ No anidar demasiado profundamente */
+.button {
+  .inner {
+    .icon {
+      svg {
+        path {
+          /* Demasiado profundo */
+        }
+      }
+    }
+  }
+}
+
+/* ❌ No usar clases inline en HTML cuando se puede usar @apply */
+/* En lugar de: <div class="flex items-center gap-4 px-4 py-2"> */
+/* Usar: <div class="component-wrapper"> */
+```
+
+### Archivos y Nombres
+
+- **Snippets**: `snake-case.liquid` (ej: `header-search-mega-menu.liquid`)
+- **Sections**: `snake-case.liquid` (ej: `main-collection-product-grid.liquid`)
+- **Templates**: `kebab-case.json` o `.liquid`
+- **Variables Liquid**: `snake_case`
+- **Clases CSS**: `kebab-case` o `BEM`
+
+---
+
+## 🔗 Referencias a Documentación
+
+### Documentos del Proyecto
+
+- **Workflow**: `WORKFLOW.md` - Guía completa de desarrollo
+- **Filtros y Categorización**: `../API/api-access-net/docs/shopify-theme-integration.md`
+- **Búsqueda Inline**: `SEARCH-INLINE-DOCS.md`
+- **Source Maps**: `SOURCE-MAPS.md`
+- **Secciones**: `SECTIONS.md`
+
+### Recursos Externos
+
+- [Shopify Liquid Docs](https://shopify.dev/docs/api/liquid)
+- [Shopify Themes Docs](https://shopify.dev/themes)
+- [Tailwind CSS Docs](https://tailwindcss.com/docs)
+- [Dawn Theme GitHub](https://github.com/Shopify/dawn)
+
+---
+
+## 🎯 Patrones Importantes
+
+### Acceder a Metafields
+
+```liquid
+{%- assign metafield = product.metafields.namespace.key -%}
+{%- if metafield -%}
+  {%- if metafield.reference -%}
+    {%- comment -%} Single reference {%- endcomment -%}
+    {{ metafield.reference.field.value }}
+  {%- elsif metafield.references -%}
+    {%- comment -%} List of references {%- endcomment -%}
+    {%- for ref in metafield.references -%}
+      {{ ref.field.value }}
+    {%- endfor -%}
+  {%- else -%}
+    {%- comment -%} Simple value {%- endcomment -%}
+    {{ metafield.value }}
+  {%- endif -%}
+{%- endif -%}
+```
+
+### Renderizar Snippets
+
+```liquid
+{% render 'snippet-name',
+  param1: value1,
+  param2: value2
+%}
+```
+
+### Condiciones Responsive
+
+```liquid
+{%- comment -%} Ocultar en mobile {%- endcomment -%}
+<div class="small-hide">
+  Desktop only
+</div>
+
+{%- comment -%} Ocultar en desktop {%- endcomment -%}
+<div class="large-up-hide">
+  Mobile only
+</div>
+```
+
+### Loops de Productos
+
+```liquid
+{%- for product in collection.products -%}
+  {% render 'card-product', card_product: product %}
+{%- endfor -%}
+```
+
+---
+
+## ⚠️ Advertencias Importantes
+
+### NO hacer
+
+- ❌ Editar `assets/app.css` directamente (se regenera)
+- ❌ Usar prefijo `twcss-` (ya no se usa, usar clases directamente)
+- ❌ Commits sin compilar CSS primero (`npm run build:css`)
+- ❌ Modificar metafields desde el frontend (solo lectura)
+- ❌ Hardcodear IDs de productos o colecciones
+
+### SÍ hacer
+
+- ✅ Editar `assets/app-tailwind.css` o archivos CSS modulares para estilos
+- ✅ Usar clases de Tailwind directamente (sin prefijo)
+- ✅ Usar `@apply` con clases semánticas en CSS en lugar de múltiples clases inline
+- ✅ Organizar CSS con anidamiento (`&`) y comentarios de sección
+- ✅ Compilar CSS antes de commit
+- ✅ Probar cambios en tema de desarrollo primero
+- ✅ Usar variables Liquid en lugar de valores hardcodeados
+
+---
+
+## 🐛 Debugging
+
+### Ver Metafields en Liquid
+
+```liquid
+{%- comment -%} Debug: Ver estructura completa {%- endcomment -%}
+<pre>{{ product.metafields | json }}</pre>
+```
+
+### Ver Tags del Producto
+
+```liquid
+{%- for tag in product.tags -%}
+  <span>{{ tag }}</span>
+{%- endfor -%}
+```
+
+### Verificar Filtros Activos
+
+```javascript
+// En consola del navegador
+console.log(document.querySelector('facet-filters-form'));
+console.log(new URLSearchParams(window.location.search).get('filter'));
+```
+
+---
+
+## 📊 IDs de Temas Importantes
+
+- **Producción (Live)**: `140509413491` - EnPits fresh
+- **Desarrollo**: `140507480179` - Development
+- **Horizon**: `140506595443` - Horizon (unpublished)
+- **En Pits Theme**: `140507578483` - En Pits Theme (unpublished)
+
+**Comandos:**
+```bash
+# Pull del tema de producción
+shopify theme pull -d --theme=140509413491
+
+# Push al tema de desarrollo
+shopify theme push -d --theme=140507480179
+```
+
+---
+
+## 🎓 Best Practices
+
+### Desarrollo General
+
+1. **Siempre** compila CSS antes de commit
+2. **Siempre** prueba en tema de desarrollo primero
+3. **Siempre** usa clases de Tailwind directamente (sin prefijo)
+4. **Nunca** edites `app.css` directamente
+5. **Documenta** código complejo con comentarios Liquid
+6. **Mantén** consistencia en nombres de archivos
+7. **Revisa** WORKFLOW.md antes de publicar cambios
+
+### Organización de Estilos CSS
+
+1. **Usa clases semánticas** con `@apply` en lugar de múltiples clases inline en HTML
+2. **Agrupa estilos relacionados** con comentarios de sección (`/* ===== Sección ===== */`)
+3. **Anida con `&`** para pseudo-clases (`:hover`, `:disabled`) y elementos hijos directos
+4. **Mantén profundidad** de anidamiento máxima de 2-3 niveles
+5. **Organiza por componente** en archivos CSS modulares (ej: `component-name.css`)
+6. **Comenta secciones principales** para mejor navegación y mantenimiento
+
+---
+
+**Última actualización**: Enero 2025
+**Mantenido por**: Equipo EnPits
+

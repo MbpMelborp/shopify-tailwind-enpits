@@ -1,0 +1,165 @@
+/* ==========================================================================
+   REPUESTOS COLLECTIONS SLIDER - Componente de slider de colecciones de repuestos
+   ========================================================================== */
+
+/* ==========================================================================
+   Sección Principal
+   ========================================================================== */
+.repuestos-slider-section {
+  @apply relative size-full !-mt-32 md:mt-0;
+}
+
+/* ==========================================================================
+   Contenedor Principal
+   ========================================================================== */
+.repuestos-slider-wrapper {
+  @apply relative flex items-center justify-between w-full max-w-full px-4 bg-blanco rounded-2xl py-2;
+}
+
+/* ==========================================================================
+   Botones de Navegación
+   ========================================================================== */
+.repuestos-slider-button {
+  @apply inline-flex items-center justify-center relative shrink-0 z-10 bg-transparent border-0 p-0 cursor-pointer;
+
+  &:disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
+
+  &:not(:disabled):hover .repuestos-slider-button-inner {
+    @apply bg-gray-200;
+  }
+
+  &:disabled .repuestos-slider-button-inner {
+    @apply opacity-50 cursor-not-allowed;
+  }
+}
+
+.repuestos-slider-button-inner {
+  @apply bg-[var(--enpits/color_pits/gris,#efefef)] flex items-center justify-center p-[7.444px] rounded-[37.218px] size-[33.496px] transition-colors duration-300;
+}
+
+.repuestos-slider-button-icon {
+  @apply flex items-center justify-center size-[18.609px];
+
+  svg {
+    color: var(--enpits/color_pits/negro, #0a0a0a);
+  }
+}
+
+/* ==========================================================================
+   Contenedor del Slider
+   ========================================================================== */
+.repuestos-slider-container {
+  @apply flex items-center gap-2 overflow-x-auto overflow-y-hidden flex-1 px-10 py-2;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  cursor: grab;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &:active {
+    cursor: grabbing;
+  }
+
+  @media screen and (max-width: 749px) {
+    @apply px-2;
+    gap: 16px;
+  }
+
+  @media screen and (min-width: 750px) and (max-width: 989px) {
+    gap: 20px;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    scroll-behavior: auto;
+  }
+}
+
+/* ==========================================================================
+   Card de Colección
+   ========================================================================== */
+.repuestos-collection-card {
+  @apply relative flex flex-col items-center gap-2 max-w-[210px] min-h-px pb-2 pl-4 pr-5 pt-0 shrink-0 w-[210px] border-r border-rojo border-solid;
+}
+
+.repuestos-collection-card-inner {
+  @apply flex flex-col gap-[5px] items-center relative shrink-0 w-full;
+}
+
+.repuestos-collection-card-image-wrapper {
+  @apply h-[120px] overflow-clip relative shrink-0 w-[120px];
+}
+
+/* .repuestos-collection-card-image-container {
+  @apply absolute left-[12.5px] size-[85px] top-[13px];
+} */
+
+/* .repuestos-collection-card-image {
+  @apply absolute inset-0 max-w-none object-[50%_50%] object-cover pointer-events-none size-full;
+} */
+
+/* .repuestos-collection-card-placeholder {
+  @apply flex items-center justify-center bg-rojo;
+} */
+
+.repuestos-collection-card-content {
+  @apply flex flex-col gap-2 items-start relative shrink-0 w-full;
+}
+
+.repuestos-collection-card-title-wrapper {
+  @apply flex flex-col items-center relative shrink-0 w-full;
+}
+
+.repuestos-collection-card-title {
+  @apply flex flex-col justify-center leading-none relative text-xl font-bold text-center uppercase w-full;
+}
+
+.repuestos-collection-card-title-link {
+  @apply leading-none text-inherit no-underline;
+  &:hover {
+    @apply underline;
+  }
+}
+
+.repuestos-collection-card-description-wrapper {
+  @apply flex flex-col items-center text-sm relative shrink-0 w-full;
+}
+
+.repuestos-collection-card-description {
+  @apply flex flex-col justify-center leading-[1.1] not-italic relative shrink-0 text-[18px] text-center w-full;
+  color: var(--enpits/color_pits/negro, #0a0a0a);
+}
+
+/* ==========================================================================
+   Estados Vacíos y Debug
+   ========================================================================== */
+.repuestos-slider-empty {
+  @apply text-center py-8 text-gray-500;
+}
+
+.repuestos-slider-debug {
+  @apply mt-4 text-xs text-gray-400;
+}
+
+.repuestos-slider-debug-list {
+  @apply list-disc list-inside mt-1;
+}
+
+/* ==========================================================================
+   Responsive - Botones
+   ========================================================================== */
+@media screen and (max-width: 749px) {
+  .repuestos-slider-prev,
+  .repuestos-slider-next {
+    @apply hidden;
+  }
+}

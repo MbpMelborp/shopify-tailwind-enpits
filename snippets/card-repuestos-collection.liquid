@@ -1,0 +1,56 @@
+{% comment %}
+  Renders a repuestos collection card for the slider
+  
+  Accepts:
+  - card_collection: {Object} Collection Liquid object
+  
+  Usage:
+  {% render 'card-repuestos-collection', card_collection: collection %}
+{% endcomment %}
+
+{%- liquid
+  assign collection_title = card_collection.title | remove: 'Repuestos · ' | remove: 'Repuestos ' | upcase
+-%}
+
+<div class="repuestos-collection-card">
+  <div class="repuestos-collection-card-inner">
+    <!-- Imagen del ícono -->
+    <div class="repuestos-collection-card-image-wrapper">
+      {%- if card_collection.featured_image -%}
+        <div class="repuestos-collection-card-image-container">
+          {{
+            card_collection.featured_image
+            | image_url: width: 110
+            | image_tag: class: 'repuestos-collection-card-image', loading: 'lazy', alt: card_collection.featured_image.alt | default: collection_title
+          }}
+        </div>
+      {%- else -%}
+        <div class="repuestos-collection-card-placeholder">
+          {{ 'collection-apparel-1' | placeholder_svg_tag: 'w-full h-full' }}
+        </div>
+      {%- endif -%}
+    </div>
+    
+    <!-- Contenido de texto -->
+    <div class="repuestos-collection-card-content">
+      <!-- Título -->
+      <div class="repuestos-collection-card-title-wrapper">
+        <h3 class="repuestos-collection-card-title">
+          <a href="{{ card_collection.url }}" class="repuestos-collection-card-title-link">
+            {{ collection_title }}
+          </a>
+        </h3>
+      </div>
+      
+      <!-- Descripción -->
+      {%- if card_collection.description != blank -%}
+        <div class="repuestos-collection-card-description-wrapper">
+          <p class="repuestos-collection-card-description">
+            {{ card_collection.description | strip_html | truncatewords: 15 }}
+          </p>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+

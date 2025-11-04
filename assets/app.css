@@ -402,7 +402,7 @@
 
 .banners-container-slider .slider-indicators {
   position: absolute;
-  bottom: 2rem;
+  bottom: 1rem;
   left: 50%;
   z-index: 30;
   display: flex;
@@ -411,6 +411,12 @@
     rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y))
     scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
   gap: 0.5rem;
+}
+
+@media (min-width: 750px) {
+  .banners-container-slider .slider-indicators {
+    bottom: 8rem;
+  }
 }
 
 :is(.banners-container-slider .slider-indicators) .slider-indicator {
@@ -748,6 +754,516 @@
   .banner-subtitle {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
   } */
+
+/* Repuestos Collections Slider Component */
+
+/* ==========================================================================
+   REPUESTOS COLLECTIONS SLIDER - Componente de slider de colecciones de repuestos
+   ========================================================================== */
+
+/* ==========================================================================
+   Sección Principal
+   ========================================================================== */
+
+.repuestos-slider-section {
+  position: relative;
+  margin-top: -8rem !important;
+  width: 100%;
+  height: 100%;
+}
+
+@media (min-width: 750px) {
+  .repuestos-slider-section {
+    margin-top: 0px;
+  }
+}
+
+/* ==========================================================================
+   Contenedor Principal
+   ========================================================================== */
+
+.repuestos-slider-wrapper {
+  position: relative;
+  display: flex;
+  width: 100%;
+  max-width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 1rem;
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+/* ==========================================================================
+   Botones de Navegación
+   ========================================================================== */
+
+.repuestos-slider-button {
+  position: relative;
+  z-index: 10;
+  display: inline-flex;
+  flex-shrink: 0;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  border-width: 0px;
+  background-color: transparent;
+  padding: 0px;
+}
+
+.repuestos-slider-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.repuestos-slider-button:not(:disabled):hover .repuestos-slider-button-inner {
+  --tw-bg-opacity: 1;
+  background-color: rgb(229 231 235 / var(--tw-bg-opacity));
+}
+
+.repuestos-slider-button:disabled .repuestos-slider-button-inner {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.repuestos-slider-button-inner {
+  display: flex;
+  width: 33.496px;
+  height: 33.496px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 37.218px;
+  background-color: var(--enpits/color pits/gris, #efefef);
+  padding: 7.444px;
+  transition-property: color, background-color, border-color, fill, stroke,
+    -webkit-text-decoration-color;
+  transition-property: color, background-color, border-color,
+    text-decoration-color, fill, stroke;
+  transition-property: color, background-color, border-color,
+    text-decoration-color, fill, stroke, -webkit-text-decoration-color;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+.repuestos-slider-button-icon {
+  display: flex;
+  width: 18.609px;
+  height: 18.609px;
+  align-items: center;
+  justify-content: center;
+}
+
+.repuestos-slider-button-icon svg {
+  color: var(--enpits/color_pits/negro, #0a0a0a);
+}
+
+/* ==========================================================================
+   Contenedor del Slider
+   ========================================================================== */
+
+.repuestos-slider-container {
+  display: flex;
+  flex: 1 1 0%;
+  align-items: center;
+  gap: 0.5rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  cursor: grab;
+}
+
+.repuestos-slider-container::-webkit-scrollbar {
+  display: none;
+}
+
+.repuestos-slider-container:active {
+  cursor: grabbing;
+}
+
+@media screen and (max-width: 749px) {
+  .repuestos-slider-container {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    gap: 16px;
+  }
+}
+
+@media screen and (min-width: 750px) and (max-width: 989px) {
+  .repuestos-slider-container {
+    gap: 20px;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .repuestos-slider-container {
+    scroll-behavior: smooth;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .repuestos-slider-container {
+    scroll-behavior: auto;
+  }
+}
+
+/* ==========================================================================
+   Card de Colección
+   ========================================================================== */
+
+.repuestos-collection-card {
+  position: relative;
+  display: flex;
+  min-height: 1px;
+  width: 210px;
+  max-width: 210px;
+  flex-shrink: 0;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  border-right-width: 1px;
+  border-style: solid;
+  --tw-border-opacity: 1;
+  border-color: rgb(250 0 20 / var(--tw-border-opacity));
+  padding-bottom: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1.25rem;
+  padding-top: 0px;
+}
+
+.repuestos-collection-card-inner {
+  position: relative;
+  display: flex;
+  width: 100%;
+  flex-shrink: 0;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.repuestos-collection-card-image-wrapper {
+  position: relative;
+  height: 120px;
+  width: 120px;
+  flex-shrink: 0;
+  overflow: clip;
+}
+
+/* .repuestos-collection-card-image-container {
+  @apply absolute left-[12.5px] size-[85px] top-[13px];
+} */
+
+/* .repuestos-collection-card-image {
+  @apply absolute inset-0 max-w-none object-[50%_50%] object-cover pointer-events-none size-full;
+} */
+
+/* .repuestos-collection-card-placeholder {
+  @apply flex items-center justify-center bg-rojo;
+} */
+
+.repuestos-collection-card-content {
+  position: relative;
+  display: flex;
+  width: 100%;
+  flex-shrink: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.repuestos-collection-card-title-wrapper {
+  position: relative;
+  display: flex;
+  width: 100%;
+  flex-shrink: 0;
+  flex-direction: column;
+  align-items: center;
+}
+
+.repuestos-collection-card-title {
+  position: relative;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.repuestos-collection-card-title-link {
+  line-height: 1;
+  color: inherit;
+  -webkit-text-decoration-line: none;
+  text-decoration-line: none;
+}
+
+.repuestos-collection-card-title-link:hover {
+  -webkit-text-decoration-line: underline;
+  text-decoration-line: underline;
+}
+
+.repuestos-collection-card-description-wrapper {
+  position: relative;
+  display: flex;
+  width: 100%;
+  flex-shrink: 0;
+  flex-direction: column;
+  align-items: center;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.repuestos-collection-card-description {
+  position: relative;
+  display: flex;
+  width: 100%;
+  flex-shrink: 0;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  font-size: 18px;
+  font-style: normal;
+  line-height: 1.1;
+  color: var(--enpits/color_pits/negro, #0a0a0a);
+}
+
+/* ==========================================================================
+   Estados Vacíos y Debug
+   ========================================================================== */
+
+.repuestos-slider-empty {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  text-align: center;
+  --tw-text-opacity: 1;
+  color: rgb(107 114 128 / var(--tw-text-opacity));
+}
+
+.repuestos-slider-debug {
+  margin-top: 1rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  --tw-text-opacity: 1;
+  color: rgb(156 163 175 / var(--tw-text-opacity));
+}
+
+.repuestos-slider-debug-list {
+  margin-top: 0.25rem;
+  list-style-position: inside;
+  list-style-type: disc;
+}
+
+/* ==========================================================================
+   Responsive - Botones
+   ========================================================================== */
+
+@media screen and (max-width: 749px) {
+  .repuestos-slider-prev,
+  .repuestos-slider-next {
+    display: none;
+  }
+
+  .product__info-container .loading__spinner:not(.repuestos-slider-prev) ~ *,
+  .quantity__rules-cart .loading__spinner:not(.repuestos-slider-prev) ~ *,
+  .product__info-container .loading__spinner:not(.repuestos-slider-next) ~ *,
+  .quantity__rules-cart .loading__spinner:not(.repuestos-slider-next) ~ * {
+    visibility: hidden;
+  }
+}
+
+/* Brands Marquee Component */
+
+/* ==========================================================================
+   BRANDS MARQUEE - Marquesina infinita de marcas
+   ========================================================================== */
+
+.section-brands-marquee {
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+/* ==========================================================================
+   Sección Principal
+   ========================================================================== */
+
+.brands-marquee-section {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 0 0 / var(--tw-bg-opacity));
+  padding-top: 2rem !important;
+  padding-bottom: 3rem !important;
+}
+
+/* ==========================================================================
+   Contenedor Principal
+   ========================================================================== */
+
+.brands-marquee-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+/* ==========================================================================
+   Título Visible
+   ========================================================================== */
+
+.brands-marquee-title-wrapper {
+  margin-bottom: 2rem;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.brands-marquee-title {
+  text-align: center;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.025em;
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+/* ==========================================================================
+   Contenedor del Marquee
+   ========================================================================== */
+
+.brands-marquee-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 10%,
+    black 90%,
+    transparent
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 10%,
+    black 90%,
+    transparent
+  );
+}
+
+/* ==========================================================================
+   Track del Marquee (Scroll Infinito)
+   ========================================================================== */
+
+.brands-marquee-track {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  white-space: nowrap;
+  animation: marquee-scroll 30s linear infinite;
+  will-change: transform;
+}
+
+.brands-marquee-container:hover .brands-marquee-track {
+  animation-play-state: paused;
+}
+
+.brands-marquee-container:focus-within .brands-marquee-track {
+  animation-play-state: paused;
+}
+
+/* ==========================================================================
+   Items del Marquee (Marcas)
+   ========================================================================== */
+
+.brands-marquee-item {
+  display: inline-block;
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+  -webkit-text-decoration-line: none;
+  text-decoration-line: none;
+  transition-property: opacity;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+  font-family: var(--font-body-family);
+  letter-spacing: 0.05em;
+}
+
+.brands-marquee-item:hover {
+  opacity: 0.7;
+}
+
+.brands-marquee-item:focus {
+  outline-width: 2px;
+  outline-offset: 2px;
+  outline-color: #fff;
+}
+
+/* ==========================================================================
+   Animación de Scroll Infinito
+   ========================================================================== */
+
+@keyframes marquee-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* ==========================================================================
+   Estado Vacío
+   ========================================================================== */
+
+.brands-marquee-empty {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  text-align: center;
+  --tw-text-opacity: 1;
+  color: rgb(156 163 175 / var(--tw-text-opacity));
+}
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+
+@media screen and (max-width: 749px) {
+  .brands-marquee-item {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+  }
+
+  .brands-marquee-track {
+    gap: 24px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brands-marquee-track {
+    animation: none;
+  }
+}
 
 /* ! tailwindcss v3.4.1 | MIT License | https://tailwindcss.com */
 
@@ -2653,6 +3169,10 @@ predictive-search-mega-menu
 
 .isolate {
   isolation: isolate;
+}
+
+.mt-2 {
+  margin-top: 0.5rem;
 }
 
 .block {
