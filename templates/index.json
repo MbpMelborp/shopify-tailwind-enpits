@@ -98,6 +98,35 @@
         "padding_bottom": 0
       }
     },
+    "promo_banners": {
+      "type": "promo-banners",
+      "blocks": {
+        "banner_1": {
+          "type": "banner",
+          "settings": {
+            "image": "",
+            "link": "",
+            "alt_text": "Newsletter"
+          }
+        },
+        "banner_2": {
+          "type": "banner",
+          "settings": {
+            "image": "",
+            "link": "",
+            "alt_text": "Llantas"
+          }
+        }
+      },
+      "block_order": [
+        "banner_1",
+        "banner_2"
+      ],
+      "settings": {
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
     "rich_text": {
       "type": "rich-text",
       "blocks": {
@@ -267,6 +296,7 @@
     "banners_container_slider_gjaAJX",
     "repuestos_collections_slider",
     "brands_marquee",
+    "promo_banners",
     "rich_text",
     "featured_collection",
     "collage",

@@ -11,7 +11,36 @@
   <ul class='list-menu list-menu--inline' role='list'>
     {%- for link in section.settings.menu.links -%}
       <li>
-        {%- if link.links != blank -%}
+        {%- liquid
+          assign is_catalog = false
+          if link.url == '/collections/all' or link.handle == 'catalog' or link.title == 'CATALOG' or link.title == 'CATÁLOGO'
+            assign is_catalog = true
+          endif
+
+          assign is_marcas = false
+          if link.handle == 'marcas' or link.title == 'MARCAS' or link.title == 'MARCAS ·'
+            assign is_marcas = true
+          endif
+
+          assign is_llantas = false
+          assign link_title_upper = link.title | upcase
+          assign link_url_lower = link.url | downcase
+          
+          if link.handle == 'llantas'
+            assign is_llantas = true
+          elsif link_title_upper == 'LLANTAS'
+            assign is_llantas = true
+          elsif link_title_upper == 'LLANTAS ·'
+            assign is_llantas = true
+          elsif link_title_upper contains 'LLANTAS'
+            assign is_llantas = true
+          elsif link_url_lower contains '/collections/llantas'
+            assign is_llantas = true
+          elsif link_url_lower contains '/pages/llantas'
+            assign is_llantas = true
+          endif
+        -%}
+        {%- if link.links != blank or is_catalog or is_marcas or is_llantas -%}
           <header-menu>
             <details id='Details-HeaderMenu-{{ forloop.index }}' class='mega-menu'>
               <summary
@@ -23,7 +52,15 @@
                     class='header__active-menu-item'
                   {% endif %}
                 >
-                  {{- link.title | escape -}}
+                  {%- if is_catalog -%}
+                    REPUESTOS
+                  {%- elsif is_marcas -%}
+                    MARCAS
+                  {%- elsif is_llantas -%}
+                    LLANTAS
+                  {%- else -%}
+                    {{- link.title | escape -}}
+                  {%- endif -%}
                 </span>
                 {{- 'icon-caret.svg' | inline_asset_content -}}
               </summary>
@@ -32,43 +69,951 @@
                 class='mega-menu__content color-{{ section.settings.menu_color_scheme }} gradient motion-reduce global-settings-popup'
                 tabindex='-1'
               >
-                <ul
-                  class='mega-menu__list page-width{% if link.levels == 1 %} mega-menu__list--condensed{% endif %}'
-                  role='list'
-                >
-                  {%- for childlink in link.links -%}
-                    <li>
-                      <a
-                        id='HeaderMenu-{{ link.handle }}-{{ childlink.handle }}'
-                        href='{{ childlink.url }}'
-                        class='mega-menu__link mega-menu__link--level-2 link{% if childlink.current %} mega-menu__link--active{% endif %}'
-                        {% if childlink.current %}
-                          aria-current='page'
-                        {% endif %}
-                      >
-                        {{ childlink.title | escape }}
-                      </a>
-                      {%- if childlink.links != blank -%}
-                        <ul class='list-unstyled' role='list'>
-                          {%- for grandchildlink in childlink.links -%}
-                            <li>
-                              <a
-                                id='HeaderMenu-{{ link.handle }}-{{ childlink.handle }}-{{ grandchildlink.handle }}'
-                                href='{{ grandchildlink.url }}'
-                                class='mega-menu__link link{% if grandchildlink.current %} mega-menu__link--active{% endif %}'
-                                {% if grandchildlink.current %}
-                                  aria-current='page'
-                                {% endif %}
-                              >
-                                {{ grandchildlink.title | escape }}
-                              </a>
-                            </li>
+                {%- if is_catalog -%}
+                  {%- comment -%} Mega menu dinámico para Repuestos {%- endcomment -%}
+                  {%- liquid
+                    assign repuestos_main_collections = blank
+                    assign repuestos_sub_collections = blank
+                    assign all_main_collections = blank
+
+                    if collections.all.size > 0
+                      assign all_collections = collections.all
+                    elsif collections.size > 0
+                      assign all_collections = collections
+                    else
+                      assign all_collections = blank
+                    endif
+
+                    if all_collections != blank
+                      for collection in all_collections
+                        assign title_lower = collection.title | downcase
+                        if title_lower contains 'repuestos ·'
+                          assign title_parts = collection.title | split: ' · '
+                          assign parts_count = title_parts.size
+
+                          if parts_count == 2
+                            # Colección principal: Repuestos · Línea
+                            if repuestos_main_collections == blank
+                              assign repuestos_main_collections = collection.title
+                              assign all_main_collections = collection.handle
+                            else
+                              assign repuestos_main_collections = repuestos_main_collections | append: '|||' | append: collection.title
+                              assign all_main_collections = all_main_collections | append: '|||' | append: collection.handle
+                            endif
+                          elsif parts_count == 3
+                            # Subcolección: Repuestos · Línea · Sublinea
+                            # Almacenar título completo y handle para búsqueda más eficiente
+                            assign sub_entry = collection.title | append: ':::' | append: collection.handle
+                            if repuestos_sub_collections == blank
+                              assign repuestos_sub_collections = sub_entry
+                            else
+                              assign repuestos_sub_collections = repuestos_sub_collections | append: '|||' | append: sub_entry
+                            endif
+                          endif
+                        endif
+                      endfor
+                    endif
+
+                    # Las colecciones se usarán en el orden que vienen de Shopify
+                    # Nota: Si se requiere orden alfabético estricto, se puede hacer en el backend al crear las colecciones
+                  -%}
+
+                  <ul class='mega-menu__list mega-menu__list--repuestos page-width' role='list'>
+                    {%- if repuestos_main_collections != blank -%}
+                      {%- assign main_collections = repuestos_main_collections | split: '|||' -%}
+                      {%- assign main_handles = all_main_collections | split: '|||' -%}
+                      {%- assign total_lines = main_collections.size -%}
+
+                      {%- comment -%} Calcular peso de cada línea (número de subcolecciones) {%- endcomment -%}
+                      {%- liquid
+                        assign lines_with_weights = blank
+                        for i in (0..main_collections.size)
+                          if i < main_collections.size
+                            assign main_title = main_collections[i]
+                            assign main_handle = main_handles[i]
+                            assign title_parts = main_title | split: ' · '
+                            assign line_name = title_parts[1]
+
+                            # Contar subcolecciones de esta línea
+                            assign sub_count = 0
+                            if repuestos_sub_collections != blank
+                              assign sub_array = repuestos_sub_collections | split: '|||'
+                              for sub_entry in sub_array
+                                assign sub_parts = sub_entry | split: ':::'
+                                if sub_parts.size == 2
+                                  assign sub_title = sub_parts[0]
+                                  assign sub_title_parts = sub_title | split: ' · '
+                                  if sub_title_parts.size == 3
+                                    assign sub_line = sub_title_parts[1]
+                                    if sub_line == line_name
+                                      assign sub_count = sub_count | plus: 1
+                                    endif
+                                  endif
+                                endif
+                              endfor
+                            endif
+
+                            # Almacenar: título:::handle:::peso
+                            assign line_entry = main_title | append: ':::' | append: main_handle | append: ':::' | append: sub_count
+                            if lines_with_weights == blank
+                              assign lines_with_weights = line_entry
+                            else
+                              assign lines_with_weights = lines_with_weights | append: '|||' | append: line_entry
+                            endif
+                          endif
+                        endfor
+                      -%}
+
+                      {%- comment -%} Distribución exacta según imagen: 5 columnas {%- endcomment -%}
+                      {%- comment -%} Col1: Cauchos, Filtros {%- endcomment -%}
+                      {%- comment -%} Col2: Partes eléctricas, Rodamientos, Silicona {%- endcomment -%}
+                      {%- comment -%} Col3: Guayas, Empaques, Línea de frenos {%- endcomment -%}
+                      {%- comment -%} Col4: Partes plásticas, Partes metálicas, Espejos {%- endcomment -%}
+                      {%- comment -%} Col5: Baterías, Kit de válvulas, Partes de motor, Transmisión {%- endcomment -%}
+                      {%- liquid
+                        assign lines_array = lines_with_weights | split: '|||'
+
+                        # Distribución en 5 columnas según imagen
+                        assign col1_items = blank
+                        assign col2_items = blank
+                        assign col3_items = blank
+                        assign col4_items = blank
+                        assign col5_items = blank
+
+                        for line_entry in lines_array
+                          assign entry_parts = line_entry | split: ':::'
+                          if entry_parts.size == 3
+                            assign main_title = entry_parts[0]
+                            assign is_col1 = false
+                            assign is_col2 = false
+                            assign is_col3 = false
+                            assign is_col4 = false
+
+                            # Verificar si es Columna 1: Cauchos, Filtros
+                            if main_title contains 'Repuestos · Cauchos'
+                              assign is_col1 = true
+                            elsif main_title contains 'Repuestos · Filtros'
+                              assign is_col1 = true
+                            endif
+
+                            # Verificar si es Columna 2: Partes eléctricas, Rodamientos, Silicona
+                            if main_title contains 'Repuestos · Partes eléctricas'
+                              assign is_col2 = true
+                            elsif main_title contains 'Repuestos · Rodamientos'
+                              assign is_col2 = true
+                            elsif main_title contains 'Repuestos · Silicona'
+                              assign is_col2 = true
+                            endif
+
+                            # Verificar si es Columna 3: Guayas, Empaques, Línea de frenos
+                            if main_title contains 'Repuestos · Guayas'
+                              assign is_col3 = true
+                            elsif main_title contains 'Repuestos · Empaques'
+                              assign is_col3 = true
+                            elsif main_title contains 'Repuestos · Línea de frenos'
+                              assign is_col3 = true
+                            endif
+
+                            # Verificar si es Columna 4: Partes plásticas, Partes metálicas, Espejos
+                            if main_title contains 'Repuestos · Partes plásticas'
+                              assign is_col4 = true
+                            elsif main_title contains 'Repuestos · Partes metálicas'
+                              assign is_col4 = true
+                            elsif main_title contains 'Repuestos · Espejos'
+                              assign is_col4 = true
+                            endif
+
+                            # Asignar a la columna correspondiente
+                            if is_col1
+                              if col1_items == blank
+                                assign col1_items = line_entry
+                              else
+                                assign col1_items = col1_items | append: '|||' | append: line_entry
+                              endif
+                            elsif is_col2
+                              if col2_items == blank
+                                assign col2_items = line_entry
+                              else
+                                assign col2_items = col2_items | append: '|||' | append: line_entry
+                              endif
+                            elsif is_col3
+                              if col3_items == blank
+                                assign col3_items = line_entry
+                              else
+                                assign col3_items = col3_items | append: '|||' | append: line_entry
+                              endif
+                            elsif is_col4
+                              if col4_items == blank
+                                assign col4_items = line_entry
+                              else
+                                assign col4_items = col4_items | append: '|||' | append: line_entry
+                              endif
+                            else
+                              # Columna 5: Baterías, Kit de válvulas, Partes de motor, Transmisión
+                              if col5_items == blank
+                                assign col5_items = line_entry
+                              else
+                                assign col5_items = col5_items | append: '|||' | append: line_entry
+                              endif
+                            endif
+                          endif
+                        endfor
+
+                        # Ordenar dentro de cada columna según la imagen
+                        # Col1: Cauchos, Filtros
+                        assign col1_ordered = blank
+                        assign col1_array = col1_items | split: '|||'
+                        assign cauchos_entry = blank
+                        assign filtros_entry = blank
+                        for entry in col1_array
+                          assign parts = entry | split: ':::'
+                          if parts.size == 3
+                            if parts[0] contains 'Repuestos · Cauchos'
+                              assign cauchos_entry = entry
+                            elsif parts[0] contains 'Repuestos · Filtros'
+                              assign filtros_entry = entry
+                            endif
+                          endif
+                        endfor
+                        if cauchos_entry != blank
+                          assign col1_ordered = cauchos_entry
+                        endif
+                        if filtros_entry != blank
+                          if col1_ordered == blank
+                            assign col1_ordered = filtros_entry
+                          else
+                            assign col1_ordered = col1_ordered | append: '|||' | append: filtros_entry
+                          endif
+                        endif
+
+                        # Col2: Partes eléctricas, Rodamientos, Silicona
+                        assign col2_ordered = blank
+                        assign col2_array = col2_items | split: '|||'
+                        assign partes_electricas = blank
+                        assign rodamientos = blank
+                        assign silicona = blank
+                        for entry in col2_array
+                          assign parts = entry | split: ':::'
+                          if parts.size == 3
+                            if parts[0] contains 'Repuestos · Partes eléctricas'
+                              assign partes_electricas = entry
+                            elsif parts[0] contains 'Repuestos · Rodamientos'
+                              assign rodamientos = entry
+                            elsif parts[0] contains 'Repuestos · Silicona'
+                              assign silicona = entry
+                            endif
+                          endif
+                        endfor
+                        if partes_electricas != blank
+                          assign col2_ordered = partes_electricas
+                        endif
+                        if rodamientos != blank
+                          if col2_ordered == blank
+                            assign col2_ordered = rodamientos
+                          else
+                            assign col2_ordered = col2_ordered | append: '|||' | append: rodamientos
+                          endif
+                        endif
+                        if silicona != blank
+                          if col2_ordered == blank
+                            assign col2_ordered = silicona
+                          else
+                            assign col2_ordered = col2_ordered | append: '|||' | append: silicona
+                          endif
+                        endif
+
+                        # Col3: Guayas, Empaques, Línea de frenos
+                        assign col3_ordered = blank
+                        assign col3_array = col3_items | split: '|||'
+                        assign guayas = blank
+                        assign empaques = blank
+                        assign linea_frenos = blank
+                        for entry in col3_array
+                          assign parts = entry | split: ':::'
+                          if parts.size == 3
+                            if parts[0] contains 'Repuestos · Guayas'
+                              assign guayas = entry
+                            elsif parts[0] contains 'Repuestos · Empaques'
+                              assign empaques = entry
+                            elsif parts[0] contains 'Repuestos · Línea de frenos'
+                              assign linea_frenos = entry
+                            endif
+                          endif
+                        endfor
+                        if guayas != blank
+                          assign col3_ordered = guayas
+                        endif
+                        if empaques != blank
+                          if col3_ordered == blank
+                            assign col3_ordered = empaques
+                          else
+                            assign col3_ordered = col3_ordered | append: '|||' | append: empaques
+                          endif
+                        endif
+                        if linea_frenos != blank
+                          if col3_ordered == blank
+                            assign col3_ordered = linea_frenos
+                          else
+                            assign col3_ordered = col3_ordered | append: '|||' | append: linea_frenos
+                          endif
+                        endif
+
+                        # Col4: Partes plásticas, Partes metálicas, Espejos
+                        assign col4_ordered = blank
+                        assign col4_array = col4_items | split: '|||'
+                        assign partes_plasticas = blank
+                        assign partes_metalicas = blank
+                        assign espejos = blank
+                        for entry in col4_array
+                          assign parts = entry | split: ':::'
+                          if parts.size == 3
+                            if parts[0] contains 'Repuestos · Partes plásticas'
+                              assign partes_plasticas = entry
+                            elsif parts[0] contains 'Repuestos · Partes metálicas'
+                              assign partes_metalicas = entry
+                            elsif parts[0] contains 'Repuestos · Espejos'
+                              assign espejos = entry
+                            endif
+                          endif
+                        endfor
+                        if partes_plasticas != blank
+                          assign col4_ordered = partes_plasticas
+                        endif
+                        if partes_metalicas != blank
+                          if col4_ordered == blank
+                            assign col4_ordered = partes_metalicas
+                          else
+                            assign col4_ordered = col4_ordered | append: '|||' | append: partes_metalicas
+                          endif
+                        endif
+                        if espejos != blank
+                          if col4_ordered == blank
+                            assign col4_ordered = espejos
+                          else
+                            assign col4_ordered = col4_ordered | append: '|||' | append: espejos
+                          endif
+                        endif
+
+                        # Col5: Baterías, Kit de válvulas, Partes de motor, Transmisión
+                        assign col5_ordered = blank
+                        assign col5_array = col5_items | split: '|||'
+                        assign baterias = blank
+                        assign kit_valvulas = blank
+                        assign partes_motor = blank
+                        assign transmision = blank
+                        for entry in col5_array
+                          assign parts = entry | split: ':::'
+                          if parts.size == 3
+                            if parts[0] contains 'Repuestos · Baterías'
+                              assign baterias = entry
+                            elsif parts[0] contains 'Repuestos · Kit de válvulas'
+                              assign kit_valvulas = entry
+                            elsif parts[0] contains 'Repuestos · Partes de motor'
+                              assign partes_motor = entry
+                            elsif parts[0] contains 'Repuestos · Transmisión'
+                              assign transmision = entry
+                            endif
+                          endif
+                        endfor
+                        if baterias != blank
+                          assign col5_ordered = baterias
+                        endif
+                        if kit_valvulas != blank
+                          if col5_ordered == blank
+                            assign col5_ordered = kit_valvulas
+                          else
+                            assign col5_ordered = col5_ordered | append: '|||' | append: kit_valvulas
+                          endif
+                        endif
+                        if partes_motor != blank
+                          if col5_ordered == blank
+                            assign col5_ordered = partes_motor
+                          else
+                            assign col5_ordered = col5_ordered | append: '|||' | append: partes_motor
+                          endif
+                        endif
+                        if transmision != blank
+                          if col5_ordered == blank
+                            assign col5_ordered = transmision
+                          else
+                            assign col5_ordered = col5_ordered | append: '|||' | append: transmision
+                          endif
+                        endif
+
+                        # Combinar todas las columnas en orden
+                        assign final_order = blank
+                        if col1_ordered != blank
+                          assign final_order = col1_ordered
+                        endif
+                        if col2_ordered != blank
+                          if final_order == blank
+                            assign final_order = col2_ordered
+                          else
+                            assign final_order = final_order | append: '|||' | append: col2_ordered
+                          endif
+                        endif
+                        if col3_ordered != blank
+                          if final_order == blank
+                            assign final_order = col3_ordered
+                          else
+                            assign final_order = final_order | append: '|||' | append: col3_ordered
+                          endif
+                        endif
+                        if col4_ordered != blank
+                          if final_order == blank
+                            assign final_order = col4_ordered
+                          else
+                            assign final_order = final_order | append: '|||' | append: col4_ordered
+                          endif
+                        endif
+                        if col5_ordered != blank
+                          if final_order == blank
+                            assign final_order = col5_ordered
+                          else
+                            assign final_order = final_order | append: '|||' | append: col5_ordered
+                          endif
+                        endif
+
+                        if final_order == blank
+                          assign final_order = lines_with_weights
+                        endif
+                      -%}
+
+                      {%- assign reordered_lines_array = final_order | split: '|||' -%}
+                      {%- assign total_lines = reordered_lines_array.size -%}
+
+                      {%- comment -%} Calcular cantidad por columna {%- endcomment -%}
+                      {%- assign col1_count = 0 %}
+                      {%- assign col2_count = 0 %}
+                      {%- assign col3_count = 0 %}
+                      {%- assign col4_count = 0 %}
+                      {%- assign col5_count = 0 %}
+
+                      {%- for line_entry in reordered_lines_array -%}
+                        {%- assign entry_parts = line_entry | split: ':::' -%}
+                        {%- if entry_parts.size == 3 -%}
+                          {%- assign main_title = entry_parts[0] -%}
+                          {%- assign is_col1_count = false -%}
+                          {%- assign is_col2_count = false -%}
+                          {%- assign is_col3_count = false -%}
+                          {%- assign is_col4_count = false -%}
+
+                          {%- comment -%} Columna 1: Cauchos, Filtros {%- endcomment -%}
+                          {%- if main_title contains 'Repuestos · Cauchos' -%}
+                            {%- assign is_col1_count = true -%}
+                          {%- elsif main_title contains 'Repuestos · Filtros' -%}
+                            {%- assign is_col1_count = true -%}
+                          {%- endif -%}
+
+                          {%- comment -%} Columna 2: Partes eléctricas, Rodamientos, Silicona {%- endcomment -%}
+                          {%- if main_title contains 'Repuestos · Partes eléctricas' -%}
+                            {%- assign is_col2_count = true -%}
+                          {%- elsif main_title contains 'Repuestos · Rodamientos' -%}
+                            {%- assign is_col2_count = true -%}
+                          {%- elsif main_title contains 'Repuestos · Silicona' -%}
+                            {%- assign is_col2_count = true -%}
+                          {%- endif -%}
+
+                          {%- comment -%} Columna 3: Guayas, Empaques, Línea de frenos {%- endcomment -%}
+                          {%- if main_title contains 'Repuestos · Guayas' -%}
+                            {%- assign is_col3_count = true -%}
+                          {%- elsif main_title contains 'Repuestos · Empaques' -%}
+                            {%- assign is_col3_count = true -%}
+                          {%- elsif main_title contains 'Repuestos · Línea de frenos' -%}
+                            {%- assign is_col3_count = true -%}
+                          {%- endif -%}
+
+                          {%- comment -%} Columna 4: Partes plásticas, Partes metálicas, Espejos {%- endcomment -%}
+                          {%- if main_title contains 'Repuestos · Partes plásticas' -%}
+                            {%- assign is_col4_count = true -%}
+                          {%- elsif main_title contains 'Repuestos · Partes metálicas' -%}
+                            {%- assign is_col4_count = true -%}
+                          {%- elsif main_title contains 'Repuestos · Espejos' -%}
+                            {%- assign is_col4_count = true -%}
+                          {%- endif -%}
+
+                          {%- if is_col1_count -%}
+                            {%- assign col1_count = col1_count | plus: 1 -%}
+                          {%- elsif is_col2_count -%}
+                            {%- assign col2_count = col2_count | plus: 1 -%}
+                          {%- elsif is_col3_count -%}
+                            {%- assign col3_count = col3_count | plus: 1 -%}
+                          {%- elsif is_col4_count -%}
+                            {%- assign col4_count = col4_count | plus: 1 -%}
+                          {%- else -%}
+                            {%- assign col5_count = col5_count | plus: 1 -%}
+                          {%- endif -%}
+                        {%- endif -%}
+                      {%- endfor -%}
+
+                      {%- assign column_distribution = col1_count
+                        | append: ','
+                        | append: col2_count
+                        | append: ','
+                        | append: col3_count
+                        | append: ','
+                        | append: col4_count
+                        | append: ','
+                        | append: col5_count
+                        | split: ','
+                      -%}
+                      {%- assign current_index = 0 -%}
+
+                      {%- for col_items in column_distribution -%}
+                        {%- assign items_in_col = col_items | plus: 0 -%}
+                        {%- if current_index < total_lines -%}
+                          <li class='mega-menu__column'>
+                            {%- assign col_end = current_index | plus: items_in_col | minus: 1 -%}
+                            {%- if col_end >= total_lines -%}
+                              {%- assign col_end = total_lines | minus: 1 -%}
+                            {%- endif -%}
+
+                            {%- for j in (current_index..col_end) -%}
+                              {%- if j < total_lines -%}
+                                {%- assign line_entry = reordered_lines_array[j] -%}
+                                {%- assign entry_parts = line_entry | split: ':::' -%}
+                                {%- if entry_parts.size == 3 -%}
+                                  {%- assign main_title = entry_parts[0] -%}
+                                  {%- assign main_handle = entry_parts[1] -%}
+                                  {%- assign title_parts = main_title | split: ' · ' -%}
+                                  {%- assign line_name = title_parts[1] -%}
+
+                                  {%- comment -%} Buscar la colección principal por handle {%- endcomment -%}
+                                  {%- assign main_collection_obj = blank -%}
+                                  {%- for collection in all_collections -%}
+                                    {%- if collection.handle == main_handle -%}
+                                      {%- assign main_collection_obj = collection -%}
+                                      {%- break -%}
+                                    {%- endif -%}
+                                  {%- endfor -%}
+
+                                  {%- comment -%} Buscar subcolecciones de esta línea {%- endcomment -%}
+                                  {%- liquid
+                                    assign subcollections_list = blank
+                                    if repuestos_sub_collections != blank
+                                      assign sub_array = repuestos_sub_collections | split: '|||'
+                                      for sub_entry in sub_array
+                                        assign sub_parts = sub_entry | split: ':::'
+                                        if sub_parts.size == 2
+                                          assign sub_title = sub_parts[0]
+                                          assign sub_handle = sub_parts[1]
+                                          assign title_parts = sub_title | split: ' · '
+                                          if title_parts.size == 3
+                                            assign sub_line = title_parts[1]
+                                            if sub_line == line_name
+                                              if subcollections_list == blank
+                                                assign subcollections_list = sub_entry
+                                              else
+                                                assign subcollections_list = subcollections_list | append: '|||' | append: sub_entry
+                                              endif
+                                            endif
+                                          endif
+                                        endif
+                                      endfor
+                                    endif
+                                  -%}
+
+                                  {%- if main_collection_obj != blank -%}
+                                    <div class='mega-menu__line-group'>
+                                      <a
+                                        href='{{ main_collection_obj.url }}'
+                                        class='mega-menu__link mega-menu__link--level-2 link'
+                                      >
+                                        {{ line_name | escape }}
+                                      </a>
+
+                                      {%- if subcollections_list != blank -%}
+                                        <ul class='list-unstyled' role='list'>
+                                          {%- assign sub_entries = subcollections_list | split: '|||' -%}
+                                          {%- for sub_entry in sub_entries -%}
+                                            {%- assign sub_parts = sub_entry | split: ':::' -%}
+                                            {%- if sub_parts.size == 2 -%}
+                                              {%- assign sub_title = sub_parts[0] -%}
+                                              {%- assign sub_handle = sub_parts[1] -%}
+                                              {%- assign title_parts = sub_title | split: ' · ' -%}
+                                              {%- assign sublinea_name = title_parts[2] -%}
+                                              {%- comment -%} Buscar la colección por handle (más eficiente) {%- endcomment -%}
+                                              {%- assign sub_collection = blank -%}
+                                              {%- for collection in all_collections -%}
+                                                {%- if collection.handle == sub_handle -%}
+                                                  {%- assign sub_collection = collection -%}
+                                                  {%- break -%}
+                                                {%- endif -%}
+                                              {%- endfor -%}
+                                              {%- if sub_collection != blank -%}
+                                                <li>
+                                                  <a
+                                                    href='{{ sub_collection.url }}'
+                                                    class='mega-menu__link link'
+                                                  >
+                                                    {{ sublinea_name | escape }}
+                                                  </a>
+                                                </li>
+                                              {%- endif -%}
+                                            {%- endif -%}
+                                          {%- endfor -%}
+                                        </ul>
+                                      {%- endif -%}
+                                      <a
+                                        href='{{ main_collection_obj.url }}'
+                                        class='mega-menu__link mega-menu__link--view-all link'
+                                      >
+                                        Ver todas
+                                      </a>
+                                    </div>
+                                  {%- endif -%}
+                                {%- endif -%}
+                              {%- endif -%}
+                            {%- endfor -%}
+                            {%- assign current_index = col_end | plus: 1 -%}
+                          </li>
+                        {%- endif -%}
+                      {%- endfor -%}
+                    {%- else -%}
+                      <li>
+                        <p class='mega-menu__empty'>No se encontraron colecciones de repuestos.</p>
+                      </li>
+                    {%- endif -%}
+                  </ul>
+                {%- elsif is_marcas -%}
+                  {%- comment -%} Mega menu dinámico para Marcas {%- endcomment -%}
+                  {%- liquid
+                    assign brand_collections = blank
+                    assign brands_with_models = blank
+                    assign brands_from_products = blank
+                    assign all_brands_set = blank
+
+                    # Usar el mismo método que funciona para repuestos
+                    if collections.all.size > 0
+                      assign all_collections = collections.all
+                    elsif collections.size > 0
+                      assign all_collections = collections
+                    else
+                      assign all_collections = blank
+                    endif
+
+                    # Método 1: Intentar obtener colecciones de marcas (mismo patrón que repuestos)
+                    if all_collections != blank
+                      for collection in all_collections
+                        assign title_lower = collection.title | downcase
+                        if title_lower contains 'marcas ·'
+                          assign title_parts = collection.title | split: ' · '
+                          assign parts_count = title_parts.size
+                          
+                          # Formato esperado: "Marcas · [BRAND_NAME]"
+                          if parts_count == 2
+                            assign brand_name = title_parts[1] | strip
+                            if brand_name != blank
+                              assign brand_entry = brand_name | append: ':::' | append: collection.handle | append: ':::' | append: collection.url
+
+                              if brand_collections == blank
+                                assign brand_collections = brand_entry
+                              else
+                                assign brand_collections = brand_collections | append: '|||' | append: brand_entry
+                              endif
+                              
+                              # Agregar a set de marcas conocidas
+                              if all_brands_set == blank
+                                assign all_brands_set = brand_name | downcase
+                              else
+                                assign brand_lower = brand_name | downcase
+                                unless all_brands_set contains brand_lower
+                                  assign all_brands_set = all_brands_set | append: '|||' | append: brand_lower
+                                endunless
+                              endif
+                            endif
+                          endif
+                        endif
+                      endfor
+                    endif
+
+                    # Nota: Si no hay colecciones de marcas, se recomienda sincronizarlas desde el backend
+                    # usando el endpoint: /api/collections/generate-brand-collections
+                    # Esto es más eficiente que cargar desde productos en el header
+
+                    # Obtener modelos para cada marca desde colecciones
+                    if brand_collections != blank
+                      assign brand_array = brand_collections | split: '|||'
+
+                      for brand_entry in brand_array
+                        assign brand_parts = brand_entry | split: ':::'
+                        if brand_parts.size == 3
+                          assign brand_name = brand_parts[0]
+                          assign brand_handle = brand_parts[1]
+                          assign brand_url = brand_parts[2]
+                          assign brand_name_normalized = brand_name | strip | upcase
+                          
+                          # Buscar colecciones de modelos directamente desde all_collections
+                          # Formato esperado: "Marcas · BRAND · MODELO"
+                          assign models_with_handles = blank
+                          assign models_count_debug = 0
+                          
+                          if all_collections != blank
+                            for collection in all_collections
+                              assign title_parts = collection.title | split: ' · '
+                              
+                              # Debe tener exactamente 3 partes: "Marcas", "BRAND", "MODELO"
+                              if title_parts.size == 3
+                                assign collection_prefix = title_parts[0] | strip
+                                assign collection_brand = title_parts[1] | strip | upcase
+                                assign model_name = title_parts[2] | strip
+                                
+                                # Verificar que sea una colección de "Marcas" y que la marca coincida
+                                if collection_prefix == 'Marcas' and collection_brand == brand_name_normalized and model_name != blank
+                                  assign models_count_debug = models_count_debug | plus: 1
+                                  assign model_collection_handle = collection.handle
+                                  assign model_collection_image = blank
+                                  
+                                  # Obtener imagen de la colección si existe
+                                  if collection.featured_image
+                                    assign model_collection_image = collection.featured_image | image_url: width: 400
+                                  elsif collection.image and collection.image.url
+                                    assign model_collection_image = collection.image.url
+                                  endif
+                                  
+                                  # Formato: model_name:::handle:::image_url (si no hay imagen, solo model_name:::handle)
+                                  if model_collection_image != blank
+                                    assign model_entry = model_name | append: ':::' | append: model_collection_handle | append: ':::' | append: model_collection_image
+                                  else
+                                    assign model_entry = model_name | append: ':::' | append: model_collection_handle
+                                  endif
+                                  
+                                  # Verificar duplicados usando el handle exacto (más preciso)
+                                  assign is_duplicate = false
+                                  if models_with_handles != blank
+                                    assign existing_models_array = models_with_handles | split: '|||'
+                                    for existing_model_entry in existing_models_array
+                                      assign existing_model_parts = existing_model_entry | split: ':::'
+                                      if existing_model_parts.size > 1
+                                        assign existing_handle = existing_model_parts[1] | strip
+                                        if existing_handle == model_collection_handle
+                                          assign is_duplicate = true
+                                          break
+                                        endif
+                                      endif
+                                    endfor
+                                  endif
+                                  
+                                  unless is_duplicate
+                                    if models_with_handles == blank
+                                      assign models_with_handles = model_entry
+                                    else
+                                      assign models_with_handles = models_with_handles | append: '|||' | append: model_entry
+                                    endif
+                                  endunless
+                                endif
+                              endif
+                            endfor
+                          endif
+                          
+                          # Debug: brand_name tiene models_count_debug colecciones encontradas
+                          
+                          # Almacenar: brand_name:::brand_handle:::brand_url:::models_with_handles
+                          # Si models_with_handles está vacío, usar cadena vacía pero aún así agregar la marca
+                          assign brand_with_models = brand_name | append: ':::' | append: brand_handle | append: ':::' | append: brand_url | append: ':::' | append: models_with_handles
+
+                          if brands_with_models == blank
+                            assign brands_with_models = brand_with_models
+                          else
+                            assign brands_with_models = brands_with_models | append: '|||' | append: brand_with_models
+                          endif
+                        endif
+                      endfor
+                    endif
+                  -%}
+
+                  <div class='mega-menu__marcas-container page-width'>
+                    {%- comment -%} Header con título y descripción {%- endcomment -%}
+                    <div class='mega-menu__marcas-header'>
+                      <div class='mega-menu__marcas-header-top'>
+                        <h2 class='mega-menu__marcas-title'>MARCAS</h2>
+                        {%- comment -%} Buscar URL de la colección de marcas {%- endcomment -%}
+                        {%- assign marcas_collection_url = '/collections/marcas' -%}
+                        {%- if collections.all.size > 0 -%}
+                          {%- for collection in collections.all -%}
+                            {%- assign title_upper = collection.title | upcase -%}
+                            {%- assign title_parts_check = collection.title | split: ' · ' -%}
+                            {%- if title_upper contains 'MARCAS' and title_parts_check.size == 1 -%}
+                              {%- assign marcas_collection_url = collection.url -%}
+                              {%- break -%}
+                            {%- endif -%}
                           {%- endfor -%}
+                        {%- endif -%}
+                        <a href='{{ marcas_collection_url }}' class='mega-menu__marcas-view-all'>
+                          Ver todas
+                        </a>
+                      </div>
+                      <p class='mega-menu__marcas-subtitle'>Expertos en todas las marcas</p>
+                      <p class='mega-menu__marcas-description'>
+                        Con más de 15 marcas reconocidas, somos tu aliado para mantener tu moto en perfecto estado. Calidad original garantizada
+                      </p>
+                    </div>
+
+                    <div class='mega-menu__marcas-content'>
+                      {%- comment -%} Columna izquierda: Lista de marcas {%- endcomment -%}
+                      <div class='mega-menu__marcas-column mega-menu__marcas-column--brands'>
+                        <ul class='mega-menu__list mega-menu__list--marcas' role='list'>
+                          {%- if brand_collections != blank -%}
+                            {%- comment -%} Mostrar marcas desde brand_collections (con o sin modelos) {%- endcomment -%}
+                            {%- assign brands_array = brand_collections | split: '|||' -%}
+                            {%- for brand_entry in brands_array -%}
+                              {%- assign brand_parts = brand_entry | split: ':::' -%}
+                              {%- if brand_parts.size == 3 -%}
+                                {%- assign brand_name = brand_parts[0] -%}
+                                {%- assign brand_handle = brand_parts[1] -%}
+                                {%- assign brand_url = brand_parts[2] -%}
+                                
+                                {%- comment -%} Buscar modelos para esta marca en brands_with_models {%- endcomment -%}
+                                {%- assign models_string = '' -%}
+                                {%- if brands_with_models != blank -%}
+                                  {%- assign brands_with_models_array = brands_with_models | split: '|||' -%}
+                                  {%- for brand_with_models_entry in brands_with_models_array -%}
+                                    {%- assign brand_with_models_parts = brand_with_models_entry | split: ':::' -%}
+                                    {%- if brand_with_models_parts.size >= 4 -%}
+                                      {%- assign brand_with_models_name = brand_with_models_parts[0] -%}
+                                      {%- if brand_with_models_name == brand_name -%}
+                                        {%- assign models_string = brand_with_models_parts[3] -%}
+                                        {%- break -%}
+                                      {%- endif -%}
+                                    {%- endif -%}
+                                  {%- endfor -%}
+                                {%- endif -%}
+
+                                <li class='mega-menu__marca-item' data-marca='{{ brand_name | escape }}' data-models='{{ models_string | escape }}' data-url='{{ brand_url | escape }}'>
+                                  <button
+                                    type='button'
+                                    class='mega-menu__marca-button'
+                                    data-marca='{{ brand_name | escape }}'
+                                  >
+                                    {{ brand_name | escape }}
+                                  </button>
+                                </li>
+                              {%- endif -%}
+                            {%- endfor -%}
+                          {%- elsif brands_with_models != blank -%}
+                            {%- comment -%} Fallback: si solo tenemos brands_with_models {%- endcomment -%}
+                            {%- assign brands_array = brands_with_models | split: '|||' -%}
+                            {%- for brand_entry in brands_array -%}
+                              {%- assign brand_parts = brand_entry | split: ':::' -%}
+                              {%- if brand_parts.size >= 4 -%}
+                                {%- assign brand_name = brand_parts[0] -%}
+                                {%- assign brand_handle = brand_parts[1] -%}
+                                {%- assign brand_url = brand_parts[2] -%}
+                                {%- assign models_string = brand_parts[3] -%}
+
+                                <li class='mega-menu__marca-item' data-marca='{{ brand_name | escape }}' data-models='{{ models_string | escape }}' data-url='{{ brand_url | escape }}'>
+                                  <button
+                                    type='button'
+                                    class='mega-menu__marca-button'
+                                    data-marca='{{ brand_name | escape }}'
+                                  >
+                                    {{ brand_name | escape }}
+                                  </button>
+                                </li>
+                              {%- endif -%}
+                            {%- endfor -%}
+                          {%- else -%}
+                            <li>
+                              <p class='mega-menu__empty'>No se encontraron marcas.</p>
+                            </li>
+                          {%- endif -%}
                         </ul>
-                      {%- endif -%}
-                    </li>
-                  {%- endfor -%}
-                </ul>
+                      </div>
+
+                      {%- comment -%} Separador vertical {%- endcomment -%}
+                      <div class='mega-menu__marcas-separator'></div>
+
+                      {%- comment -%} Columna derecha: Lista de modelos {%- endcomment -%}
+                      <div class='mega-menu__marcas-column mega-menu__marcas-column--models'>
+                        <ul class='mega-menu__modelos-list list-unstyled' role='list' id='mega-menu-modelos-list'>
+                          <li class='mega-menu__modelos-placeholder'>
+                            <p class='mega-menu__modelos-empty'>Selecciona una marca para ver sus modelos</p>
+                          </li>
+                        </ul>
+                      </div>
+
+                      {%- comment -%} Imagen de moto a la derecha con título (oculta inicialmente) {%- endcomment -%}
+                      <div class='mega-menu__moto-image-wrapper'>
+                        <h3 id='mega-menu-moto-title' class='mega-menu__moto-title' style='display: none;'></h3>
+                        <img
+                          id='mega-menu-moto-image'
+                          src=''
+                          alt=''
+                          class='mega-menu__moto-image'
+                          loading='lazy'
+                          style='display: none; opacity: 0;'
+                        >
+                      </div>
+                    </div>
+                  </div>
+                {%- elsif is_llantas -%}
+                  {%- comment -%} Mega menu dinámico para Llantas {%- endcomment -%}
+                  {%- liquid
+                    # Buscar colección principal de Llantas
+                    assign llantas_main_url = blank
+                    if collections.all.size > 0
+                      assign all_collections = collections.all
+                    elsif collections.size > 0
+                      assign all_collections = collections
+                    else
+                      assign all_collections = blank
+                    endif
+                    
+                    if all_collections != blank
+                      for collection in all_collections
+                        assign title_upper = collection.title | upcase
+                        if title_upper == 'LLANTAS' or title_upper == 'LLANTAS ·'
+                          assign llantas_main_url = collection.url
+                          break
+                        endif
+                      endfor
+                    endif
+                    
+                    if llantas_main_url == blank
+                      assign llantas_main_url = '/collections/llantas'
+                    endif
+                  -%}
+                  {%- render 'header-mega-menu-llantas', llantas_main_url: llantas_main_url -%}
+                {%- else -%}
+                  {%- comment -%} Menú estático original {%- endcomment -%}
+                  <ul
+                    class='mega-menu__list page-width{% if link.levels == 1 %} mega-menu__list--condensed{% endif %}'
+                    role='list'
+                  >
+                    {%- for childlink in link.links -%}
+                      <li>
+                        <a
+                          id='HeaderMenu-{{ link.handle }}-{{ childlink.handle }}'
+                          href='{{ childlink.url }}'
+                          class='mega-menu__link mega-menu__link--level-2 link{% if childlink.current %} mega-menu__link--active{% endif %}'
+                          {% if childlink.current %}
+                            aria-current='page'
+                          {% endif %}
+                        >
+                          {{ childlink.title | escape }}
+                        </a>
+                        {%- if childlink.links != blank -%}
+                          <ul class='list-unstyled' role='list'>
+                            {%- for grandchildlink in childlink.links -%}
+                              <li>
+                                <a
+                                  id='HeaderMenu-{{ link.handle }}-{{ childlink.handle }}-{{ grandchildlink.handle }}'
+                                  href='{{ grandchildlink.url }}'
+                                  class='mega-menu__link link{% if grandchildlink.current %} mega-menu__link--active{% endif %}'
+                                  {% if grandchildlink.current %}
+                                    aria-current='page'
+                                  {% endif %}
+                                >
+                                  {{ grandchildlink.title | escape }}
+                                </a>
+                              </li>
+                            {%- endfor -%}
+                          </ul>
+                        {%- endif -%}
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                {%- endif -%}
               </div>
             </details>
           </header-menu>
@@ -91,6 +1036,68 @@
           </a>
         {%- endif -%}
       </li>
+      
+      {%- comment -%} Agregar LLANTAS justo después de MARCAS {%- endcomment -%}
+      {%- if is_marcas -%}
+        {%- liquid
+          assign has_llantas_collections = false
+          assign llantas_main_collection_url = blank
+          
+          if collections.all.size > 0
+            assign all_collections_check = collections.all
+          elsif collections.size > 0
+            assign all_collections_check = collections
+          else
+            assign all_collections_check = blank
+          endif
+          
+          if all_collections_check != blank
+            for collection in all_collections_check
+              assign title_lower = collection.title | downcase
+              if title_lower contains 'llantas ·'
+                assign has_llantas_collections = true
+                # Buscar colección principal de Llantas
+                assign title_upper = collection.title | upcase
+                if title_upper == 'LLANTAS'
+                  assign llantas_main_collection_url = collection.url
+                  break
+                elsif title_upper == 'LLANTAS ·'
+                  assign llantas_main_collection_url = collection.url
+                  break
+                endif
+              endif
+            endfor
+          endif
+          
+          # Si no encontramos colección principal, usar /collections/llantas como fallback
+          if has_llantas_collections and llantas_main_collection_url == blank
+            assign llantas_main_collection_url = '/collections/llantas'
+          endif
+        -%}
+        
+        {%- if has_llantas_collections -%}
+          <li>
+            <header-menu>
+              <details id='Details-HeaderMenu-llantas' class='mega-menu'>
+                <summary
+                  id='HeaderMenu-llantas'
+                  class='header__menu-item list-menu__item link focus-inset'
+                >
+                  <span>LLANTAS</span>
+                  {{- 'icon-caret.svg' | inline_asset_content -}}
+                </summary>
+                <div
+                  id='MegaMenu-Content-llantas'
+                  class='mega-menu__content color-{{ section.settings.menu_color_scheme }} gradient motion-reduce global-settings-popup'
+                  tabindex='-1'
+                >
+                  {%- render 'header-mega-menu-llantas', llantas_main_url: llantas_main_collection_url -%}
+                </div>
+              </details>
+            </header-menu>
+          </li>
+        {%- endif -%}
+      {%- endif -%}
     {%- endfor -%}
   </ul>
   <div class='header__search-mega-menu'>

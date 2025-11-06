@@ -14,7 +14,6 @@
 
 {%- liquid
   assign brands_count = 0
-  assign brands_collections = blank
 
   comment
     Intentar diferentes formas de acceder a las colecciones
@@ -30,8 +29,8 @@
   endif
 
   comment
-    Filtrar colecciones que tengan el formato "Marcas · [BRAND]"
-    y crear un array de marcas
+    Filtrar colecciones que tengan el formato "Marcas · [BRAND]" (solo nivel principal)
+    Excluir subcolecciones de modelos como "Marcas · BRAND · MODELO"
   endcomment
 
   if all_collections != blank
@@ -39,11 +38,20 @@
     for collection in all_collections
       assign collection_title_upper = collection.title | upcase
       if collection_title_upper contains 'MARCAS ·'
-        assign brands_count = brands_count | plus: 1
-        if brands_array == blank
-          assign brands_array = collection.title
-        else
-          assign brands_array = brands_array | append: '|||' | append: collection.title
+        assign title_parts = collection.title | split: ' · '
+        assign parts_count = title_parts.size
+        
+        comment
+          Solo incluir colecciones con exactamente 2 partes: "Marcas · BRAND"
+          Excluir colecciones con 3 partes: "Marcas · BRAND · MODELO"
+        endcomment
+        if parts_count == 2
+          assign brands_count = brands_count | plus: 1
+          if brands_array == blank
+            assign brands_array = collection.title
+          else
+            assign brands_array = brands_array | append: '|||' | append: collection.title
+          endif
         endif
       endif
     endfor
@@ -126,7 +134,7 @@
       "unit": "x",
       "label": "Velocidad de scroll",
       "info": "1 = más lento, 10 = más rápido",
-      "default": 5
+      "default": 10
     },
     {
       "type": "header",

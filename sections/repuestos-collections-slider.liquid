@@ -34,7 +34,12 @@
     for collection in all_collections
       assign collection_title_upper = collection.title | upcase
       if collection_title_upper contains 'REPUESTOS'
-        assign collections_count = collections_count | plus: 1
+        # Solo contar colecciones de primer nivel (2 partes: "Repuestos · Línea")
+        assign title_parts = collection.title | split: ' · '
+        assign parts_count = title_parts.size
+        if parts_count == 2
+          assign collections_count = collections_count | plus: 1
+        endif
       endif
     endfor
   endif
@@ -83,9 +88,14 @@
           {%- for collection in all_collections -%}
             {%- assign collection_title_upper = collection.title | upcase -%}
             {%- if collection_title_upper contains 'REPUESTOS' -%}
-              {%- if max_collections == 0 or current_count < max_collections -%}
-                {% render 'card-repuestos-collection', card_collection: collection %}
-                {%- assign current_count = current_count | plus: 1 -%}
+              {%- comment -%} Solo mostrar colecciones de primer nivel (2 partes: "Repuestos · Línea") {%- endcomment -%}
+              {%- assign title_parts = collection.title | split: ' · ' -%}
+              {%- assign parts_count = title_parts.size -%}
+              {%- if parts_count == 2 -%}
+                {%- if max_collections == 0 or current_count < max_collections -%}
+                  {% render 'card-repuestos-collection', card_collection: collection %}
+                  {%- assign current_count = current_count | plus: 1 -%}
+                {%- endif -%}
               {%- endif -%}
             {%- endif -%}
           {%- endfor -%}

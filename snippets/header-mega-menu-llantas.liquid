@@ -1,0 +1,409 @@
+{% comment %}
+  Mega menu dinámico para Llantas
+  
+  Parámetros:
+    - llantas_main_url: URL de la colección principal de Llantas
+{% endcomment %}
+
+{%- liquid
+  # Obtener todas las colecciones de Llantas
+  assign llantas_collections = blank
+  assign llantas_categories = blank
+  assign llantas_main_url_param = llantas_main_url | default: blank
+
+  # Intentar obtener colecciones de diferentes formas según el contexto
+  assign all_collections = blank
+  
+  # Método 1: collections.all (disponible en algunos contextos)
+  if collections.all.size > 0
+    assign all_collections = collections.all
+  # Método 2: collections (objeto directo)
+  elsif collections.size > 0
+    assign all_collections = collections
+  # Método 3: Intentar acceder directamente a colecciones conocidas
+  elsif collections.llantas
+    assign all_collections = collections
+  endif
+  
+  # Debug: Verificar si tenemos colecciones
+  # Si no hay colecciones, el menú mostrará el mensaje de "No se encontraron colecciones"
+
+  # Categorías principales de Llantas según el diseño
+  assign categories_list = 'CARGUERO,MULTIPROPÓSITO,NEUMÁTICOS,OFF ROAD,PISTERA,STREET' | split: ','
+  assign types_list = 'TL,TT' | split: ','
+  assign sizes_list = '8,12,13,16,17,18,19,21' | split: ','
+
+  # Buscar colección principal de Llantas si no se pasó como parámetro
+  assign neumaticos_main_url = blank
+  
+  if llantas_main_url_param == blank
+    if all_collections != blank
+      for collection in all_collections
+        assign title_upper = collection.title | upcase
+        if title_upper == 'LLANTAS' or title_upper == 'LLANTAS ·'
+          assign llantas_main_url_param = collection.url
+        elsif title_upper == 'NEUMÁTICOS' or title_upper == 'NEUMATICOS' or title_upper == 'LLANTAS · NEUMÁTICOS' or title_upper == 'LLANTAS · NEUMATICOS'
+          assign neumaticos_main_url = collection.url
+        endif
+      endfor
+    endif
+    
+    # Si no encontramos colección principal, usar /collections/llantas como fallback
+    if llantas_main_url_param == blank
+      assign llantas_main_url_param = '/collections/llantas'
+    endif
+  endif
+  
+  # Buscar colección de Neumáticos si no se encontró antes
+  if neumaticos_main_url == blank and all_collections != blank
+    for collection in all_collections
+      assign title_upper = collection.title | upcase
+      if title_upper == 'NEUMÁTICOS' or title_upper == 'NEUMATICOS' or title_upper == 'LLANTAS · NEUMÁTICOS' or title_upper == 'LLANTAS · NEUMATICOS'
+        assign neumaticos_main_url = collection.url
+        break
+      endif
+    endfor
+  endif
+  
+  # Fallback para neumáticos
+  if neumaticos_main_url == blank
+    assign neumaticos_main_url = '/collections/neumaticos'
+  endif
+
+  # Organizar colecciones por categoría, tipo y tamaño
+  # Estructura: categoria:::tipo:::tamaño:::handle:::url
+  # Soporta múltiples formatos según las colecciones reales:
+  # - "Llantas · CATEGORÍA · TIPO · TAMAÑO" (4 partes)
+  # - "Llantas · CATEGORÍA · TIPO" (3 partes)
+  # - "Llantas · CATEGORÍA" (2 partes - categoría)
+  # - "Llantas · TIPO" (2 partes - tipo TL/TT)
+  # - "Llantas · TAMAÑO" (2 partes - tamaño como "21"")
+  
+  # Mapeo de nombres de categorías en las colecciones a nombres normalizados
+  assign categoria_map = 'Llantas para carguero:CARGUERO,Multipropósito:MULTIPROPÓSITO,Neumáticos:NEUMÁTICOS,Off Road:OFF ROAD,Pistera:PISTERA,Street:STREET' | split: ','
+  
+  if all_collections != blank
+    for collection in all_collections
+      assign title_lower = collection.title | downcase
+      if title_lower contains 'llantas ·'
+        assign title_parts = collection.title | split: ' · '
+        assign parts_count = title_parts.size
+        
+        # Formato con tamaño: "Llantas · CATEGORÍA · TIPO · TAMAÑO" (4 partes)
+        if parts_count == 4
+          assign categoria_raw = title_parts[1] | strip
+          assign tipo_raw = title_parts[2] | strip | upcase
+          assign tamano_raw = title_parts[3] | strip
+          
+          # Normalizar categoría
+          assign categoria = categoria_raw | upcase
+          for mapping in categoria_map
+            assign map_parts = mapping | split: ':'
+            if map_parts.size == 2
+              assign map_key = map_parts[0] | strip | upcase
+              assign map_value = map_parts[1] | strip | upcase
+              if categoria == map_key
+                assign categoria = map_value
+                break
+              endif
+            endif
+          endfor
+          
+          # Verificar que la categoría esté en nuestra lista
+          assign categoria_valid = false
+          for cat in categories_list
+            if cat == categoria
+              assign categoria_valid = true
+              break
+            endif
+          endfor
+          
+          if categoria_valid
+            assign collection_entry = categoria | append: ':::' | append: tipo_raw | append: ':::' | append: tamano_raw | append: ':::' | append: collection.handle | append: ':::' | append: collection.url
+            
+            if llantas_collections == blank
+              assign llantas_collections = collection_entry
+            else
+              assign llantas_collections = llantas_collections | append: '|||' | append: collection_entry
+            endif
+          endif
+        # Formato sin tamaño: "Llantas · CATEGORÍA · TIPO" (3 partes)
+        elsif parts_count == 3
+          assign categoria_raw = title_parts[1] | strip
+          assign tipo_raw = title_parts[2] | strip | upcase
+          
+          # Normalizar categoría
+          assign categoria = categoria_raw | upcase
+          for mapping in categoria_map
+            assign map_parts = mapping | split: ':'
+            if map_parts.size == 2
+              assign map_key = map_parts[0] | strip | upcase
+              assign map_value = map_parts[1] | strip | upcase
+              if categoria == map_key
+                assign categoria = map_value
+                break
+              endif
+            endif
+          endfor
+          
+          # Verificar que la categoría esté en nuestra lista
+          assign categoria_valid = false
+          for cat in categories_list
+            if cat == categoria
+              assign categoria_valid = true
+              break
+            endif
+          endfor
+          
+          # Verificar que el tipo sea TL o TT
+          assign tipo_valid = false
+          for t in types_list
+            if t == tipo_raw
+              assign tipo_valid = true
+              break
+            endif
+          endfor
+          
+          # Si es una categoría válida con tipo válido, crear entradas para todos los tamaños
+          if categoria_valid and tipo_valid
+            for size in sizes_list
+              assign collection_entry = categoria | append: ':::' | append: tipo_raw | append: ':::' | append: size | append: ':::' | append: collection.handle | append: ':::' | append: collection.url
+              
+              if llantas_collections == blank
+                assign llantas_collections = collection_entry
+              else
+                assign llantas_collections = llantas_collections | append: '|||' | append: collection_entry
+              endif
+            endfor
+          endif
+        # Formato de 2 partes: "Llantas · CATEGORÍA" o "Llantas · TIPO" o "Llantas · TAMAÑO"
+        elsif parts_count == 2
+          assign second_part = title_parts[1] | strip
+          assign second_part_upper = second_part | upcase
+          
+          # Verificar si es un tipo (TL o TT)
+          assign is_tipo = false
+          for t in types_list
+            if t == second_part_upper
+              assign is_tipo = true
+              break
+            endif
+          endfor
+          
+          # Verificar si es un tamaño (contiene " o número)
+          assign is_tamano = false
+          assign tamano_value = blank
+          if second_part contains '"'
+            assign tamano_value = second_part | remove: '"' | strip
+            assign is_tamano = true
+          elsif second_part contains '21' or second_part contains '19' or second_part contains '17' or second_part contains '16' or second_part contains '13' or second_part contains '12' or second_part contains '8' or second_part contains '18'
+            assign tamano_value = second_part | remove: '"' | strip
+            assign is_tamano = true
+          endif
+          
+          # Si es un tipo (TL o TT), crear entradas para todas las categorías y tamaños
+          if is_tipo
+            for cat in categories_list
+              for size in sizes_list
+                assign collection_entry = cat | append: ':::' | append: second_part_upper | append: ':::' | append: size | append: ':::' | append: collection.handle | append: ':::' | append: collection.url
+                
+                if llantas_collections == blank
+                  assign llantas_collections = collection_entry
+                else
+                  assign llantas_collections = llantas_collections | append: '|||' | append: collection_entry
+                endif
+              endfor
+            endfor
+          # Si es un tamaño, crear entradas para todas las categorías y tipos
+          elsif is_tamano
+            for cat in categories_list
+              for t in types_list
+                assign collection_entry = cat | append: ':::' | append: t | append: ':::' | append: tamano_value | append: ':::' | append: collection.handle | append: ':::' | append: collection.url
+                
+                if llantas_collections == blank
+                  assign llantas_collections = collection_entry
+                else
+                  assign llantas_collections = llantas_collections | append: '|||' | append: collection_entry
+                endif
+              endfor
+            endfor
+          # Si es una categoría
+          else
+            # Normalizar categoría
+            assign categoria = second_part_upper
+            for mapping in categoria_map
+              assign map_parts = mapping | split: ':'
+              if map_parts.size == 2
+                assign map_key = map_parts[0] | strip | upcase
+                assign map_value = map_parts[1] | strip | upcase
+                if categoria == map_key
+                  assign categoria = map_value
+                  break
+                endif
+              endif
+            endfor
+            
+            # Verificar que la categoría esté en nuestra lista
+            assign categoria_valid = false
+            for cat in categories_list
+              if cat == categoria
+                assign categoria_valid = true
+                break
+              endif
+            endfor
+            
+            # Si es una categoría válida, crear entradas para todos los tipos y tamaños
+            if categoria_valid
+              for t in types_list
+                for size in sizes_list
+                  assign collection_entry = categoria | append: ':::' | append: t | append: ':::' | append: size | append: ':::' | append: collection.handle | append: ':::' | append: collection.url
+                  
+                  if llantas_collections == blank
+                    assign llantas_collections = collection_entry
+                  else
+                    assign llantas_collections = llantas_collections | append: '|||' | append: collection_entry
+                  endif
+                endfor
+              endfor
+            endif
+          endif
+        endif
+      endif
+    endfor
+  endif
+-%}
+
+<div class='mega-menu__llantas-container page-width'>
+  {%- comment -%} Layout de 2 columnas: LLANTAS | NEUMÁTICOS {%- endcomment -%}
+  <div class='mega-menu__llantas-content'>
+    {%- comment -%} Columna izquierda: LLANTAS {%- endcomment -%}
+    <div class='mega-menu__llantas-column mega-menu__llantas-column--llantas'>
+      <div class='mega-menu__llantas-header'>
+        <div class='mega-menu__llantas-header-top'>
+          <h2 class='mega-menu__llantas-title'>LLANTAS</h2>
+          {%- if llantas_main_url_param != blank -%}
+            <a href='{{ llantas_main_url_param }}' class='mega-menu__llantas-view-all'>
+              Ver todos
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+
+      {%- if llantas_collections != blank -%}
+        <div class='mega-menu__llantas-grid'>
+          {%- for categoria in categories_list -%}
+            {%- liquid
+              # Filtrar colecciones de esta categoría
+              assign categoria_collections = blank
+              if llantas_collections != blank
+                assign collections_array = llantas_collections | split: '|||'
+                for collection_entry in collections_array
+                  assign entry_parts = collection_entry | split: ':::'
+                  if entry_parts.size >= 3
+                    assign entry_categoria = entry_parts[0] | strip
+                    if entry_categoria == categoria
+                      if categoria_collections == blank
+                        assign categoria_collections = collection_entry
+                      else
+                        assign categoria_collections = categoria_collections | append: '|||' | append: collection_entry
+                      endif
+                    endif
+                  endif
+                endfor
+              endif
+            -%}
+
+            {%- if categoria_collections != blank -%}
+              <div class='mega-menu__llantas-category'>
+                <h3 class='mega-menu__llantas-category-title'>{{ categoria }}</h3>
+                
+                {%- comment -%} Mostrar tipos TL y TT {%- endcomment -%}
+                {%- for tipo in types_list -%}
+                  <div class='mega-menu__llantas-type'>
+                    <span class='mega-menu__llantas-type-label'>{{ tipo }}</span>
+                    <ul class='mega-menu__llantas-sizes'>
+                      {%- liquid
+                        # Filtrar colecciones de este tipo
+                        assign tipo_collections = blank
+                        if categoria_collections != blank
+                          assign cat_collections_array = categoria_collections | split: '|||'
+                          for collection_entry in cat_collections_array
+                            assign entry_parts = collection_entry | split: ':::'
+                            if entry_parts.size >= 3
+                              assign entry_tipo = entry_parts[1] | strip
+                              if entry_tipo == tipo
+                                if tipo_collections == blank
+                                  assign tipo_collections = collection_entry
+                                else
+                                  assign tipo_collections = tipo_collections | append: '|||' | append: collection_entry
+                                endif
+                              endif
+                            endif
+                          endfor
+                        endif
+                      -%}
+                      
+                      {%- if tipo_collections != blank -%}
+                        {%- assign tipo_array = tipo_collections | split: '|||' -%}
+                        {%- for size in sizes_list -%}
+                          {%- liquid
+                            # Buscar si existe una colección para este tamaño
+                            assign size_found = false
+                            assign size_handle = blank
+                            assign size_url = blank
+                            
+                            for collection_entry in tipo_array
+                              assign entry_parts = collection_entry | split: ':::'
+                              if entry_parts.size >= 5
+                                assign entry_size = entry_parts[2] | strip
+                                if entry_size == size
+                                  assign size_found = true
+                                  assign size_handle = entry_parts[3] | strip
+                                  assign size_url = entry_parts[4] | strip
+                                  break
+                                endif
+                              endif
+                            endfor
+                          -%}
+                          
+                          {%- if size_found -%}
+                            <li>
+                              <a href='{{ size_url }}' class='mega-menu__llantas-size-link'>
+                                {{ size }}
+                              </a>
+                            </li>
+                          {%- endif -%}
+                        {%- endfor -%}
+                      {%- endif -%}
+                    </ul>
+                  </div>
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- else -%}
+        <p class='mega-menu__llantas-empty'>No se encontraron colecciones de llantas.</p>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} Separador vertical {%- endcomment -%}
+    <div class='mega-menu__llantas-separator'></div>
+
+    {%- comment -%} Columna derecha: NEUMÁTICOS {%- endcomment -%}
+    <div class='mega-menu__llantas-column mega-menu__llantas-column--neumaticos'>
+      <div class='mega-menu__llantas-header'>
+        <div class='mega-menu__llantas-header-top'>
+          <h2 class='mega-menu__llantas-title'>NEUMÁTICOS</h2>
+          {%- if neumaticos_main_url != blank -%}
+            <a href='{{ neumaticos_main_url }}' class='mega-menu__llantas-view-all'>
+              Ver todos
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+      {%- comment -%} TODO: Agregar contenido de neumáticos cuando esté disponible {%- endcomment -%}
+    </div>
+  </div>
+</div>
+

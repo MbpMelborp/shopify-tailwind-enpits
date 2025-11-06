@@ -6,7 +6,7 @@
    Sección Principal
    ========================================================================== */
 .repuestos-slider-section {
-  @apply relative size-full !-mt-32 md:mt-0;
+  @apply relative size-full !-mt-32 md:mt-0 px-4;
 }
 
 /* ==========================================================================

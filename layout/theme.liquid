@@ -43,6 +43,14 @@
     <script src='{{ 'banners-container-slider.js' | asset_url }}' defer='defer'></script>
     <script src='{{ 'repuestos-collections-slider.js' | asset_url }}' defer='defer'></script>
     <script src='{{ 'brands-marquee.js' | asset_url }}' defer='defer'></script>
+    {%- comment -%} Variable global para URL del API backend {%- endcomment -%}
+    <script>
+      // URL del API backend (ajustar según tu entorno)
+      // Para desarrollo local con ngrok, usar la URL de ngrok
+      // Para producción, usar la URL del servidor de producción
+      window.ENPITS_API_URL = 'https://browny-naoma-ovate.ngrok-free.dev';
+    </script>
+    <script src='{{ 'marcas-mega-menu.js' | asset_url }}' defer='defer'></script>
 
     {%- if settings.animations_reveal_on_scroll -%}
       <script src='{{ 'animations.js' | asset_url }}' defer='defer'></script>

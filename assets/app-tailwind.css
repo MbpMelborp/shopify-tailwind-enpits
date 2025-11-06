@@ -15,6 +15,9 @@
 /* Brands Marquee Component */
 @import './brands-marquee.css';
 
+/* Promo Banners Component */
+@import './promo-banners.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -285,7 +288,6 @@ h6:empty {
 .link,
 .customer a {
   @apply cursor-pointer inline-block shadow-none underline underline-offset-[0.3rem] bg-transparent text-[1.4rem] border-[none];
-  font-family: inherit;
 }
 .link-with-icon {
   @apply inline-flex text-[1.4rem] font-semibold tracking-[0.1rem] no-underline whitespace-nowrap mb-[4.5rem];
@@ -1533,4 +1535,355 @@ details-disclosure > details {
   .rte table td {
     @apply px-[1.2rem];
   }
+}
+
+/* MEGAMNU COMPONENT */
+
+/*
+  Based on TailwindCSS recommendations,
+  consider using classes instead of the `@apply` directive
+  @see https://tailwindcss.com/docs/reusing-styles#avoiding-premature-abstraction
+*/
+.mega-menu {
+  @apply static;
+}
+.mega-menu__content {
+  @apply bg-blanco overflow-y-auto absolute rounded-none border-x-0 top-full inset-x-0 !pt-4 !pb-4;
+}
+.shopify-section-header-sticky .mega-menu__content {
+  @apply max-h-[calc(100vh_-_var(--header-bottom-position-desktop,20rem)_-_4rem)];
+}
+.header-wrapper--border-bottom .mega-menu__content {
+  @apply border-t-0;
+}
+.js .mega-menu__content {
+  @apply opacity-0 translate-y-[-1.5rem];
+}
+.mega-menu[open] .mega-menu__content {
+  @apply opacity-100 translate-y-0;
+}
+.mega-menu__list {
+  @apply grid gap-[1.8rem_4rem] grid-cols-6 list-none;
+}
+.mega-menu__list--repuestos {
+  @apply grid-cols-5 content-between gap-y-2 gap-x-4;
+}
+.mega-menu__link {
+  @apply text-negro block leading-none no-underline transition-[text-decoration] duration-[var(--duration-short)] ease-[ease] py-[0.6rem];
+  word-wrap: break-word;
+}
+.mega-menu__link--level-2 {
+  @apply font-bold;
+}
+.header--top-center .mega-menu__list {
+  @apply flex justify-center flex-wrap gap-x-0;
+}
+.header--top-center .mega-menu__list > li {
+  @apply w-[16%] pr-[2.4rem];
+}
+.mega-menu__link:hover,
+.mega-menu__link--active {
+  @apply text-[rgb(var(--color-foreground))] underline;
+}
+.mega-menu__link--active:hover {
+  @apply decoration-[0.2rem];
+}
+.mega-menu .mega-menu__list--condensed {
+  @apply block;
+}
+.mega-menu__list--condensed .mega-menu__link {
+  @apply font-[normal];
+}
+.mega-menu__column {
+  @apply flex flex-col !justify-start !items-start;
+}
+.mega-menu__link--view-all {
+  @apply !text-rojo text-sm mt-2 mb-3 hover:text-red-700 hover:underline;
+}
+.mega-menu__empty {
+  @apply text-[rgba(var(--color-foreground),0.75)] text-center p-4;
+}
+.mega-menu__line-group {
+  @apply w-full;
+}
+.mega-menu__line-group ul li {
+  @apply w-full !block !h-auto px-0 py-0;
+  a.link {
+    @apply text-negro block leading-none no-underline transition-all !text-base duration-[var(--duration-short)] ease-in-out pt-0 pb-0 mx-0 my-0;
+  }
+}
+
+/* ==========================================================================
+   MEGA MENU MARCAS - Dropdown de marcas con modelos
+   ========================================================================== */
+
+.mega-menu__marcas-container {
+  @apply w-full flex gap-4;
+}
+
+/* ==========================================================================
+   Header del mega menú de marcas
+   ========================================================================== */
+.mega-menu__marcas-header {
+  @apply mb-8 max-w-xs flex flex-col gap-8;
+}
+
+.mega-menu__marcas-header-top {
+  @apply flex justify-start mb-4 gap-2 items-baseline;
+}
+
+.mega-menu__marcas-title {
+  @apply text-2xl font-bold text-negro m-0 gap-2 items-baseline;
+}
+
+.mega-menu__marcas-view-all {
+  @apply text-rojo text-base font-normal no-underline hover:underline;
+}
+
+.mega-menu__marcas-subtitle {
+  @apply text-xl font-bold text-negro mb-2;
+}
+
+.mega-menu__marcas-description {
+  @apply text-base text-negro opacity-75 leading-relaxed;
+}
+
+/* ==========================================================================
+   Contenido principal: Layout de 4 columnas (marcas | separador | modelos | imagen)
+   ========================================================================== */
+.mega-menu__marcas-content {
+  @apply grid grid-cols-[200px_200px_1fr] gap-6 items-start flex-1;
+}
+
+/* ==========================================================================
+   Columna de marcas (izquierda)
+   ========================================================================== */
+.mega-menu__marcas-column--brands {
+  @apply w-full;
+}
+
+.mega-menu__list--marcas {
+  @apply list-none p-0 m-0 space-y-0 flex flex-col gap-0 divide-y;
+}
+
+.mega-menu__marca-item {
+  @apply relative;
+}
+
+.mega-menu__marca-button {
+  @apply w-full text-left px-4 py-1.5 text-base text-negro bg-transparent border-none cursor-pointer transition-all duration-200 font-bold;
+
+  &:hover {
+    @apply bg-gray-100;
+  }
+
+  /* Estado activo/seleccionado */
+  &.active,
+  &[aria-selected='true'] {
+    @apply bg-negro text-white;
+
+    &:hover {
+      @apply bg-gray-800;
+    }
+  }
+}
+
+/* ==========================================================================
+   Separador vertical
+   ========================================================================== */
+.mega-menu__marcas-separator {
+  @apply w-px bg-gray-300 self-stretch;
+}
+
+/* ==========================================================================
+   Columna de modelos (derecha)
+   ========================================================================== */
+.mega-menu__marcas-column--models {
+  @apply w-full;
+}
+
+.mega-menu__modelos-list {
+  @apply list-none p-0 m-0 gap-0 divide-y;
+}
+.mega-menu__modelos-list li {
+  @apply p-0 m-0 text-left;
+}
+
+.mega-menu__modelos-placeholder {
+  @apply py-4;
+}
+
+.mega-menu__modelos-empty {
+  @apply text-sm text-negro opacity-50 italic text-left;
+}
+
+/* ==========================================================================
+   Loading indicator para modelos
+   ========================================================================== */
+.mega-menu__loading-container {
+  @apply flex flex-col items-center justify-center gap-3 py-6;
+}
+
+.mega-menu__loading-spinner {
+  @apply w-8 h-8 text-rojo;
+  animation: spin 1s linear infinite;
+}
+
+.mega-menu__loading-circle {
+  @apply opacity-75;
+}
+
+.mega-menu__modelos-loading {
+  @apply text-sm text-negro opacity-70 font-medium text-center m-0;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.mega-menu__modelo-link {
+  @apply block text-sm text-negro no-underline py-1 px-0 transition-all duration-200 cursor-pointer w-full uppercase font-semibold;
+
+  &:hover {
+    @apply opacity-100 underline font-semibold;
+  }
+}
+
+/* ==========================================================================
+   Enlace "Ver todos" al final de la lista de modelos
+   ========================================================================== */
+.mega-menu__modelos-ver-todos {
+  @apply mt-4 pt-4 border-t border-gray-300;
+}
+
+.mega-menu__modelo-link--ver-todos {
+  @apply block text-sm text-rojo no-underline py-1 px-0 transition-all duration-200 cursor-pointer w-full uppercase font-bold;
+
+  &:hover {
+    @apply opacity-100 underline font-bold;
+  }
+}
+
+/* ==========================================================================
+   Imagen de moto (derecha)
+   ========================================================================== */
+.mega-menu__moto-image-wrapper {
+  @apply sticky top-4 w-full flex flex-col items-center justify-start bg-gray-100 rounded-lg overflow-hidden h-full;
+  min-height: 320px; /* Altura mínima para mantener el espacio */
+}
+
+.mega-menu__moto-title {
+  @apply text-lg font-bold text-negro mb-3 px-4 pt-4 text-center w-full;
+  display: none; /* Oculto por defecto, se muestra cuando hay modelo */
+}
+
+.mega-menu__moto-image {
+  @apply max-w-md mx-auto my-auto  w-full h-auto object-contain transition-opacity duration-300;
+  display: none; /* Oculto inicialmente, se muestra cuando hay modelo */
+}
+
+/* ==========================================================================
+   Responsive: En mobile, reorganizar layout
+   ========================================================================== */
+@media screen and (max-width: 989px) {
+  .mega-menu__marcas-content {
+    @apply grid-cols-1 gap-4;
+  }
+
+  .mega-menu__marcas-separator {
+    @apply hidden;
+  }
+
+  .mega-menu__moto-image-wrapper {
+    @apply w-full h-64 mt-4 order-last;
+  }
+}
+
+/* ==========================================================================
+   MEGA MENU LLANTAS - Dropdown de llantas con categorías, tipos y tamaños
+   ========================================================================== */
+
+.mega-menu__llantas-container {
+  @apply w-full;
+}
+
+.mega-menu__llantas-content {
+  @apply grid grid-cols-[3fr_1fr] gap-6 items-start;
+}
+
+/* ==========================================================================
+   Header del mega menú de llantas
+   ========================================================================== */
+.mega-menu__llantas-header {
+  @apply mb-6;
+}
+
+.mega-menu__llantas-header-top {
+  @apply flex justify-start mb-4 gap-2 items-baseline;
+}
+
+.mega-menu__llantas-title {
+  @apply text-2xl font-bold text-negro m-0;
+}
+
+.mega-menu__llantas-view-all {
+  @apply text-rojo text-base font-normal no-underline hover:underline;
+}
+
+/* ==========================================================================
+   Columnas principales
+   ========================================================================== */
+.mega-menu__llantas-column {
+  @apply w-full;
+}
+
+.mega-menu__llantas-separator {
+  @apply w-px bg-gray-300 self-stretch;
+}
+
+/* ==========================================================================
+   Grid de categorías
+   ========================================================================== */
+.mega-menu__llantas-grid {
+  @apply grid grid-cols-6 gap-x-8 gap-y-6 divide-x;
+}
+
+.mega-menu__llantas-category {
+  @apply w-full pl-2;
+}
+
+.mega-menu__llantas-category-title {
+  @apply text-lg font-bold text-negro mb-3 uppercase;
+}
+
+/* ==========================================================================
+   Tipos (TL y TT) con tamaños a la derecha
+   ========================================================================== */
+.mega-menu__llantas-type {
+  @apply mb-4 last:mb-0 flex items-start gap-4;
+}
+
+.mega-menu__llantas-type-label {
+  @apply block text-sm font-normal text-negro mb-0 flex-shrink-0 min-w-[40px];
+}
+
+.mega-menu__llantas-sizes {
+  @apply list-none p-0 m-0 gap-0 flex-1;
+}
+
+.mega-menu__llantas-size-link {
+  @apply block text-sm text-negro no-underline py-0.5 transition-all duration-200 cursor-pointer leading-none;
+
+  &:hover {
+    @apply opacity-100 underline;
+  }
+}
+
+.mega-menu__llantas-empty {
+  @apply text-sm text-negro opacity-50 italic text-left py-4;
 }
