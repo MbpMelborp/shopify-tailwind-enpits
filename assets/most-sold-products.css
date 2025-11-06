@@ -1,0 +1,116 @@
+/* ==========================================================================
+   MOST SOLD PRODUCTS - Sección de productos más vendidos
+   ========================================================================== */
+
+.most-sold-section {
+  @apply w-full;
+}
+
+.most-sold-header {
+  @apply text-center mb-8;
+}
+
+.most-sold-title {
+  @apply text-3xl md:text-4xl font-bold mb-4;
+  color: var(--color-rojo, #fa0014);
+}
+
+.most-sold-subtitle {
+  @apply text-base md:text-lg text-gray-700 max-w-2xl mx-auto;
+}
+
+/* ==========================================================================
+   Filtros de Categoría
+   ========================================================================== */
+.most-sold-filters {
+  @apply flex items-center justify-center gap-2 mb-8;
+}
+
+.most-sold-filter {
+  @apply px-4 py-2 text-sm md:text-base font-medium transition-colors duration-200;
+  @apply bg-transparent border-0 cursor-pointer;
+  color: var(--color-foreground, #000);
+}
+
+.most-sold-filter:hover {
+  @apply opacity-80;
+}
+
+.most-sold-filter--active {
+  color: var(--color-rojo, #fa0014);
+  @apply font-bold;
+}
+
+.most-sold-filter-separator {
+  @apply text-gray-400 text-sm;
+}
+
+/* ==========================================================================
+   Grid de Productos
+   ========================================================================== */
+.most-sold-products-grid {
+  @apply grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6;
+}
+
+.most-sold-product-item {
+  @apply opacity-100 transition-opacity duration-300;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.most-sold-product-item[data-category] {
+  @apply block;
+}
+
+.most-sold-product-item.hidden {
+  display: none;
+}
+
+/* ==========================================================================
+   Estado Vacío
+   ========================================================================== */
+.most-sold-empty {
+  @apply col-span-full text-center py-12;
+}
+
+.most-sold-empty p {
+  @apply text-gray-500 text-lg;
+}
+
+/* ==========================================================================
+   Animación Fade-In
+   ========================================================================== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================================
+   Responsive Adjustments
+   ========================================================================== */
+@media screen and (max-width: 749px) {
+  .most-sold-title {
+    @apply text-2xl;
+  }
+
+  .most-sold-subtitle {
+    @apply text-sm;
+  }
+
+  .most-sold-filters {
+    @apply gap-1;
+  }
+
+  .most-sold-filter {
+    @apply px-2 py-1 text-xs;
+  }
+
+  .most-sold-filter-separator {
+    @apply text-xs;
+  }
+}

@@ -17,7 +17,7 @@
    Desktop: Grid Layout
    ========================================================================== */
 .promo-banners-container--desktop {
-  @apply hidden md:grid gap-4;
+  @apply hidden md:grid gap-12 md:max-w-[90rem] mx-auto;
 }
 
 .promo-banners-container--desktop.promo-banners-container--single {

@@ -18,6 +18,9 @@
 /* Promo Banners Component */
 @import './promo-banners.css';
 
+/* Most Sold Products Component */
+@import './most-sold-products.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

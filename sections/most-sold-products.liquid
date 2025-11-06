@@ -1,0 +1,258 @@
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+{%- liquid
+  # Obtener tags filtrables desde settings
+  assign tags_filter = section.settings.tags_filter | strip
+  assign tags_array = blank
+  if tags_filter != blank
+    assign tags_array = tags_filter | split: ','
+  endif
+
+  # Obtener todos los productos disponibles
+  assign all_products = collections.all.products
+  assign filtered_products_array = blank
+  assign products_count = 0
+
+  # Filtrar productos por tags si están configurados
+  if tags_array != blank
+    for product in all_products
+      assign product_matches = false
+      for tag in tags_array
+        assign tag_trimmed = tag | strip
+        if product.tags contains tag_trimmed
+          assign product_matches = true
+          break
+        endif
+      endfor
+      
+      if product_matches
+        if filtered_products_array == blank
+          assign filtered_products_array = product.handle
+        else
+          assign filtered_products_array = filtered_products_array | append: '|||' | append: product.handle
+        endif
+        assign products_count = products_count | plus: 1
+      endif
+    endfor
+  else
+    # Si no hay tags, usar todos los productos disponibles
+    for product in all_products
+      if filtered_products_array == blank
+        assign filtered_products_array = product.handle
+      else
+        assign filtered_products_array = filtered_products_array | append: '|||' | append: product.handle
+      endif
+      assign products_count = products_count | plus: 1
+    endfor
+  endif
+
+  # Limitar cantidad de productos
+  assign max_products = section.settings.products_count
+  if max_products == 0 or max_products == blank
+    assign max_products = 8
+  endif
+-%}
+
+<div class='most-sold-section section-{{ section.id }}-padding'>
+  <div class='page-width'>
+    {%- comment -%} Header con título y subtítulo {%- endcomment -%}
+    <div class='most-sold-header'>
+      {%- if section.settings.title != blank -%}
+        <h2 class='most-sold-title'>{{ section.settings.title }}</h2>
+      {%- endif -%}
+      {%- if section.settings.subtitle != blank -%}
+        <p class='most-sold-subtitle'>{{ section.settings.subtitle }}</p>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} Filtros de categoría {%- endcomment -%}
+    <div class='most-sold-filters'>
+      <button
+        type='button'
+        class='most-sold-filter most-sold-filter--active'
+        data-category='all'
+        aria-label='Mostrar todos los productos'
+      >
+        TODOS
+      </button>
+      <span class='most-sold-filter-separator'>·</span>
+      <button
+        type='button'
+        class='most-sold-filter'
+        data-category='llantas'
+        aria-label='Mostrar solo llantas'
+      >
+        LLANTAS
+      </button>
+      <span class='most-sold-filter-separator'>·</span>
+      <button
+        type='button'
+        class='most-sold-filter'
+        data-category='repuestos'
+        aria-label='Mostrar solo repuestos'
+      >
+        REPUESTOS
+      </button>
+    </div>
+
+    {%- comment -%} Grid de productos {%- endcomment -%}
+    <div class='most-sold-products-grid'>
+      {%- if filtered_products_array != blank -%}
+        {%- assign products_handles = filtered_products_array | split: '|||' -%}
+        {%- assign products_limit = 0 -%}
+        
+        {%- for product_handle in products_handles -%}
+          {%- if products_limit < max_products -%}
+            {%- assign product = blank -%}
+            {%- for p in all_products -%}
+              {%- if p.handle == product_handle -%}
+                {%- assign product = p -%}
+                {%- break -%}
+              {%- endif -%}
+            {%- endfor -%}
+            
+            {%- if product != blank -%}
+              {%- liquid
+                # Determinar categorías del producto
+                assign product_categories = 'all'
+                assign is_llantas_product = false
+                assign is_repuestos_product = false
+                
+                assign product_tags_lower = product.tags | join: ',' | downcase
+                if product_tags_lower contains 'llanta' or product_tags_lower contains 'llantas' or product_tags_lower contains 'neumatico' or product_tags_lower contains 'neumáticos'
+                  assign is_llantas_product = true
+                  assign product_categories = product_categories | append: ' llantas'
+                endif
+                
+                if product_tags_lower contains 'repuesto' or product_tags_lower contains 'repuestos' or product_tags_lower contains 'filtro' or product_tags_lower contains 'aceite' or product_tags_lower contains 'bujia' or product_tags_lower contains 'freno'
+                  assign is_repuestos_product = true
+                  assign product_categories = product_categories | append: ' repuestos'
+                endif
+                
+                if product.metafields.custom.taxonomia_producto
+                  assign taxonomia = product.metafields.custom.taxonomia_producto
+                  if taxonomia.reference
+                    assign categoria = taxonomia.reference.categoria.value | downcase
+                    if categoria == 'llantas' or categoria == 'neumáticos'
+                      assign is_llantas_product = true
+                      assign product_categories = product_categories | append: ' llantas'
+                    elsif categoria == 'repuestos'
+                      assign is_repuestos_product = true
+                      assign product_categories = product_categories | append: ' repuestos'
+                    endif
+                  endif
+                endif
+              -%}
+              
+              <div
+                class='most-sold-product-item'
+                data-category='{{ product_categories }}'
+              >
+                {% render 'card-product',
+                  card_product: product,
+                  show_vendor: false,
+                  show_rating: false,
+                  lazy_load: true,
+                  section_id: section.id,
+                  quick_add: 'standard'
+                %}
+              </div>
+              {%- assign products_limit = products_limit | plus: 1 -%}
+            {%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- else -%}
+        <div class='most-sold-empty'>
+          <p>No se encontraron productos.</p>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+<script src='{{ 'most-sold-products.js' | asset_url }}' defer='defer'></script>
+
+{% schema %}
+{
+  "name": "Productos Más Vendidos",
+  "tag": "section",
+  "class": "section section-most-sold-products",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Título",
+      "default": "Los que más se mueven"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtítulo",
+      "default": "Estos productos no se quedan quietos. Los favoritos de los que saben lo que funciona de verdad."
+    },
+    {
+      "type": "text",
+      "id": "tags_filter",
+      "label": "Tags de filtrado",
+      "info": "Separa los tags por comas. Solo se mostrarán productos que tengan al menos uno de estos tags. Deja vacío para mostrar todos los productos.",
+      "default": ""
+    },
+    {
+      "type": "range",
+      "id": "products_count",
+      "min": 4,
+      "max": 24,
+      "step": 2,
+      "unit": "productos",
+      "label": "Cantidad de productos",
+      "default": 8,
+      "info": "Número máximo de productos a mostrar"
+    },
+    {
+      "type": "header",
+      "content": "Espaciado"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Espaciado superior",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Espaciado inferior",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "Productos Más Vendidos"
+    }
+  ]
+}
+{% endschema %}
+

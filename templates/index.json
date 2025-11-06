@@ -104,16 +104,16 @@
         "banner_1": {
           "type": "banner",
           "settings": {
-            "image": "",
-            "link": "",
+            "image": "shopify://shop_images/LLANTAS.webp",
+            "link": "shopify://collections/llantas",
             "alt_text": "Newsletter"
           }
         },
         "banner_2": {
           "type": "banner",
           "settings": {
-            "image": "",
-            "link": "",
+            "image": "shopify://shop_images/NEWSLETTER.webp",
+            "link": "shopify://collections/repuestos-guayas",
             "alt_text": "Llantas"
           }
         }
@@ -123,8 +123,8 @@
         "banner_2"
       ],
       "settings": {
-        "padding_top": 0,
-        "padding_bottom": 0
+        "padding_top": 32,
+        "padding_bottom": 32
       }
     },
     "rich_text": {
