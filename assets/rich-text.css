@@ -1,0 +1,232 @@
+/* ==========================================================================
+   RICH TEXT SECTION - Sección de texto enriquecido
+   ========================================================================== */
+
+.container {
+  width: 100%;
+}
+
+@media (min-width: 320px) {
+  .container {
+    max-width: 320px;
+  }
+}
+
+@media (min-width: 750px) {
+  .container {
+    max-width: 750px;
+  }
+}
+
+@media (min-width: 990px) {
+  .container {
+    max-width: 990px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .container {
+    max-width: 1440px;
+  }
+}
+
+@media (min-width: 1920px) {
+  .container {
+    max-width: 1920px;
+  }
+}
+
+/* ==========================================================================
+     Contenedor Principal
+     ========================================================================== */
+
+.rich-text {
+  position: relative;
+  z-index: 1;
+}
+
+/* ==========================================================================
+     Wrapper y Layout
+     ========================================================================== */
+
+.rich-text__wrapper {
+  display: flex;
+  justify-content: center;
+  width: calc(100% - 4rem / var(--font-body-scale));
+}
+
+.rich-text:not(.rich-text--full-width) .rich-text__wrapper {
+  margin-left: auto;
+  margin-right: auto;
+  width: calc(100% - 8rem / var(--font-body-scale));
+}
+
+@media screen and (min-width: 750px) {
+  .rich-text__wrapper {
+    width: 100%;
+  }
+
+  .rich-text__wrapper--left {
+    justify-content: flex-start;
+  }
+
+  .rich-text__wrapper--right {
+    justify-content: flex-end;
+  }
+}
+
+/* ==========================================================================
+     Bloques de Contenido
+     ========================================================================== */
+
+.rich-text__blocks {
+  width: 100%;
+}
+
+@media screen and (min-width: 750px) {
+  .rich-text__blocks {
+    max-width: 50rem;
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .rich-text__blocks {
+    max-width: 78rem;
+  }
+}
+
+.rich-text__blocks * {
+  overflow-wrap: break-word;
+}
+
+.rich-text__blocks > * {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.rich-text__blocks > * + * {
+  margin-top: 2rem;
+}
+
+.rich-text__blocks > * + a {
+  margin-top: 3rem;
+}
+
+/* ==========================================================================
+     Heading (Título) - Estilo similar a most-sold-title
+     ========================================================================== */
+
+.rich-text__heading {
+  margin-bottom: 1rem;
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-weight: 700;
+}
+
+@media (min-width: 750px) {
+  .rich-text__heading {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+  }
+}
+
+.rich-text__heading {
+  color: var(--color-rojo, #fa0014);
+}
+
+@media screen and (max-width: 749px) {
+  .rich-text__heading {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+}
+
+/* ==========================================================================
+     Caption (Subtítulo) - Estilo similar a most-sold-subtitle
+     ========================================================================== */
+
+.rich-text__caption {
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 1rem;
+  max-width: 42rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  --tw-text-opacity: 1;
+  color: rgb(55 65 81 / var(--tw-text-opacity));
+}
+
+@media (min-width: 750px) {
+  .rich-text__caption {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .rich-text__caption {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+}
+
+/* ==========================================================================
+     Text (Texto enriquecido)
+     ========================================================================== */
+
+.rich-text__text {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 42rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  --tw-text-opacity: 1;
+  color: rgb(55 65 81 / var(--tw-text-opacity));
+}
+
+@media (min-width: 750px) {
+  .rich-text__text {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .rich-text__text {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+}
+
+/* ==========================================================================
+     Botones
+     ========================================================================== */
+
+.rich-text__buttons {
+  display: inline-flex;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  max-width: 45rem;
+  word-break: break-word;
+}
+
+.rich-text__buttons--multiple > * {
+  flex-grow: 1;
+  min-width: 22rem;
+}
+
+.rich-text__buttons + .rich-text__buttons {
+  margin-top: 1rem;
+}
+
+.rich-text__blocks.left .rich-text__buttons {
+  justify-content: flex-start;
+}
+
+.rich-text__blocks.right .rich-text__buttons {
+  justify-content: flex-end;
+}
+
+/*# sourceMappingURL=rich-text.css.map */

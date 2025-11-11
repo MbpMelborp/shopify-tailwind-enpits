@@ -14,28 +14,40 @@ Este archivo contiene reglas y guías para el desarrollo del tema de Shopify EnP
 
 ```
 shopify-tailwind-enpits/
-├── assets/              # CSS compilado, JS, imágenes, SVGs
-│   ├── app-tailwind.css    # Fuente de Tailwind (editar aquí)
-│   ├── app.css            # CSS compilado (auto-generado)
-│   └── facets.js          # Lógica de filtros
-├── config/             # Configuración del tema
+├── assets/                    # CSS compilado, JS, imágenes, SVGs
+│   ├── tailwind/              # ⭐ Archivos fuente de Tailwind (EDITAR AQUÍ)
+│   │   ├── app-tailwind.css      # Estilos globales y @tailwind directives
+│   │   ├── component-card-tailwind.css
+│   │   ├── promo-banners-tailwind.css
+│   │   └── ... (otros componentes)
+│   ├── components/            # CSS compilado para componentes en subcarpetas
+│   │   ├── banners-container-slider.css
+│   │   ├── mega-menu-search.css
+│   │   └── predictive-search-mega-menu.css
+│   ├── app.css                # CSS compilado global (auto-generado)
+│   ├── component-card.css     # CSS compilado (auto-generado)
+│   ├── promo-banners.css      # CSS compilado (auto-generado)
+│   └── facets.js             # Lógica de filtros
+├── scripts/                   # Scripts de automatización
+│   └── build-css.js           # ⭐ Script automático de compilación CSS
+├── config/                    # Configuración del tema
 │   ├── settings_data.json
 │   └── settings_schema.json
-├── layout/             # Layouts principales
+├── layout/                    # Layouts principales
 │   └── theme.liquid
-├── sections/           # Secciones del tema (header, footer, product)
+├── sections/                  # Secciones del tema (header, footer, product)
 │   ├── header.liquid
 │   ├── main-collection-product-grid.liquid  # ⭐ Filtros principales
 │   └── facets.liquid (snippet)
-├── snippets/           # Componentes reutilizables
-│   ├── facets.liquid       # ⭐ Componente de filtros
+├── snippets/                  # Componentes reutilizables
+│   ├── facets.liquid          # ⭐ Componente de filtros
 │   ├── card-product.liquid
 │   └── header-search-mega-menu.liquid
-├── templates/          # Plantillas de páginas
+├── templates/                 # Plantillas de páginas
 │   ├── collection.json
 │   └── product.json
-├── locales/            # Traducciones
-└── tailwind.config.js  # Configuración de Tailwind
+├── locales/                   # Traducciones
+└── tailwind.config.js         # Configuración de Tailwind
 ```
 
 ---
@@ -86,16 +98,26 @@ x2lg: 1920px  /* Extra Large */
 
 ### Compilar CSS
 
+**⚠️ IMPORTANTE**: El sistema de compilación es **automático**. Detecta todos los archivos `*-tailwind.css` en `assets/tailwind/` y los compila automáticamente.
+
 ```bash
-# Desarrollo (con source maps)
-npm run build:css:dev
-
-# Producción (minificado)
-npm run build:css
-
-# Watch mode (desarrollo activo)
+# Watch mode (desarrollo activo) - Compila TODOS los archivos automáticamente
 npm run dev:css
+
+# Producción (minificado) - Compila TODOS los archivos automáticamente
+npm run build:css
 ```
+
+**Cómo funciona:**
+- El script `scripts/build-css.js` detecta automáticamente todos los archivos `*-tailwind.css` en `assets/tailwind/`
+- Compila cada archivo a su ubicación correspondiente en `assets/` o `assets/components/`
+- No necesitas actualizar `package.json` al agregar nuevos componentes
+- Los archivos se compilan en paralelo en modo watch, secuencialmente en modo build
+
+**Estructura de nombres:**
+- Archivo fuente: `assets/tailwind/component-name-tailwind.css`
+- Archivo compilado: `assets/component-name.css`
+- Excepciones (subcarpetas): Ver `PATH_MAP` en `scripts/build-css.js`
 
 ---
 
@@ -344,12 +366,69 @@ git commit -m "Tipo: Descripción"
 
 ### CSS
 
+#### 🎯 Crear un Nuevo Componente CSS
+
+**Paso a paso:**
+
+1. **Crear archivo fuente** en `assets/tailwind/`:
+   ```bash
+   # Nombre: component-name-tailwind.css
+   touch assets/tailwind/mi-nuevo-componente-tailwind.css
+   ```
+
+2. **Estructura del archivo**:
+   ```css
+   /* ==========================================================================
+      MI NUEVO COMPONENTE - Descripción breve
+      ========================================================================== */
+   
+   @tailwind base;
+   @tailwind components;
+   @tailwind utilities;
+   
+   @layer components {
+     /* ==========================================================================
+        Sección Principal
+        ========================================================================== */
+     .mi-componente {
+       @apply relative flex items-center;
+     }
+   
+     /* ==========================================================================
+        Subsecciones
+        ========================================================================== */
+     .mi-componente-header {
+       @apply flex flex-col;
+     }
+   }
+   ```
+
+3. **El archivo se compilará automáticamente**:
+   - En desarrollo: `npm run dev:css` detectará y compilará el nuevo archivo
+   - En producción: `npm run build:css` lo incluirá automáticamente
+   - **No necesitas modificar `package.json`**
+
+4. **Cargar el CSS en tu sección/snippet**:
+   ```liquid
+   {{ 'mi-nuevo-componente.css' | asset_url | stylesheet_tag }}
+   ```
+
+5. **Si el componente va a una subcarpeta** (ej: `assets/components/`):
+   - Editar `scripts/build-css.js` y agregar al `PATH_MAP`:
+   ```javascript
+   const PATH_MAP = {
+     'mi-nuevo-componente-tailwind.css': 'components/mi-nuevo-componente.css',
+     // ... otros mapeos
+   };
+   ```
+
 #### Organización de Estilos
 
 **Principios:**
-- Editar en `assets/app-tailwind.css` o archivos CSS modulares (ej: `repuestos-collections-slider.css`)
-- Usar `@apply` para componentes frecuentes en lugar de clases inline en HTML
-- NO editar `app.css` directamente (auto-generado)
+- ✅ Editar en `assets/tailwind/*-tailwind.css` (archivos fuente)
+- ✅ Usar `@apply` para componentes frecuentes en lugar de clases inline en HTML
+- ✅ NO editar archivos `.css` compilados directamente (auto-generados)
+- ✅ Cada componente tiene su propio archivo `*-tailwind.css`
 
 #### Estructura de Archivos CSS
 
@@ -359,22 +438,28 @@ git commit -m "Tipo: Descripción"
    NOMBRE DEL COMPONENTE - Descripción breve
    ========================================================================== */
 
-/* ==========================================================================
-   Sección Principal
-   ========================================================================== */
-.component-main {
-  @apply relative flex items-center;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-/* ==========================================================================
-   Subsecciones Agrupadas
-   ========================================================================== */
-.component-header {
-  @apply flex flex-col;
-}
+@layer components {
+  /* ==========================================================================
+     Sección Principal
+     ========================================================================== */
+  .component-main {
+    @apply relative flex items-center;
+  }
 
-.component-content {
-  @apply relative w-full;
+  /* ==========================================================================
+     Subsecciones Agrupadas
+     ========================================================================== */
+  .component-header {
+    @apply flex flex-col;
+  }
+
+  .component-content {
+    @apply relative w-full;
+  }
 }
 ```
 
@@ -383,22 +468,27 @@ git commit -m "Tipo: Descripción"
 - ✅ Agrupar estilos relacionados con comentarios de sección
 - ✅ Mantener profundidad de anidamiento máxima de 2-3 niveles
 - ✅ Usar comentarios descriptivos para cada sección principal
+- ✅ Incluir `@tailwind` directives si el componente es independiente
 
 **Ejemplo correcto:**
 ```css
-.button {
-  @apply px-4 py-2 rounded transition-colors;
+@tailwind components;
 
-  &:hover {
-    @apply bg-gray-200;
-  }
+@layer components {
+  .button {
+    @apply px-4 py-2 rounded transition-colors;
 
-  &:disabled {
-    @apply opacity-50 cursor-not-allowed;
-  }
+    &:hover {
+      @apply bg-gray-200;
+    }
 
-  svg {
-    color: var(--color-primary);
+    &:disabled {
+      @apply opacity-50 cursor-not-allowed;
+    }
+
+    svg {
+      color: var(--color-primary);
+    }
   }
 }
 ```
@@ -421,6 +511,10 @@ git commit -m "Tipo: Descripción"
 /* ❌ No usar clases inline en HTML cuando se puede usar @apply */
 /* En lugar de: <div class="flex items-center gap-4 px-4 py-2"> */
 /* Usar: <div class="component-wrapper"> */
+
+/* ❌ No editar archivos compilados directamente */
+/* Editar: assets/tailwind/component-tailwind.css */
+/* NO editar: assets/component.css */
 ```
 
 ### Archivos y Nombres
@@ -519,13 +613,16 @@ git commit -m "Tipo: Descripción"
 
 ### SÍ hacer
 
-- ✅ Editar `assets/app-tailwind.css` o archivos CSS modulares para estilos
+- ✅ Editar archivos en `assets/tailwind/*-tailwind.css` (archivos fuente)
+- ✅ Crear nuevos componentes en `assets/tailwind/` con formato `nombre-componente-tailwind.css`
 - ✅ Usar clases de Tailwind directamente (sin prefijo)
 - ✅ Usar `@apply` con clases semánticas en CSS en lugar de múltiples clases inline
 - ✅ Organizar CSS con anidamiento (`&`) y comentarios de sección
-- ✅ Compilar CSS antes de commit
+- ✅ Cargar CSS compilado en secciones/snippets con `{{ 'component.css' | asset_url | stylesheet_tag }}`
+- ✅ Compilar CSS antes de commit (`npm run build:css`)
 - ✅ Probar cambios en tema de desarrollo primero
 - ✅ Usar variables Liquid en lugar de valores hardcodeados
+- ✅ Confiar en la compilación automática (no editar `package.json` al agregar componentes)
 
 ---
 
@@ -588,12 +685,28 @@ shopify theme push -d --theme=140507480179
 
 ### Organización de Estilos CSS
 
-1. **Usa clases semánticas** con `@apply` en lugar de múltiples clases inline en HTML
-2. **Agrupa estilos relacionados** con comentarios de sección (`/* ===== Sección ===== */`)
-3. **Anida con `&`** para pseudo-clases (`:hover`, `:disabled`) y elementos hijos directos
-4. **Mantén profundidad** de anidamiento máxima de 2-3 niveles
-5. **Organiza por componente** en archivos CSS modulares (ej: `component-name.css`)
-6. **Comenta secciones principales** para mejor navegación y mantenimiento
+1. **Crea componentes modulares** en `assets/tailwind/*-tailwind.css` (un archivo por componente)
+2. **Usa clases semánticas** con `@apply` en lugar de múltiples clases inline en HTML
+3. **Agrupa estilos relacionados** con comentarios de sección (`/* ===== Sección ===== */`)
+4. **Anida con `&`** para pseudo-clases (`:hover`, `:disabled`) y elementos hijos directos
+5. **Mantén profundidad** de anidamiento máxima de 2-3 niveles
+6. **Incluye `@tailwind` directives** en componentes independientes
+7. **Carga CSS en secciones** con `{{ 'component.css' | asset_url | stylesheet_tag }}`
+8. **Confía en la compilación automática** - el script detecta nuevos archivos automáticamente
+9. **Comenta secciones principales** para mejor navegación y mantenimiento
+
+### Creación de Componentes CSS - Checklist
+
+Al crear un nuevo componente CSS:
+
+- [ ] Crear archivo `assets/tailwind/mi-componente-tailwind.css`
+- [ ] Incluir `@tailwind` directives si es componente independiente
+- [ ] Usar `@layer components` para estilos personalizados
+- [ ] Agregar comentarios de sección descriptivos
+- [ ] Cargar CSS compilado en la sección/snippet: `{{ 'mi-componente.css' | asset_url | stylesheet_tag }}`
+- [ ] Si va a subcarpeta, agregar mapeo en `scripts/build-css.js` `PATH_MAP`
+- [ ] Ejecutar `npm run dev:css` para verificar compilación automática
+- [ ] Verificar que el CSS se carga correctamente en el navegador
 
 ---
 

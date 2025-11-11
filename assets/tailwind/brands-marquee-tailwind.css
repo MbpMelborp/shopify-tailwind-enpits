@@ -1,0 +1,123 @@
+/* ==========================================================================
+   BRANDS MARQUEE - Marquesina infinita de marcas
+   ========================================================================== */
+.section-brands-marquee {
+  @apply mx-4;
+}
+/* ==========================================================================
+   Sección Principal
+   ========================================================================== */
+.brands-marquee-section {
+  @apply relative w-full bg-black overflow-hidden rounded-3xl !pt-8 !pb-12;
+}
+
+/* ==========================================================================
+   Contenedor Principal
+   ========================================================================== */
+.brands-marquee-wrapper {
+  @apply relative w-full;
+}
+
+/* ==========================================================================
+   Título Visible
+   ========================================================================== */
+.brands-marquee-title-wrapper {
+  @apply flex justify-center items-center w-full mb-8;
+}
+
+.brands-marquee-title {
+  @apply text-white text-xl font-bold uppercase text-center tracking-tight;
+}
+
+/* ==========================================================================
+   Contenedor del Marquee
+   ========================================================================== */
+.brands-marquee-container {
+  @apply relative w-full overflow-hidden;
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 10%,
+    black 90%,
+    transparent
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 10%,
+    black 90%,
+    transparent
+  );
+}
+
+/* ==========================================================================
+   Track del Marquee (Scroll Infinito)
+   ========================================================================== */
+.brands-marquee-track {
+  @apply flex items-center gap-8 whitespace-nowrap;
+  animation: marquee-scroll 30s linear infinite;
+  will-change: transform;
+}
+
+.brands-marquee-container:hover .brands-marquee-track {
+  animation-play-state: paused;
+}
+
+.brands-marquee-container:focus-within .brands-marquee-track {
+  animation-play-state: paused;
+}
+
+/* ==========================================================================
+   Items del Marquee (Marcas)
+   ========================================================================== */
+.brands-marquee-item {
+  @apply inline-block text-white font-bold text-3xl uppercase no-underline transition-opacity duration-200;
+  font-family: var(--font-body-family);
+  letter-spacing: 0.05em;
+
+  &:hover {
+    @apply opacity-70;
+  }
+
+  &:focus {
+    @apply outline-2 outline-offset-2 outline-white;
+  }
+}
+
+/* ==========================================================================
+   Animación de Scroll Infinito
+   ========================================================================== */
+@keyframes marquee-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* ==========================================================================
+   Estado Vacío
+   ========================================================================== */
+.brands-marquee-empty {
+  @apply text-center py-8 text-gray-400;
+}
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+@media screen and (max-width: 749px) {
+  .brands-marquee-item {
+    @apply text-lg;
+  }
+
+  .brands-marquee-track {
+    gap: 24px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brands-marquee-track {
+    animation: none;
+  }
+}

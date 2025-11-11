@@ -1,25 +1,7 @@
 /* ==========================================================================
-   COMPONENT IMPORTS - Archivos CSS modulares para mejor organización
+   APP TAILWIND - Archivo principal de Tailwind CSS
    ========================================================================== */
-
-/* Mega Menu Search Component */
-@import './components/mega-menu-search.css';
-@import './components/predictive-search-mega-menu.css';
-
-/* Banner Rotador Component */
-@import './components/banners-container-slider.css';
-
-/* Repuestos Collections Slider Component */
-@import './repuestos-collections-slider.css';
-
-/* Brands Marquee Component */
-@import './brands-marquee.css';
-
-/* Promo Banners Component */
-@import './promo-banners.css';
-
-/* Most Sold Products Component */
-@import './most-sold-products.css';
+/* Nota: Los archivos CSS modulares ahora se cargan directamente en sus secciones correspondientes */
 
 @tailwind base;
 @tailwind components;

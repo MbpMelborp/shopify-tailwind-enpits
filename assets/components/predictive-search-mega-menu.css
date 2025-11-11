@@ -2,500 +2,849 @@
    PREDICTIVE SEARCH MEGA MENU - Búsqueda predictiva específica para mega menu
    ========================================================================== */
 
-@layer components {
-  /* ==========================================================================
+.container {
+  width: 100%;
+}
+
+@media (min-width: 320px) {
+  .container {
+    max-width: 320px;
+  }
+}
+
+@media (min-width: 750px) {
+  .container {
+    max-width: 750px;
+  }
+}
+
+@media (min-width: 990px) {
+  .container {
+    max-width: 990px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .container {
+    max-width: 1440px;
+  }
+}
+
+@media (min-width: 1920px) {
+  .container {
+    max-width: 1920px;
+  }
+}
+
+/* ==========================================================================
      BASE STYLES - Estilos base para búsqueda predictiva
      ========================================================================== */
 
-  /* Contenedor principal de búsqueda predictiva */
-  predictive-search-mega-menu {
-    @apply relative w-full;
-  }
+/* Contenedor principal de búsqueda predictiva */
 
-  /* Estilos del input de búsqueda - Mayor especificidad para sobrescribir mega-menu-search.css */
-  predictive-search-mega-menu .search__input.field__input.inline-search-input {
-    @apply w-full flex-1 h-14 bg-blanco text-negro text-lg transition-all duration-300 pr-12 px-4 py-2 rounded-3xl outline-none border-none !important;
+predictive-search-mega-menu {
+  position: relative;
+  width: 100%;
+}
 
-    &::placeholder {
-      @apply text-negro/50 !important;
-      color: rgba(10, 10, 10, 0.5) !important;
-      opacity: 1 !important;
-    }
+/* Estilos del input de búsqueda - Mayor especificidad para sobrescribir mega-menu-search.css */
 
-    &:focus {
-      @apply bg-gris ring-1 ring-rojo border-transparent outline-none !important;
+predictive-search-mega-menu .search__input.field__input.inline-search-input {
+  height: 3.5rem !important;
+  width: 100% !important;
+  flex: 1 1 0% !important;
+  border-radius: 1.5rem !important;
+  border-style: none !important;
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity)) !important;
+  padding-left: 1rem !important;
+  padding-top: 0.5rem !important;
+  padding-bottom: 0.5rem !important;
+  padding-right: 3rem !important;
+  font-size: 1.125rem !important;
+  line-height: 1.75rem !important;
+  --tw-text-opacity: 1 !important;
+  color: rgb(10 10 10 / var(--tw-text-opacity)) !important;
+  outline: 2px solid transparent !important;
+  outline-offset: 2px !important;
+  transition-property: all !important;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition-duration: 300ms !important;
+}
 
-      &::placeholder {
-        @apply text-negro/30 !important;
-        color: rgba(10, 10, 10, 0.3) !important;
-        opacity: 1 !important;
-      }
-    }
-  }
+:is(predictive-search-mega-menu
+    .search__input.field__input.inline-search-input)::-moz-placeholder {
+  color: rgb(10 10 10 / 0.5) !important;
+  color: rgba(10, 10, 10, 0.5) !important;
+  opacity: 1 !important;
+}
 
-  /* Contenedor del formulario */
-  predictive-search-mega-menu .search {
-    @apply relative w-full flex flex-1;
-  }
+:is(predictive-search-mega-menu
+    .search__input.field__input.inline-search-input):-ms-input-placeholder {
+  color: rgb(10 10 10 / 0.5) !important;
+  color: rgba(10, 10, 10, 0.5) !important;
+  opacity: 1 !important;
+}
 
-  /* Campo del formulario */
-  predictive-search-mega-menu .field {
-    @apply relative w-full m-0 flex flex-1;
-  }
+:is(predictive-search-mega-menu
+    .search__input.field__input.inline-search-input)::placeholder {
+  color: rgb(10 10 10 / 0.5) !important;
+  color: rgba(10, 10, 10, 0.5) !important;
+  opacity: 1 !important;
+}
 
-  /* Botón de búsqueda - Mayor especificidad */
-  predictive-search-mega-menu .search__button {
-    @apply absolute right-4 top-1/2 transform -translate-y-1/2;
-    @apply flex items-center justify-center;
-    @apply h-8 w-8 cursor-pointer rounded-md border-none;
-    @apply transition-all duration-200 ease-in-out;
+:is(predictive-search-mega-menu
+    .search__input.field__input.inline-search-input):focus {
+  border-color: transparent !important;
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(239 239 239 / var(--tw-bg-opacity)) !important;
+  outline: 2px solid transparent !important;
+  outline-offset: 2px !important;
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0
+    var(--tw-ring-offset-width) var(--tw-ring-offset-color) !important;
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0
+    calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color) !important;
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow),
+    var(--tw-shadow, 0 0 #0000) !important;
+  --tw-ring-opacity: 1 !important;
+  --tw-ring-color: rgb(250 0 20 / var(--tw-ring-opacity)) !important;
+}
 
-    .svg-wrapper {
-      @apply w-full h-full;
+:is(predictive-search-mega-menu
+    .search__input.field__input.inline-search-input):focus::-moz-placeholder {
+  color: rgb(10 10 10 / 0.3) !important;
+  color: rgba(10, 10, 10, 0.3) !important;
+  opacity: 1 !important;
+}
 
-      svg {
-        @apply w-full h-full text-rojo fill-current;
-      }
-    }
-  }
+:is(predictive-search-mega-menu
+    .search__input.field__input.inline-search-input):focus:-ms-input-placeholder {
+  color: rgb(10 10 10 / 0.3) !important;
+  color: rgba(10, 10, 10, 0.3) !important;
+  opacity: 1 !important;
+}
 
-  /* Dropdown de resultados predictivos */
-  predictive-search-mega-menu .predictive-search {
-    @apply hidden absolute top-full left-0 right-0 mt-2 z-50;
-    @apply max-h-96 overflow-y-auto;
-  }
+:is(predictive-search-mega-menu
+    .search__input.field__input.inline-search-input):focus::placeholder {
+  color: rgb(10 10 10 / 0.3) !important;
+  color: rgba(10, 10, 10, 0.3) !important;
+  opacity: 1 !important;
+}
 
-  /* Estados de visibilidad */
-  predictive-search-mega-menu[open] .predictive-search,
-  predictive-search-mega-menu[loading] .predictive-search {
-    @apply block;
-  }
+/* Contenedor del formulario */
 
-  /* ==========================================================================
+predictive-search-mega-menu .search {
+  position: relative;
+  display: flex;
+  width: 100%;
+  flex: 1 1 0%;
+}
+
+/* Campo del formulario */
+
+predictive-search-mega-menu .field {
+  position: relative;
+  margin: 0px;
+  display: flex;
+  width: 100%;
+  flex: 1 1 0%;
+}
+
+/* Botón de búsqueda - Mayor especificidad */
+
+predictive-search-mega-menu .search__button {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  --tw-translate-y: -50%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y))
+    rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y))
+    scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2rem;
+  width: 2rem;
+  cursor: pointer;
+  border-radius: 0.375rem;
+  border-style: none;
+  transition-property: all;
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+:is(predictive-search-mega-menu .search__button) .svg-wrapper {
+  height: 100%;
+  width: 100%;
+}
+
+:is(:is(predictive-search-mega-menu .search__button) .svg-wrapper) svg {
+  height: 100%;
+  width: 100%;
+  fill: currentColor;
+  --tw-text-opacity: 1;
+  color: rgb(250 0 20 / var(--tw-text-opacity));
+}
+
+/* Dropdown de resultados predictivos */
+
+predictive-search-mega-menu .predictive-search {
+  position: absolute;
+  top: 100%;
+  left: 0px;
+  right: 0px;
+  z-index: 50;
+  margin-top: 0.5rem;
+  display: none;
+  max-height: 24rem;
+  overflow-y: auto;
+}
+
+/* Estados de visibilidad */
+
+predictive-search-mega-menu[open] .predictive-search,
+predictive-search-mega-menu[loading] .predictive-search {
+  display: block;
+}
+
+/* ==========================================================================
      RESULTS CONTAINER - Contenedor de resultados
      ========================================================================== */
 
-  /* Wrapper de grupos de resultados */
-  predictive-search-mega-menu
-    .mega-menu-predictive-search__results-groups-wrapper {
-    @apply flex border-b border-gray-200 pb-4;
-  }
+/* Wrapper de grupos de resultados */
 
-  /* Grupo de resultados */
-  predictive-search-mega-menu .mega-menu-predictive-search__result-group {
-    @apply flex flex-col flex-1 gap-8;
-  }
+predictive-search-mega-menu
+  .mega-menu-predictive-search__results-groups-wrapper {
+  display: flex;
+  border-bottom-width: 1px;
+  --tw-border-opacity: 1;
+  border-color: rgb(229 231 235 / var(--tw-border-opacity));
+  padding-bottom: 1rem;
+}
 
-  /* ==========================================================================
+/* Grupo de resultados */
+
+predictive-search-mega-menu .mega-menu-predictive-search__result-group {
+  display: flex;
+  flex: 1 1 0%;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* ==========================================================================
      HEADINGS - Títulos de secciones
      ========================================================================== */
 
-  /* Títulos de secciones */
-  predictive-search-mega-menu .mega-menu-predictive-search__heading {
-    @apply border-b border-gray-800 mx-4 py-6 pt-6 pb-3;
-    @apply text-lg font-medium text-blanco uppercase tracking-wide;
-  }
+/* Títulos de secciones */
 
-  /* ==========================================================================
+predictive-search-mega-menu .mega-menu-predictive-search__heading {
+  margin-left: 1rem;
+  margin-right: 1rem;
+  border-bottom-width: 1px;
+  --tw-border-opacity: 1;
+  border-color: rgb(31 41 55 / var(--tw-border-opacity));
+  padding-top: 1.5rem;
+  padding-bottom: 0.75rem;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+/* ==========================================================================
      LISTS - Listas de resultados
      ========================================================================== */
 
-  /* Lista de resultados */
-  predictive-search-mega-menu .mega-menu-predictive-search__results-list {
-    @apply list-none p-0 m-0;
-  }
+/* Lista de resultados */
 
-  /* Items de la lista */
-  predictive-search-mega-menu .mega-menu-predictive-search__list-item {
-    @apply relative border-b border-gray-900;
-  }
+predictive-search-mega-menu .mega-menu-predictive-search__results-list {
+  margin: 0px;
+  list-style-type: none;
+  padding: 0px;
+}
 
-  /* ==========================================================================
+/* Items de la lista */
+
+predictive-search-mega-menu .mega-menu-predictive-search__list-item {
+  position: relative;
+  border-bottom-width: 1px;
+  --tw-border-opacity: 1;
+  border-color: rgb(17 24 39 / var(--tw-border-opacity));
+}
+
+/* ==========================================================================
      ITEMS - Elementos de resultados
      ========================================================================== */
 
-  /* Item base */
-  predictive-search-mega-menu .mega-menu-predictive-search__item {
-    @apply flex p-4 text-left no-underline w-full;
-    @apply transition-colors duration-150 ease-in-out;
-  }
+/* Item base */
 
-  /* Item con thumbnail (productos) */
-  predictive-search-mega-menu
-    .mega-menu-predictive-search__item--link-with-thumbnail {
-    @apply grid grid-cols-[6rem_1fr] gap-8;
-    grid-template-areas: 'product-image product-content';
-  }
+predictive-search-mega-menu .mega-menu-predictive-search__item {
+  display: flex;
+  width: 100%;
+  padding: 1rem;
+  text-align: left;
+  -webkit-text-decoration-line: none;
+  text-decoration-line: none;
+  transition-property: color, background-color, border-color, fill, stroke,
+    -webkit-text-decoration-color;
+  transition-property: color, background-color, border-color,
+    text-decoration-color, fill, stroke;
+  transition-property: color, background-color, border-color,
+    text-decoration-color, fill, stroke, -webkit-text-decoration-color;
+  transition-duration: 150ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-  /* Item de término de búsqueda */
-  predictive-search-mega-menu .mega-menu-predictive-search__item--term {
-    @apply justify-between items-center p-5;
-    @apply break-all leading-relaxed;
-  }
+/* Item con thumbnail (productos) */
 
-  /* ==========================================================================
+predictive-search-mega-menu
+  .mega-menu-predictive-search__item--link-with-thumbnail {
+  display: grid;
+  grid-template-columns: 6rem 1fr;
+  gap: 2rem;
+  grid-template-areas: 'product-image product-content';
+}
+
+/* Item de término de búsqueda */
+
+predictive-search-mega-menu .mega-menu-predictive-search__item--term {
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem;
+  word-break: break-all;
+  line-height: 1.625;
+}
+
+/* ==========================================================================
      CONTENT - Contenido de los items
      ========================================================================== */
 
-  /* Contenedor de contenido */
-  predictive-search-mega-menu .mega-menu-predictive-search__item-content {
-    @apply flex flex-col;
-    grid-area: product-content;
-  }
+/* Contenedor de contenido */
 
-  /* Contenido centrado */
-  predictive-search-mega-menu
-    .mega-menu-predictive-search__item-content--centered {
-    @apply justify-center;
-  }
+predictive-search-mega-menu .mega-menu-predictive-search__item-content {
+  display: flex;
+  flex-direction: column;
+  grid-area: product-content;
+}
 
-  /* Vendor (proveedor) */
-  predictive-search-mega-menu .mega-menu-predictive-search__item-vendor {
-    @apply text-xs text-gray-100 uppercase tracking-wide;
-  }
+/* Contenido centrado */
 
-  /* Título del item */
-  predictive-search-mega-menu .mega-menu-predictive-search__item-heading {
-    @apply m-0 text-base font-medium text-blanco;
-  }
+predictive-search-mega-menu
+  .mega-menu-predictive-search__item-content--centered {
+  justify-content: center;
+}
 
-  /* Resultado de consulta */
-  predictive-search-mega-menu .mega-menu-predictive-search__item-query-result {
-    @apply font-bold;
-  }
+/* Vendor (proveedor) */
 
-  /* Texto marcado en resultados */
-  predictive-search-mega-menu
-    .mega-menu-predictive-search__item-query-result
-    mark {
-    @apply bg-transparent text-gray-200 font-normal;
-  }
+predictive-search-mega-menu .mega-menu-predictive-search__item-vendor {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  --tw-text-opacity: 1;
+  color: rgb(243 244 246 / var(--tw-text-opacity));
+}
 
-  /* ==========================================================================
+/* Título del item */
+
+predictive-search-mega-menu .mega-menu-predictive-search__item-heading {
+  margin: 0px;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 500;
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+/* Resultado de consulta */
+
+predictive-search-mega-menu .mega-menu-predictive-search__item-query-result {
+  font-weight: 700;
+}
+
+/* Texto marcado en resultados */
+
+predictive-search-mega-menu
+  .mega-menu-predictive-search__item-query-result
+  mark {
+  background-color: transparent;
+  font-weight: 400;
+  --tw-text-opacity: 1;
+  color: rgb(229 231 235 / var(--tw-text-opacity));
+}
+
+/* ==========================================================================
      IMAGES - Imágenes de productos
      ========================================================================== */
 
-  /* Imagen de producto */
-  predictive-search-mega-menu .mega-menu-predictive-search__image {
-    @apply object-contain rounded-md;
-    grid-area: product-image;
-    font-family: 'object-fit: contain';
-  }
+/* Imagen de producto */
 
-  /* ==========================================================================
+predictive-search-mega-menu .mega-menu-predictive-search__image {
+  border-radius: 0.375rem;
+  -o-object-fit: contain;
+  object-fit: contain;
+  grid-area: product-image;
+  font-family: 'object-fit: contain';
+}
+
+/* ==========================================================================
      PRICES - Precios
      ========================================================================== */
 
-  /* Precio en resultados */
-  predictive-search-mega-menu .mega-menu-predictive-search__item .price {
-    @apply text-gray-100 text-sm mt-2;
-  }
+/* Precio en resultados */
 
-  /* Espaciado después del vendor */
-  predictive-search-mega-menu
-    .mega-menu-predictive-search__item-vendor
-    + .mega-menu-predictive-search__item-heading,
-  predictive-search-mega-menu .predictive-search .price {
-    @apply mt-2;
-  }
+predictive-search-mega-menu .mega-menu-predictive-search__item .price {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  --tw-text-opacity: 1;
+  color: rgb(243 244 246 / var(--tw-text-opacity));
+}
 
-  /* Estilos de precio con nesting */
-  predictive-search-mega-menu .price {
-    @apply mt-2;
+/* Espaciado después del vendor */
 
-    .price__container {
-      @apply flex flex-col gap-1;
-    }
+predictive-search-mega-menu
+  .mega-menu-predictive-search__item-vendor
+  + .mega-menu-predictive-search__item-heading,
+predictive-search-mega-menu .predictive-search .price {
+  margin-top: 0.5rem;
+}
 
-    .price__regular {
-      @apply flex items-center;
-    }
+/* Estilos de precio con nesting */
 
-    .price__sale {
-      @apply flex flex-col gap-1;
-    }
+predictive-search-mega-menu .price {
+  margin-top: 0.5rem;
+}
 
-    .price-item {
-      @apply text-sm font-medium;
+:is(predictive-search-mega-menu .price) .price__container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
 
-      &--regular {
-        @apply text-gray-300;
-      }
+:is(predictive-search-mega-menu .price) .price__regular {
+  display: flex;
+  align-items: center;
+}
 
-      &--sale {
-        @apply text-green-400 font-semibold;
-      }
-    }
+:is(predictive-search-mega-menu .price) .price__sale {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
 
-    /* Estados de oferta - solo mostrar precio de oferta */
-    &.price--on-sale {
-      .price__regular {
-        @apply hidden;
-      }
+:is(predictive-search-mega-menu .price) .price-item {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+}
 
-      .price__sale {
-        @apply flex flex-col gap-1;
+--regular:is(:is(predictive-search-mega-menu .price) .price-item) {
+  --tw-text-opacity: 1;
+  color: rgb(209 213 219 / var(--tw-text-opacity));
+}
 
-        .price-item--regular s {
-          @apply text-gray-400 line-through text-xs;
-        }
+--sale:is(:is(predictive-search-mega-menu .price) .price-item) {
+  font-weight: 600;
+  --tw-text-opacity: 1;
+  color: rgb(74 222 128 / var(--tw-text-opacity));
+}
 
-        .price-item--sale {
-          @apply text-green-400 font-semibold text-sm;
-        }
-      }
-    }
+/* Estados de oferta - solo mostrar precio de oferta */
 
-    /* Precio regular sin oferta - solo mostrar precio normal */
-    &:not(.price--on-sale) {
-      .price__sale {
-        @apply hidden;
-      }
+.price--on-sale:is(predictive-search-mega-menu .price) .price__regular {
+  display: none;
+}
 
-      .price__regular {
-        .price-item--regular {
-          @apply text-gray-300 text-sm;
-        }
-      }
-    }
+.price--on-sale:is(predictive-search-mega-menu .price) .price__sale {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
 
-    /* Ocultar precio unitario que causa el "/" extra */
-    .unit-price {
-      @apply hidden;
-    }
-  }
+:is(.price--on-sale:is(predictive-search-mega-menu .price) .price__sale)
+  .price-item--regular
+  s {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  --tw-text-opacity: 1;
+  color: rgb(156 163 175 / var(--tw-text-opacity));
+  -webkit-text-decoration-line: line-through;
+  text-decoration-line: line-through;
+}
 
-  /* ==========================================================================
+:is(.price--on-sale:is(predictive-search-mega-menu .price) .price__sale)
+  .price-item--sale {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 600;
+  --tw-text-opacity: 1;
+  color: rgb(74 222 128 / var(--tw-text-opacity));
+}
+
+/* Precio regular sin oferta - solo mostrar precio normal */
+
+:is(predictive-search-mega-menu .price):not(.price--on-sale) .price__sale {
+  display: none;
+}
+
+:is(:is(predictive-search-mega-menu .price):not(.price--on-sale)
+    .price__regular)
+  .price-item--regular {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  --tw-text-opacity: 1;
+  color: rgb(209 213 219 / var(--tw-text-opacity));
+}
+
+/* Ocultar precio unitario que causa el "/" extra */
+
+:is(predictive-search-mega-menu .price) .unit-price {
+  display: none;
+}
+
+/* ==========================================================================
      ICONS - Iconos
      ========================================================================== */
 
-  /* ==========================================================================
+/* ==========================================================================
      STATES - Estados interactivos
      ========================================================================== */
 
-  /* Item seleccionado */
-  predictive-search-mega-menu
-    .mega-menu-predictive-search__list-item[aria-selected='true']
-    > *,
-  predictive-search-mega-menu .mega-menu-predictive-search__list-item:hover > *,
-  predictive-search-mega-menu
-    .mega-menu-predictive-search__item[aria-selected='true'],
-  predictive-search-mega-menu .mega-menu-predictive-search__item:hover {
-    @apply text-blanco bg-gray-800;
-  }
+/* Item seleccionado */
 
-  /* Título con underline en hover */
-  predictive-search-mega-menu
-    .mega-menu-predictive-search__list-item[aria-selected='true']
-    .mega-menu-predictive-search__item-heading,
-  predictive-search-mega-menu
-    .mega-menu-predictive-search__list-item:hover
-    .mega-menu-predictive-search__item-heading {
-    @apply underline underline-offset-2;
-  }
+predictive-search-mega-menu
+  .mega-menu-predictive-search__list-item[aria-selected='true']
+  > *,
+predictive-search-mega-menu .mega-menu-predictive-search__list-item:hover > *,
+predictive-search-mega-menu
+  .mega-menu-predictive-search__item[aria-selected='true'],
+predictive-search-mega-menu .mega-menu-predictive-search__item:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(31 41 55 / var(--tw-bg-opacity));
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+}
 
-  /* Título sin underline por defecto */
-  predictive-search-mega-menu .mega-menu-predictive-search__item-heading {
-    @apply no-underline;
-  }
+/* Título con underline en hover */
 
-  /* ==========================================================================
+predictive-search-mega-menu
+  .mega-menu-predictive-search__list-item[aria-selected='true']
+  .mega-menu-predictive-search__item-heading,
+predictive-search-mega-menu
+  .mega-menu-predictive-search__list-item:hover
+  .mega-menu-predictive-search__item-heading {
+  -webkit-text-decoration-line: underline;
+  text-decoration-line: underline;
+  text-underline-offset: 2px;
+}
+
+/* Título sin underline por defecto */
+
+predictive-search-mega-menu .mega-menu-predictive-search__item-heading {
+  -webkit-text-decoration-line: none;
+  text-decoration-line: none;
+}
+
+/* ==========================================================================
      LOADING STATES - Estados de carga
      ========================================================================== */
 
-  /* Spinner de carga */
-  predictive-search-mega-menu .spinner {
-    @apply w-6 h-6;
-  }
+/* Spinner de carga */
 
-  /* Estado de carga oculto por defecto */
-  predictive-search-mega-menu .mega-menu-predictive-search__loading-state {
-    @apply hidden;
-  }
+predictive-search-mega-menu .spinner {
+  height: 1.5rem;
+  width: 1.5rem;
+}
 
-  /* Mostrar spinner solo cuando está cargando */
-  predictive-search-mega-menu[loading]
-    .mega-menu-predictive-search__loading-state {
-    @apply flex justify-center p-4;
-  }
+/* Estado de carga oculto por defecto */
 
-  /* Ocultar botón de búsqueda cuando está cargando */
-  predictive-search-mega-menu[loading]
-    .mega-menu-predictive-search__search-for-button {
-    @apply hidden;
-  }
+predictive-search-mega-menu .mega-menu-predictive-search__loading-state {
+  display: none;
+}
 
-  /* Ocultar resultados cuando está cargando */
-  predictive-search-mega-menu[loading]
-    .mega-menu-predictive-search__results-groups-wrapper {
-    @apply hidden;
-  }
+/* Mostrar spinner solo cuando está cargando */
 
-  /* Ocultar estado de carga cuando hay resultados */
-  predictive-search-mega-menu[results]
-    .mega-menu-predictive-search__loading-state {
-    @apply hidden;
-  }
+predictive-search-mega-menu[loading]
+  .mega-menu-predictive-search__loading-state {
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+}
 
-  /* Ocultar loader cuando hay resultados o cuando se cierra */
-  predictive-search-mega-menu:not([loading])
-    .mega-menu-predictive-search__loading-state {
-    @apply hidden;
-  }
+/* Ocultar botón de búsqueda cuando está cargando */
 
-  /* Estilos para mensaje de "no hay resultados" - Máxima especificidad */
-  #predictive-search-results-mega-menu
-    .mega-menu-predictive-search__no-results {
-    @apply flex flex-col items-center justify-center p-8 text-center;
-  }
-
-  #predictive-search-results-mega-menu
-    .mega-menu-predictive-search__no-results-icon {
-    @apply w-16 h-16 text-gray-300 mb-4;
-    svg {
-      @apply w-full h-full;
-    }
-  }
-
-  #predictive-search-results-mega-menu
-    .mega-menu-predictive-search__no-results-title {
-    @apply text-xl font-semibold text-gray-300 mb-3;
-    @apply leading-tight;
-  }
-
-  #predictive-search-results-mega-menu
-    .mega-menu-predictive-search__no-results-message {
-    @apply text-sm text-gray-400 mb-4;
-    @apply leading-relaxed max-w-sm;
-  }
-
-  /* Botón de búsqueda para término */
-
+predictive-search-mega-menu[loading]
   .mega-menu-predictive-search__search-for-button {
-    @apply block mx-2 mb-2;
-    button {
-      @apply w-full flex justify-between items-center bg-rojo hover:bg-rojo/80;
-      @apply rounded-full transition-colors duration-200;
-      @apply text-white text-xl px-8 py-3 no-underline;
-      span {
-        @apply text-blanco font-semibold;
-      }
-      svg {
-        @apply text-blanco w-6 h-6 fill-current;
-      }
-    }
-  }
+  display: none;
+}
 
-  /* ==========================================================================
+/* Ocultar resultados cuando está cargando */
+
+predictive-search-mega-menu[loading]
+  .mega-menu-predictive-search__results-groups-wrapper {
+  display: none;
+}
+
+/* Ocultar estado de carga cuando hay resultados */
+
+predictive-search-mega-menu[results]
+  .mega-menu-predictive-search__loading-state {
+  display: none;
+}
+
+/* Ocultar loader cuando hay resultados o cuando se cierra */
+
+predictive-search-mega-menu:not([loading])
+  .mega-menu-predictive-search__loading-state {
+  display: none;
+}
+
+/* Estilos para mensaje de "no hay resultados" - Máxima especificidad */
+
+#predictive-search-results-mega-menu .mega-menu-predictive-search__no-results {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+}
+
+#predictive-search-results-mega-menu
+  .mega-menu-predictive-search__no-results-icon {
+  margin-bottom: 1rem;
+  height: 4rem;
+  width: 4rem;
+  --tw-text-opacity: 1;
+  color: rgb(209 213 219 / var(--tw-text-opacity));
+}
+
+:is(#predictive-search-results-mega-menu
+    .mega-menu-predictive-search__no-results-icon)
+  svg {
+  height: 100%;
+  width: 100%;
+}
+
+#predictive-search-results-mega-menu
+  .mega-menu-predictive-search__no-results-title {
+  margin-bottom: 0.75rem;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-weight: 600;
+  --tw-text-opacity: 1;
+  color: rgb(209 213 219 / var(--tw-text-opacity));
+  line-height: 1.25;
+}
+
+#predictive-search-results-mega-menu
+  .mega-menu-predictive-search__no-results-message {
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  --tw-text-opacity: 1;
+  color: rgb(156 163 175 / var(--tw-text-opacity));
+  max-width: 24rem;
+  line-height: 1.625;
+}
+
+/* Botón de búsqueda para término */
+
+.mega-menu-predictive-search__search-for-button {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.mega-menu-predictive-search__search-for-button button {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  --tw-bg-opacity: 1;
+  background-color: rgb(250 0 20 / var(--tw-bg-opacity));
+}
+
+.mega-menu-predictive-search__search-for-button button:hover {
+  background-color: rgb(250 0 20 / 0.8);
+}
+
+.mega-menu-predictive-search__search-for-button button {
+  border-radius: 9999px;
+  transition-property: color, background-color, border-color, fill, stroke,
+    -webkit-text-decoration-color;
+  transition-property: color, background-color, border-color,
+    text-decoration-color, fill, stroke;
+  transition-property: color, background-color, border-color,
+    text-decoration-color, fill, stroke, -webkit-text-decoration-color;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+  -webkit-text-decoration-line: none;
+  text-decoration-line: none;
+}
+
+:is(.mega-menu-predictive-search__search-for-button button) span {
+  font-weight: 600;
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+:is(.mega-menu-predictive-search__search-for-button button) svg {
+  height: 1.5rem;
+  width: 1.5rem;
+  fill: currentColor;
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+/* ==========================================================================
      MOBILE STYLES - Estilos específicos para móvil
      ========================================================================== */
 
-  @media screen and (max-width: 749px) {
-    /* Ajustar posición en móvil */
-    predictive-search-mega-menu .predictive-search {
-      @apply right-0 left-0 top-full;
-    }
-
-    /* Cambiar dirección de grupos en móvil */
-    predictive-search-mega-menu
-      .mega-menu-predictive-search__results-groups-wrapper {
-      @apply flex-col;
-    }
-
-    /* Gap entre grupos en móvil */
-    predictive-search-mega-menu
-      .mega-menu-predictive-search__results-groups-wrapper:not(.mega-menu-predictive-search__results-groups-wrapper--no-suggestions) {
-      @apply gap-8;
-    }
-
-    /* Ajustar padding del item de término en móvil */
-    predictive-search-mega-menu .mega-menu-predictive-search__item--term {
-      @apply py-4;
-    }
+@media screen and (max-width: 749px) {
+  /* Ajustar posición en móvil */
+  predictive-search-mega-menu .predictive-search {
+    right: 0px;
+    left: 0px;
+    top: 100%;
   }
 
-  /* ==========================================================================
+  /* Cambiar dirección de grupos en móvil */
+  predictive-search-mega-menu
+    .mega-menu-predictive-search__results-groups-wrapper {
+    flex-direction: column;
+  }
+
+  /* Gap entre grupos en móvil */
+  predictive-search-mega-menu
+    .mega-menu-predictive-search__results-groups-wrapper:not(.mega-menu-predictive-search__results-groups-wrapper--no-suggestions) {
+    gap: 2rem;
+  }
+
+  /* Ajustar padding del item de término en móvil */
+  predictive-search-mega-menu .mega-menu-predictive-search__item--term {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+}
+
+/* ==========================================================================
      DESKTOP STYLES - Estilos específicos para desktop
      ========================================================================== */
 
-  @media screen and (min-width: 750px) {
-    /* Ajustar ancho en desktop */
-    predictive-search-mega-menu .predictive-search {
-      @apply w-full;
-    }
-
-    /* Ocultar páginas duplicadas en desktop */
-    predictive-search-mega-menu
-      .mega-menu-predictive-search__result-group:first-child
-      .mega-menu-predictive-search__pages-wrapper {
-      @apply hidden;
-    }
-
-    /* Mostrar páginas solo en el segundo grupo */
-    predictive-search-mega-menu
-      .mega-menu-predictive-search__results-groups-wrapper--no-products
-      .mega-menu-predictive-search__result-group:nth-child(2)
-      .mega-menu-predictive-search__pages-wrapper,
-    predictive-search-mega-menu
-      .mega-menu-predictive-search__result-group:last-child
-      .mega-menu-predictive-search__pages-wrapper {
-      @apply hidden;
-    }
-
-    /* Mostrar páginas en el primer grupo */
-    predictive-search-mega-menu
-      .mega-menu-predictive-search__result-group:first-child
-      .mega-menu-predictive-search__pages-wrapper {
-      @apply block;
-    }
-
-    /* Ancho fijo para el primer grupo */
-    predictive-search-mega-menu
-      .mega-menu-predictive-search__result-group:first-child {
-      @apply flex-none;
-      flex: 0 0 26.4rem;
-    }
-
-    /* Crecer cuando no hay productos */
-    predictive-search-mega-menu
-      .mega-menu-predictive-search__results-groups-wrapper--no-products
-      .mega-menu-predictive-search__result-group:first-child,
-    predictive-search-mega-menu
-      .mega-menu-predictive-search__result-group:only-child {
-      @apply flex-grow;
-    }
+@media screen and (min-width: 750px) {
+  /* Ajustar ancho en desktop */
+  predictive-search-mega-menu .predictive-search {
+    width: 100%;
   }
 
-  /* ==========================================================================
+  /* Ocultar páginas duplicadas en desktop */
+  predictive-search-mega-menu
+    .mega-menu-predictive-search__result-group:first-child
+    .mega-menu-predictive-search__pages-wrapper {
+    display: none;
+  }
+
+  /* Mostrar páginas solo en el segundo grupo */
+  predictive-search-mega-menu
+    .mega-menu-predictive-search__results-groups-wrapper--no-products
+    .mega-menu-predictive-search__result-group:nth-child(2)
+    .mega-menu-predictive-search__pages-wrapper,
+  predictive-search-mega-menu
+    .mega-menu-predictive-search__result-group:last-child
+    .mega-menu-predictive-search__pages-wrapper {
+    display: none;
+  }
+
+  /* Mostrar páginas en el primer grupo */
+  predictive-search-mega-menu
+    .mega-menu-predictive-search__result-group:first-child
+    .mega-menu-predictive-search__pages-wrapper {
+    display: block;
+  }
+
+  /* Ancho fijo para el primer grupo */
+  predictive-search-mega-menu
+    .mega-menu-predictive-search__result-group:first-child {
+    flex: none;
+    flex: 0 0 26.4rem;
+  }
+
+  /* Crecer cuando no hay productos */
+  predictive-search-mega-menu
+    .mega-menu-predictive-search__results-groups-wrapper--no-products
+    .mega-menu-predictive-search__result-group:first-child,
+  predictive-search-mega-menu
+    .mega-menu-predictive-search__result-group:only-child {
+    flex-grow: 1;
+  }
+}
+
+/* ==========================================================================
      ACCESSIBILITY - Mejoras de accesibilidad
      ========================================================================== */
 
-  /* Status oculto por defecto */
-  predictive-search-mega-menu .predictive-search-status {
-    @apply invisible absolute w-px h-px overflow-hidden whitespace-nowrap opacity-0;
-    @apply -m-px p-0 border-0;
-    clip: rect(0, 0, 0, 0) !important;
-  }
+/* Status oculto por defecto */
 
-  /* Status siempre oculto - solo para lectores de pantalla */
-  predictive-search-mega-menu .predictive-search-status[aria-hidden='false'] {
-    @apply invisible absolute w-px h-px overflow-hidden whitespace-nowrap opacity-0;
-    @apply -m-px p-0 border-0;
-    clip: rect(0, 0, 0, 0) !important;
-  }
+predictive-search-mega-menu .predictive-search-status {
+  visibility: hidden;
+  position: absolute;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  white-space: nowrap;
+  opacity: 0;
+  margin: -1px;
+  border-width: 0px;
+  padding: 0px;
+  clip: rect(0, 0, 0, 0) !important;
+}
 
-  /* ==========================================================================
+/* Status siempre oculto - solo para lectores de pantalla */
+
+predictive-search-mega-menu .predictive-search-status[aria-hidden='false'] {
+  visibility: hidden;
+  position: absolute;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  white-space: nowrap;
+  opacity: 0;
+  margin: -1px;
+  border-width: 0px;
+  padding: 0px;
+  clip: rect(0, 0, 0, 0) !important;
+}
+
+/* ==========================================================================
      UTILITIES - Utilidades específicas
      ========================================================================== */
 
-  /* Ocultar elementos cuando no hay resultados */
-  predictive-search-mega-menu
-    .mega-menu-predictive-search__results-groups-wrapper--no-products {
-    @apply border-b-0;
-  }
+/* Ocultar elementos cuando no hay resultados */
 
-  predictive-search-mega-menu
-    .mega-menu-predictive-search__results-groups-wrapper--no-suggestions {
-    @apply border-b-0;
-  }
-} /* End @layer components */
+predictive-search-mega-menu
+  .mega-menu-predictive-search__results-groups-wrapper--no-products {
+  border-bottom-width: 0px;
+}
+
+predictive-search-mega-menu
+  .mega-menu-predictive-search__results-groups-wrapper--no-suggestions {
+  border-bottom-width: 0px;
+}
+
+/* End @layer components */
+
+/*# sourceMappingURL=predictive-search-mega-menu.css.map */

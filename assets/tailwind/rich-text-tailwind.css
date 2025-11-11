@@ -1,0 +1,143 @@
+/* ==========================================================================
+   RICH TEXT SECTION - Sección de texto enriquecido
+   ========================================================================== */
+
+@tailwind components;
+
+@layer components {
+  /* ==========================================================================
+     Contenedor Principal
+     ========================================================================== */
+  .rich-text {
+    @apply relative;
+    z-index: 1;
+  }
+
+  /* ==========================================================================
+     Wrapper y Layout
+     ========================================================================== */
+  .rich-text__wrapper {
+    @apply flex justify-center;
+    width: calc(100% - 4rem / var(--font-body-scale));
+  }
+
+  .rich-text:not(.rich-text--full-width) .rich-text__wrapper {
+    @apply mx-auto;
+    width: calc(100% - 8rem / var(--font-body-scale));
+  }
+
+  @media screen and (min-width: 750px) {
+    .rich-text__wrapper {
+      @apply w-full;
+    }
+
+    .rich-text__wrapper--left {
+      @apply justify-start;
+    }
+
+    .rich-text__wrapper--right {
+      @apply justify-end;
+    }
+  }
+
+  /* ==========================================================================
+     Bloques de Contenido
+     ========================================================================== */
+  .rich-text__blocks {
+    @apply w-full;
+  }
+
+  @media screen and (min-width: 750px) {
+    .rich-text__blocks {
+      max-width: 50rem;
+    }
+  }
+
+  @media screen and (min-width: 990px) {
+    .rich-text__blocks {
+      max-width: 78rem;
+    }
+  }
+
+  .rich-text__blocks * {
+    overflow-wrap: break-word;
+  }
+
+  .rich-text__blocks > * {
+    @apply mt-0 mb-0;
+  }
+
+  .rich-text__blocks > * + * {
+    @apply mt-8;
+  }
+
+  .rich-text__blocks > * + a {
+    @apply mt-12;
+  }
+
+  /* ==========================================================================
+     Heading (Título) - Estilo similar a most-sold-title
+     ========================================================================== */
+  .rich-text__heading {
+    @apply text-3xl md:text-4xl font-bold mb-4;
+    color: var(--color-rojo, #fa0014);
+  }
+
+  @media screen and (max-width: 749px) {
+    .rich-text__heading {
+      @apply text-2xl;
+    }
+  }
+
+  /* ==========================================================================
+     Caption (Subtítulo) - Estilo similar a most-sold-subtitle
+     ========================================================================== */
+  .rich-text__caption {
+    @apply text-base md:text-lg text-gray-700 max-w-2xl mx-auto mb-4;
+  }
+
+  @media screen and (max-width: 749px) {
+    .rich-text__caption {
+      @apply text-sm;
+    }
+  }
+
+  /* ==========================================================================
+     Text (Texto enriquecido)
+     ========================================================================== */
+  .rich-text__text {
+    @apply text-base md:text-lg text-gray-700 max-w-2xl mx-auto;
+  }
+
+  @media screen and (max-width: 749px) {
+    .rich-text__text {
+      @apply text-sm;
+    }
+  }
+
+  /* ==========================================================================
+     Botones
+     ========================================================================== */
+  .rich-text__buttons {
+    @apply inline-flex justify-center flex-wrap gap-4 w-full;
+    max-width: 45rem;
+    word-break: break-word;
+  }
+
+  .rich-text__buttons--multiple > * {
+    flex-grow: 1;
+    min-width: 22rem;
+  }
+
+  .rich-text__buttons + .rich-text__buttons {
+    @apply mt-4;
+  }
+
+  .rich-text__blocks.left .rich-text__buttons {
+    @apply justify-start;
+  }
+
+  .rich-text__blocks.right .rich-text__buttons {
+    @apply justify-end;
+  }
+}

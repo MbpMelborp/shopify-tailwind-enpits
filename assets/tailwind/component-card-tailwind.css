@@ -1,0 +1,870 @@
+/* ==========================================================================
+   COMPONENT CARD - Product Card Component
+   ========================================================================== */
+
+@tailwind components;
+
+@layer components {
+  /* ==========================================================================
+     Card Wrapper
+     ========================================================================== */
+  .card-wrapper {
+    @apply relative h-full;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /* ==========================================================================
+     Card Base - Estilo Genérico para todo el sitio
+     ========================================================================== */
+  .card {
+    @apply no-underline text-center flex flex-col h-full bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-none;
+
+    box-shadow: none !important;
+  }
+
+  /* Ocultar elementos antiguos que no se usan en el nuevo diseño */
+  .card .card__inner,
+  .card > .card__content:not(.card__info-section) {
+    @apply hidden;
+  }
+
+  /* Asegurar que el card tenga el estilo correcto */
+  .card-wrapper .card {
+    @apply flex flex-col h-full bg-white rounded-lg overflow-hidden;
+  }
+
+  .card:not(.ratio) {
+    @apply flex flex-col h-full;
+  }
+
+  /* ==========================================================================
+     Sección de Imagen (Superior) - Estilo Genérico
+     ========================================================================== */
+  .card-wrapper .card .card__image-section {
+    @apply relative flex flex-1 min-h-72 aspect-square items-center justify-center p-4 box-border;
+  }
+
+  .card .card__media-wrapper {
+    @apply w-full h-full absolute inset-0;
+  }
+
+  .card .card__media-wrapper .media {
+    @apply w-full h-full absolute inset-0;
+  }
+
+  .card .card__media-wrapper .media img {
+    @apply w-full h-full object-contain object-center absolute inset-0;
+  }
+
+  .card .card__media-wrapper .media img:first-child:not(:only-child) {
+    @apply opacity-100 transition-opacity duration-300 absolute inset-0;
+  }
+
+  .card .card__media-wrapper .media img + img {
+    @apply opacity-0 transition-opacity duration-300 absolute inset-0;
+  }
+
+  .card-wrapper:hover
+    .card
+    .card__media-wrapper
+    .media
+    img:first-child:not(:only-child) {
+    @apply opacity-0;
+  }
+
+  .card-wrapper:hover .card .card__media-wrapper .media img + img {
+    @apply opacity-100;
+  }
+
+  /* ==========================================================================
+     Badges en Esquina Superior Izquierda - Estilo Genérico
+     ========================================================================== */
+  .card__badges-top {
+    @apply absolute top-3 left-3 z-0 flex flex-col gap-2;
+  }
+
+  .card__badge--new {
+    @apply px-3 py-1.5 rounded text-white font-bold text-xs;
+    background-color: #4ade80; /* Light green */
+    line-height: 1.2;
+  }
+
+  .card__badge--discount {
+    @apply px-3 py-1.5 rounded text-white font-bold text-xs;
+    background-color: #f97316; /* Orange-red */
+    line-height: 1.2;
+  }
+
+  /* ==========================================================================
+     Sección de Información (Inferior con fondo oscuro) - Estilo Genérico
+     ========================================================================== */
+  .card-wrapper .card .card__info-section {
+    @apply flex text-negro bg-blanco px-2 py-1 flex-col gap-3 shrink-0 !bg-transparent;
+  }
+
+  /* ==========================================================================
+     Botones de Acción (Agregar / Seleccionar)
+     ========================================================================== */
+  .card-wrapper .card .card__quick-action-button {
+    @apply cursor-pointer flex visible opacity-100 bg-gray-200 text-black no-underline shadow-none border-0;
+    @apply w-full font-semibold py-3 px-4 flex items-center justify-between gap-3 hover:bg-gray-300 !leading-none transition-colors disabled:opacity-50 disabled:cursor-not-allowed rounded-full outline-none uppercase;
+    box-shadow: none !important;
+  }
+
+  .card-wrapper .card .card__quick-action-button::before,
+  .card-wrapper .card .card__quick-action-button::after {
+    content: none !important;
+    @apply hidden;
+  }
+
+  .card-wrapper .card .card__quick-action-button--primary {
+    @apply font-bold;
+  }
+
+  .card-wrapper .card .card__quick-action-button--secondary {
+    @apply font-medium;
+  }
+
+  .card-wrapper .card .card__quick-action-text {
+    @apply flex-1 text-center text-base text-black;
+    color: #000000 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  .card-wrapper
+    .card
+    .card__quick-action-button--secondary
+    .card__quick-action-text {
+    font-weight: 600;
+  }
+
+  .card-wrapper .card .card__quick-action-icon {
+    @apply flex items-center justify-center flex-shrink-0;
+  }
+
+  .card-wrapper .card .card__quick-action-icon svg {
+    @apply w-5 h-5;
+  }
+
+  .card-wrapper .card .card__add-to-cart-icon {
+    @apply w-8 h-8 bg-white rounded-full flex items-center justify-center flex-shrink-0;
+    display: flex !important;
+  }
+
+  .card-wrapper .card .card__add-to-cart-icon svg {
+    @apply w-5 h-5;
+    color: #ef4444 !important;
+    fill: #ef4444 !important;
+  }
+
+  .card-wrapper
+    .card
+    .card__quick-action-button--primary:disabled
+    .card__add-to-cart-icon {
+    @apply opacity-50;
+  }
+
+  .card-wrapper .card .card__quick-action-button .loading__spinner {
+    display: none !important;
+  }
+
+  .card-wrapper .card .card__quick-action-button.loading .loading__spinner {
+    @apply flex items-center justify-center !important;
+  }
+
+  /* Asegurar que el botón se muestre en grids */
+  .grid .card-wrapper .card .quick-add,
+  .grid__item .card-wrapper .card .quick-add {
+    @apply block;
+    display: block !important;
+  }
+
+  /* Asegurar que el card se vea bien en grids */
+  .grid .card-wrapper .card,
+  .grid__item .card-wrapper .card,
+  .tgrid .card-wrapper .card,
+  .product-grid .card-wrapper .card {
+    @apply flex flex-col h-full bg-white rounded-lg overflow-hidden;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    height: 100% !important;
+    min-height: 0 !important;
+  }
+
+  /* Asegurar que el wrapper del card no rompa el grid */
+  .grid__item .card-wrapper,
+  .tgrid .grid__item .card-wrapper,
+  .product-grid .grid__item .card-wrapper {
+    @apply h-full;
+    height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  /* Asegurar que grid__item tenga altura para que el card funcione */
+  .grid__item .card,
+  .tgrid .grid__item .card,
+  .product-grid .grid__item .card {
+    flex: 1 1 auto;
+    min-height: 0;
+    width: 100%;
+  }
+
+  /* Asegurar que el grid__item funcione correctamente */
+  .grid__item .card-wrapper.product-card-wrapper,
+  .tgrid .grid__item .card-wrapper.product-card-wrapper,
+  .product-grid .grid__item .card-wrapper.product-card-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  /* Asegurar que el fondo negro se vea en todos los contextos */
+  .card-wrapper .card .card__info-section,
+  .grid .card-wrapper .card .card__info-section,
+  .grid__item .card-wrapper .card .card__info-section {
+    @apply bg-transparent;
+  }
+
+  /* Asegurar que el botón se muestre siempre */
+  .card-wrapper .card .quick-add {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  .card-wrapper .card .quick-add__submit,
+  .card-wrapper .card .card__add-to-cart-btn {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: 100% !important;
+  }
+
+  /* Asegurar que el texto del botón sea visible en todos los contextos */
+  .collection .card-wrapper .card .card__quick-action-text,
+  .collection
+    .card-wrapper
+    .card
+    .card__quick-action-button
+    .card__quick-action-text {
+    color: #000000 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  /* Si no hay quick-add, mostrar el botón directamente */
+  .card-wrapper .card .card__info-section:not(:has(.quick-add))::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 48px;
+    background-color: #e5e7eb;
+    border-radius: 0.5rem;
+  }
+
+  /* ==========================================================================
+     Card Horizontal Layout
+     ========================================================================== */
+  .card.card--horizontal {
+    @apply flex-row items-start gap-6;
+    --text-alignment: left;
+    --image-padding: 0rem;
+  }
+
+  .card--horizontal.ratio:before {
+    padding-bottom: 0;
+  }
+
+  .card--card.card--horizontal {
+    @apply p-5;
+  }
+
+  .card--card.card--horizontal.card--text {
+    column-gap: 0;
+  }
+
+  /* ==========================================================================
+     Card Styles (Card & Standard)
+     ========================================================================== */
+  .card--card {
+    @apply h-full;
+  }
+
+  .card--card,
+  .card--standard .card__inner {
+    @apply relative;
+    box-sizing: border-box;
+    border-radius: var(--border-radius);
+    border: var(--border-width) solid
+      rgba(var(--color-foreground), var(--border-opacity));
+  }
+
+  .card--card:after,
+  .card--standard .card__inner:after {
+    content: '';
+    @apply absolute -z-10;
+    width: calc(var(--border-width) * 2 + 100%);
+    height: calc(var(--border-width) * 2 + 100%);
+    top: calc(var(--border-width) * -1);
+    left: calc(var(--border-width) * -1);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-horizontal-offset) var(--shadow-vertical-offset)
+      var(--shadow-blur-radius) rgba(var(--color-shadow), var(--shadow-opacity));
+  }
+
+  /* Gradient continuity */
+  .card--card.gradient,
+  .card__inner.gradient {
+    transform: perspective(0);
+  }
+
+  .card__inner.color-scheme-1 {
+    @apply bg-transparent;
+  }
+
+  /* ==========================================================================
+     Card Media
+     ========================================================================== */
+  .card .card__inner .card__media {
+    @apply overflow-hidden z-0;
+    border-radius: calc(
+      var(--border-radius) - var(--border-width) - var(--image-padding)
+    );
+  }
+
+  .card--card .card__inner .card__media {
+    @apply rounded-br-none rounded-bl-none;
+  }
+
+  .card--standard.card--text {
+    @apply bg-transparent;
+  }
+
+  .card__media,
+  .card .media {
+    @apply absolute bottom-0 top-0;
+  }
+
+  .card .media {
+    @apply w-full;
+  }
+
+  .card__media {
+    margin: var(--image-padding);
+    width: calc(100% - 2 * var(--image-padding));
+  }
+
+  .card--standard .card__media {
+    margin: var(--image-padding);
+  }
+
+  .card__media .media img {
+    @apply h-full w-full object-cover object-center;
+  }
+
+  /* ==========================================================================
+     Card Inner & Content
+     ========================================================================== */
+  .card__inner {
+    @apply w-full;
+  }
+
+  .card__inner:not(.ratio) > .card__content {
+    @apply h-full;
+  }
+
+  .card--media .card__inner .card__content {
+    @apply relative;
+    padding: calc(var(--image-padding) + 1rem);
+  }
+
+  .card__content {
+    @apply grid w-full flex-grow p-4;
+    grid-template-rows: minmax(0, 1fr) max-content minmax(0, 1fr);
+  }
+
+  .card__content--auto-margins {
+    grid-template-rows: minmax(0, auto) max-content minmax(0, auto);
+  }
+
+  .card:not(.ratio) > .card__content {
+    grid-template-rows: max-content minmax(0, 1fr) max-content auto;
+  }
+
+  .card--card.card--media > .card__content {
+    margin-top: calc(0rem - var(--image-padding));
+  }
+
+  .card--standard > .card__content {
+    @apply p-0;
+  }
+
+  /* ==========================================================================
+     Card Information
+     ========================================================================== */
+  .card-information {
+    @apply w-full text-center;
+  }
+
+  .card-information > * {
+    @apply text-negro leading-normal;
+  }
+
+  .card-information > * + * {
+    @apply mt-0;
+  }
+
+  .card-information > .price {
+    @apply text-negro;
+  }
+
+  .card--horizontal .card-information > .price {
+    @apply text-negro;
+  }
+
+  .card-information > .rating {
+    @apply mt-0;
+  }
+
+  .card-information .caption {
+    letter-spacing: 0.07rem;
+  }
+
+  .card-information .card__information-volume-pricing-note {
+    @apply mt-0;
+    line-height: calc(0.5 + 0.4 / var(--font-body-scale));
+    color: rgba(var(--color-foreground), 0.75);
+  }
+
+  .card-information
+    > *:not(.visually-hidden:first-child)
+    + *:not(.rating):not(.card__information-volume-pricing-note) {
+    @apply mt-0;
+  }
+
+  .card-information
+    > *:not(.visually-hidden:first-child)
+    + quantity-popover:not(.rating):not(.card__information-volume-pricing-note),
+  .card-information
+    .card__information-volume-pricing-note.card__information-volume-pricing-note--button {
+    @apply mt-0;
+  }
+
+  .card__information {
+    @apply py-1 px-1;
+    grid-row-start: 2;
+  }
+
+  .card--standard > .card__content .card__information {
+    @apply px-0;
+  }
+
+  .card-article-info {
+    @apply mt-4;
+  }
+
+  /* ==========================================================================
+     Card Heading
+     ========================================================================== */
+  .card__heading {
+    @apply m-0;
+    a {
+      @apply text-negro uppercase font-semibold text-xl tracking-tighter relative;
+    }
+  }
+
+  .card__heading:last-child {
+    @apply mb-0;
+  }
+
+  .card__heading a::after {
+    content: '';
+    @apply absolute bottom-0 left-0 right-0 top-0 z-10 pointer-events-none;
+  }
+
+  .card__heading a:after {
+    outline-offset: 0.3rem;
+  }
+
+  .card__heading a:focus:after {
+    box-shadow: 0 0 0 0.3rem rgb(var(--color-background)),
+      0 0 0.5rem 0.4rem rgba(var(--color-foreground), 0.3);
+    outline: 0.2rem solid rgba(var(--color-foreground), 0.5);
+  }
+
+  .card__heading a:focus-visible:after {
+    box-shadow: 0 0 0 0.3rem rgb(var(--color-background)),
+      0 0 0.5rem 0.4rem rgba(var(--color-foreground), 0.3);
+    outline: 0.2rem solid rgba(var(--color-foreground), 0.5);
+  }
+
+  .card__heading a:focus:not(:focus-visible):after {
+    @apply shadow-none outline-none;
+  }
+
+  .card__heading a:focus {
+    @apply shadow-none outline-none;
+  }
+
+  .card--standard.card--text a::after,
+  .card--card .card__heading a::after {
+    bottom: calc(var(--border-width) * -1);
+    left: calc(var(--border-width) * -1);
+    right: calc(var(--border-width) * -1);
+    top: calc(var(--border-width) * -1);
+  }
+
+  .card--horizontal .card__heading,
+  .card--horizontal .price__container .price-item,
+  .card--horizontal__quick-add {
+    font-size: calc(var(--font-heading-scale) * 1.2rem);
+  }
+
+  .card--horizontal
+    .card-information
+    > *:not(.visually-hidden:first-child)
+    + *:not(.rating):not(.card__information-volume-pricing-note) {
+    @apply mt-0;
+  }
+
+  .card--horizontal__quick-add:before {
+    @apply shadow-none;
+  }
+
+  /* ==========================================================================
+     Card Badge
+     ========================================================================== */
+  .card__badge {
+    @apply self-end justify-self-start;
+    grid-row-start: 3;
+  }
+
+  .card__badge.top {
+    @apply self-start;
+    grid-row-start: 1;
+  }
+
+  .card__badge.right {
+    @apply justify-self-end;
+  }
+
+  .card:not(.card--horizontal) > .card__content > .card__badge {
+    @apply m-5;
+  }
+
+  /* ==========================================================================
+     Card Extend Height
+     ========================================================================== */
+  .card--extend-height {
+    @apply h-full;
+  }
+
+  .card--extend-height.card--standard.card--text,
+  .card--extend-height.card--media {
+    @apply flex flex-col;
+  }
+
+  .card--extend-height.card--standard.card--text .card__inner,
+  .card--extend-height.card--media .card__inner {
+    @apply flex-grow;
+  }
+
+  /* ==========================================================================
+     Card Icon Wrap
+     ========================================================================== */
+  .card .icon-wrap {
+    @apply ml-3 whitespace-nowrap overflow-hidden;
+    transition: transform var(--duration-short) ease;
+  }
+
+  /* ==========================================================================
+     Volume Pricing Note Button
+     ========================================================================== */
+  .card__information-volume-pricing-note--button,
+  .card__information-volume-pricing-note--button.quantity-popover__info-button--icon-with-label {
+    @apply relative z-10 cursor-pointer p-0 m-0;
+    text-align: var(--text-alignment);
+    min-width: auto;
+  }
+
+  .card__information-volume-pricing-note--button:hover {
+    @apply underline;
+  }
+
+  .card__information-volume-pricing-note--button
+    + .global-settings-popup.quantity-popover__info {
+    transform: initial;
+    @apply top-auto bottom-16 max-w-80;
+    width: calc(95% + 2rem);
+  }
+
+  .card__information-volume-pricing-note--button
+    + .global-settings-popup.quantity-popover__info
+    span:first-of-type {
+    @apply pr-1;
+  }
+
+  .card__information-volume-pricing-note--button-right
+    + .global-settings-popup.quantity-popover__info {
+    @apply right-0 left-auto;
+  }
+
+  .card__information-volume-pricing-note--button-center
+    + .global-settings-popup.quantity-popover__info {
+    @apply left-1/2;
+    transform: translate(-50%);
+  }
+
+  .card__information-volume-pricing-note--button
+    + .global-settings-popup.quantity-popover__info
+    .quantity__rules {
+    @apply text-left;
+  }
+
+  /* ==========================================================================
+     Card Hover Effects - Second Image
+     ========================================================================== */
+  @media screen and (min-width: 990px) {
+    .card .media.media--hover-effect > img:only-child,
+    .card-wrapper .media.media--hover-effect > img:only-child {
+      transition: transform var(--duration-long) ease;
+    }
+
+    .card:hover .media.media--hover-effect > img:first-child:only-child,
+    .card-wrapper:hover
+      .media.media--hover-effect
+      > img:first-child:only-child {
+      @apply scale-[1.03];
+    }
+
+    .card-wrapper:hover
+      .media.media--hover-effect
+      > img:first-child:not(:only-child) {
+      @apply opacity-0;
+    }
+
+    .card-wrapper:hover .media.media--hover-effect > img + img {
+      @apply opacity-100 scale-[1.03];
+      transition: transform var(--duration-long) ease;
+    }
+
+    .underline-links-hover:hover a {
+      @apply underline;
+      text-underline-offset: 0.3rem;
+    }
+  }
+
+  /* ==========================================================================
+     Card Standard Styles
+     ========================================================================== */
+  .card--standard.card--media .card__inner .card__information,
+  .card--standard.card--text:not(.card--horizontal)
+    > .card__content
+    .card__heading:not(.card__heading--placeholder),
+  .card--standard:not(.card--horizontal) > .card__content .card__badge,
+  .card--standard.card--text.article-card > .card__content .card__information,
+  .card--standard > .card__content .card__caption {
+    @apply hidden;
+  }
+
+  .card--standard:not(.card--horizontal) .placeholder-svg {
+    @apply w-full;
+  }
+
+  .card--card.card--media .card__inner .card__information,
+  .card--card.card--text .card__inner,
+  .card--card.card--media > .card__content .card__badge {
+    @apply hidden;
+  }
+
+  .card--horizontal .card__badge,
+  .card--horizontal.card--text .card__inner {
+    @apply hidden;
+  }
+
+  /* ==========================================================================
+     Card Shapes
+     ========================================================================== */
+  .card--shape .card__content {
+    @apply pt-0;
+  }
+
+  .card--shape.card--standard:not(.card--text) .card__inner {
+    @apply border-0 bg-transparent;
+    filter: drop-shadow(
+      var(--shadow-horizontal-offset) var(--shadow-vertical-offset)
+        var(--shadow-blur-radius)
+        rgba(var(--color-shadow), var(--shadow-opacity))
+    );
+  }
+
+  .card--shape.card--standard:not(.card--text) .card__inner:after {
+    @apply hidden;
+  }
+
+  .grid__item:nth-child(2n) .shape--blob {
+    clip-path: polygon(var(--shape--blob-2));
+  }
+
+  .grid__item:nth-child(3n) .shape--blob {
+    clip-path: polygon(var(--shape--blob-3));
+  }
+
+  .grid__item:nth-child(4n) .shape--blob {
+    clip-path: polygon(var(--shape--blob-4));
+  }
+
+  .grid__item:nth-child(5n) .shape--blob {
+    clip-path: polygon(var(--shape--blob-5));
+  }
+
+  .grid__item:nth-child(7n) .shape--blob {
+    clip-path: polygon(var(--shape--blob-6));
+  }
+
+  .grid__item:nth-child(8n) .shape--blob {
+    clip-path: polygon(var(--shape--blob-1));
+  }
+
+  /* ==========================================================================
+     Card Shape Hover Rules
+     ========================================================================== */
+  @media (prefers-reduced-motion: no-preference) {
+    .product-card-wrapper .shape--round {
+      transition: clip-path var(--duration-long) ease;
+    }
+
+    .product-card-wrapper:hover .shape--round {
+      clip-path: ellipse(47% 47% at 50% 50%);
+    }
+
+    .product-card-wrapper .shape--blob {
+      transition: clip-path var(--duration-long) ease-in-out;
+    }
+
+    .product-card-wrapper:hover .shape--blob {
+      clip-path: polygon(var(--shape--blob-5));
+    }
+
+    .grid__item:nth-child(2n) .product-card-wrapper:hover .shape--blob {
+      clip-path: polygon(var(--shape--blob-6));
+    }
+
+    .grid__item:nth-child(3n) .product-card-wrapper:hover .shape--blob {
+      clip-path: polygon(var(--shape--blob-1));
+    }
+
+    .grid__item:nth-child(4n) .product-card-wrapper:hover .shape--blob {
+      clip-path: polygon(var(--shape--blob-2));
+    }
+
+    .grid__item:nth-child(5n) .product-card-wrapper:hover .shape--blob {
+      clip-path: polygon(var(--shape--blob-3));
+    }
+
+    .grid__item:nth-child(7n) .product-card-wrapper:hover .shape--blob {
+      clip-path: polygon(var(--shape--blob-4));
+    }
+
+    .grid__item:nth-child(8n) .product-card-wrapper:hover .shape--blob {
+      clip-path: polygon(var(--shape--blob-5));
+    }
+  }
+
+  /* ==========================================================================
+     Responsive Styles
+     ========================================================================== */
+  @media screen and (min-width: 750px) {
+    .card__information {
+      @apply py-3;
+    }
+  }
+
+  @media only screen and (min-width: 750px) {
+    .card--horizontal .card__heading,
+    .card--horizontal .price__container .price-item,
+    .card--horizontal__quick-add {
+      font-size: calc(var(--font-heading-scale) * 1.3rem);
+    }
+  }
+
+  @media screen and (min-width: 990px) {
+    .grid--6-col-desktop .card__content quick-add-bulk .quantity {
+      @apply w-auto;
+    }
+
+    .grid--6-col-desktop .card__content quick-add-bulk .quantity__button {
+      width: calc(3rem / var(--font-body-scale));
+    }
+
+    .grid--6-col-desktop
+      .card__information-volume-pricing-note--button
+      + .global-settings-popup.quantity-popover__info {
+      @apply left-1/2;
+      transform: translate(-50%);
+      width: calc(100% + var(--border-width) + 3.5rem);
+    }
+
+    .grid--6-col-desktop
+      .card--standard
+      .card__information-volume-pricing-note--button
+      + .global-settings-popup.quantity-popover__info {
+      width: calc(100% + var(--border-width) + 1rem);
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .grid--2-col-tablet-down .card__content quick-add-bulk .quantity__button {
+      width: calc(3.5rem / var(--font-body-scale));
+    }
+
+    .grid--2-col-tablet-down
+      .card--card
+      .card__information-volume-pricing-note--button
+      + .global-settings-popup.quantity-popover__info,
+    .grid--2-col-tablet-down
+      .card--standard
+      .card__information-volume-pricing-note--button
+      + .global-settings-popup.quantity-popover__info {
+      @apply left-1/2;
+      transform: translate(-50%);
+    }
+
+    .grid--2-col-tablet-down
+      .card--standard
+      .card__information-volume-pricing-note--button
+      + .global-settings-popup.quantity-popover__info {
+      @apply w-full;
+    }
+
+    .grid--2-col-tablet-down
+      .card--card
+      .card__information-volume-pricing-note--button
+      + .global-settings-popup.quantity-popover__info {
+      width: calc(100% + var(--border-width) + 4rem);
+    }
+
+    .grid--2-col-tablet-down .card__content quick-add-bulk .quantity {
+      @apply w-auto;
+    }
+  }
+
+  @media screen and (max-width: 989px) {
+    .card-information quantity-popover .quantity__rules ~ volume-pricing {
+      @apply mt-0;
+    }
+
+    .card-information quantity-popover volume-pricing {
+      @apply mt-11;
+    }
+  }
+
+  .card-information quantity-popover volume-pricing {
+    @apply mt-0;
+  }
+}

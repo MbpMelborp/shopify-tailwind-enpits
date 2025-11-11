@@ -1,0 +1,206 @@
+/* ==========================================================================
+   MEGA MENU SEARCH - Búsqueda inline para mega menu (completamente independiente)
+   ========================================================================== */
+
+@tailwind components;
+
+@layer components {
+  /* ==========================================================================
+     BASE STYLES - Estilos compartidos entre mobile y desktop
+     ========================================================================== */
+
+  /* Contenedor principal del mega menu con búsqueda inline */
+  .header__search-mega-menu {
+    @apply flex justify-between items-center w-full gap-4;
+
+    /* Sección de búsqueda inline - crece al máximo */
+    .header__search-mega-menu-search {
+      @apply flex-1 max-w-full flex items-center;
+    }
+
+    /* Sección de ayuda/WhatsApp - más compacta */
+    .header__search-mega-menu-help {
+      @apply flex items-center shrink-0 whitespace-nowrap gap-4;
+
+      svg {
+        @apply w-8 h-8 shrink-0;
+      }
+
+      .header__search-mega-menu-help-text {
+        @apply flex flex-col gap-0;
+
+        .help-text-title {
+          @apply text-white text-sm leading-tight;
+        }
+
+        .help-text-content {
+          @apply text-white text-lg font-normal leading-tight;
+
+          a {
+            @apply font-bold text-white no-underline hover:underline;
+          }
+        }
+      }
+    }
+  }
+
+  /* Layout del mega menu container */
+  .header__search-mega-menu-container {
+    @apply flex items-center justify-start gap-4 w-full flex-1 flex-col;
+
+    .list-menu--inline {
+      @apply shrink-0;
+    }
+
+    .header__search-mega-menu {
+      @apply flex-1 w-full max-w-none;
+    }
+  }
+
+  /* ==========================================================================
+     INLINE SEARCH WRAPPER - Estilos del contenedor de búsqueda
+     ========================================================================== */
+
+  .header__search-mega-menu .inline-search-wrapper {
+    @apply w-full flex flex-1;
+
+    /* Formulario inline */
+    .inline-search-form {
+      @apply relative w-full flex flex-1;
+
+      .field {
+        @apply relative w-full m-0 flex flex-1;
+        &:before {
+          @apply hidden;
+        }
+        &:after {
+          @apply hidden;
+        }
+      }
+    }
+
+    /* Label oculto para accesibilidad */
+    .field__label {
+      @apply invisible absolute w-px h-px overflow-hidden whitespace-nowrap opacity-0 -m-px p-0 border-0;
+      @apply !hidden;
+      clip: rect(0, 0, 0, 0) !important;
+    }
+
+    /* Botón de reset (oculto) */
+    .reset__button {
+      @apply !hidden;
+    }
+
+    /* Override de estilos de Safari */
+    input::-webkit-search-decoration {
+      -webkit-appearance: none !important;
+    }
+  }
+
+  /* ==========================================================================
+     INPUT STYLES - Estilos del campo de búsqueda
+     ========================================================================== */
+
+  .header__search-mega-menu .inline-search-wrapper {
+    /* Input de búsqueda inline - Estilos completos */
+    .inline-search-input {
+      @apply w-full flex-1 h-14 bg-blanco text-negro text-lg transition-all duration-300 pr-12 px-4 py-2 rounded-3xl outline-none border-none;
+
+      &::placeholder {
+        @apply text-negro/50 !important;
+      }
+
+      &:focus {
+        @apply bg-gris ring-1 ring-rojo border-transparent outline-none;
+
+        &::placeholder {
+          @apply text-negro/30 !important;
+          color: rgba(10, 10, 10, 0.3) !important;
+        }
+      }
+    }
+  }
+
+  /* ==========================================================================
+     PREDICTIVE SEARCH RESULTS - Resultados de búsqueda predictiva
+     ========================================================================== */
+
+  .header__search-mega-menu .inline-search-wrapper {
+    .inline-search-results {
+      @apply absolute top-full left-0 right-0 mt-2;
+      @apply bg-negro rounded-lg text-negro;
+      @apply max-h-96 overflow-y-auto z-50;
+    }
+
+    /* Estados de carga y mensajes */
+    .predictive-search__loading-state {
+      @apply flex items-center justify-center w-full p-4;
+      svg {
+        @apply w-8 h-8 fill-current;
+      }
+    }
+  }
+
+  /* ==========================================================================
+     MOBILE STYLES - Estilos específicos para dispositivos móviles
+     ========================================================================== */
+
+  @media screen and (max-width: 989px) {
+    /* Ocultar búsqueda inline en mobile */
+    .header__search-mega-menu .inline-search-wrapper {
+      @apply !hidden;
+    }
+
+    /* Mostrar ícono del modal en mobile */
+    .header__search-mega-menu .inline-search-icon {
+      @apply !flex;
+    }
+
+    /* Ajustar alineación del mega menu en mobile */
+    .header__search-mega-menu {
+      @apply justify-end;
+
+      .header__search-mega-menu-search {
+        @apply flex-initial;
+      }
+    }
+  }
+
+  /* ==========================================================================
+     DESKTOP STYLES - Estilos específicos para desktop
+     ========================================================================== */
+
+  @media screen and (min-width: 990px) {
+    /* Mostrar búsqueda inline en desktop */
+    .header__search-mega-menu .header__search-mega-menu-search {
+      @apply !flex flex-1;
+    }
+
+    .header__search-mega-menu .inline-search-wrapper {
+      @apply !flex flex-1 w-full;
+      flex: 1 1 0% !important; /* Ocupar todo el ancho disponible */
+    }
+
+    /* Ocultar ícono del modal en desktop */
+    .header__search-mega-menu .inline-search-icon {
+      @apply !hidden;
+    }
+
+    /* Ocultar modal completamente en desktop */
+    .header__search-mega-menu .inline-search-modal-wrapper {
+      @apply !hidden absolute w-0 h-0 overflow-hidden pointer-events-none;
+    }
+
+    .header__search-mega-menu
+      .header__search-mega-menu-search
+      .inline-search-modal-wrapper {
+      @apply absolute w-0 h-0 overflow-hidden pointer-events-none;
+    }
+
+    /* Ajustar grid del header en desktop */
+    .header--middle-left {
+      @apply grid-cols-[auto_1fr_auto] gap-x-8;
+      grid-template-areas: 'heading navigation icons';
+    }
+  }
+} /* End @layer components */

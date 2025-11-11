@@ -1,0 +1,233 @@
+/* ==========================================================================
+   QUICK ADD MODAL - Tailwind component styles
+   ========================================================================== */
+
+@tailwind components;
+
+@layer components {
+  .quick-add {
+    @apply relative z-[1] mb-4 mt-0 row-start-4;
+  }
+
+  .card--card .quick-add {
+    @apply mx-5 mb-4;
+  }
+
+  .quick-add-modal {
+    @apply fixed inset-0 m-0 w-full h-full opacity-0 invisible -z-10;
+    background: rgba(var(--color-foreground), 0.2);
+    box-sizing: border-box;
+  }
+
+  .quick-add-modal[open] {
+    @apply opacity-100 visible z-[101];
+  }
+
+  .quick-add-modal .scroll-trigger.scroll-trigger {
+    @apply opacity-100 translate-x-0 translate-y-0;
+    animation: none;
+  }
+
+  .quick-add-modal .quick-order-list__container {
+    @apply pb-6;
+  }
+
+  .quick-add-modal__content {
+    --modal-height-offset: 3.2rem;
+    @apply absolute left-1/2 top-0 w-[calc(100%-3rem)] max-w-[var(--page-width)]
+      -translate-x-1/2 bg-[rgb(var(--color-background))] overflow-hidden;
+    margin: var(--modal-height-offset) auto 0;
+  }
+
+  .quick-add-modal__content .loading__spinner {
+    display: none !important;
+  }
+
+  .quick-add-modal__content button.loading .loading__spinner,
+  .quick-add-modal__content .quick-add__submit.loading .loading__spinner {
+    @apply flex items-center justify-center !important;
+  }
+
+  .quick-add-modal__content.quick-add-modal__content--bulk {
+    @apply w-[90%];
+  }
+
+  .quick-add-modal__content img {
+    @apply max-w-full;
+  }
+
+  .quick-add-modal__content-info {
+    --modal-padding: 2.5rem;
+    @apply flex h-full overflow-y-auto pr-[4.4rem] p-[var(--modal-padding)];
+  }
+
+  .quick-add-modal__content-info > * {
+    @apply w-full max-w-full mx-auto;
+  }
+
+  .quick-add-modal__content-info > product-info {
+    @apply p-0;
+  }
+
+  .quick-add-modal__toggle {
+    @apply fixed top-6 right-6 flex items-center justify-center rounded-full
+      border border-[rgba(var(--color-foreground),0.1)] bg-[rgb(var(--color-background))]
+      p-5 text-[rgba(var(--color-foreground),0.55)] cursor-pointer z-[5] w-16;
+  }
+
+  .quick-add-modal__toggle:hover {
+    @apply text-[rgba(var(--color-foreground),0.75)];
+  }
+
+  .quick-add-modal__toggle .icon {
+    @apply w-9 h-auto m-0;
+  }
+
+  .quick-add-modal .quick-add-hidden,
+  .quick-add-modal .product__modal-opener:not(.product__modal-opener--image),
+  .quick-add-modal .product__media-item:not(:first-child) {
+    @apply hidden !important;
+  }
+
+  .quick-add-modal .product__column-sticky .product__media-list {
+    @apply mb-0;
+  }
+
+  .quick-add-modal .product__media-list .deferred-media {
+    @apply block w-full;
+  }
+
+  .quick-add-modal .product__column-sticky {
+    @apply relative top-0;
+  }
+
+  .quick-add__submit {
+    @apply box-border min-w-full px-4 py-3;
+  }
+
+  .quick-add-bulk {
+    @apply relative z-[1] mb-4 mt-0 row-start-4;
+  }
+
+  .card__content quick-add-bulk .quantity {
+    @apply w-full;
+  }
+
+  .quantity__input-disabled {
+    @apply pointer-events-none;
+  }
+
+  @screen md {
+    .quick-add-modal__content {
+      --modal-height-offset: 10rem;
+      @apply mt-[var(--modal-height-offset)] w-4/5 max-h-[calc(100%-var(--modal-height-offset)*2)]
+        overflow-y-auto;
+    }
+
+    quick-add-modal .quick-add-modal__toggle {
+      @apply top-8 right-8;
+    }
+
+    .quick-add-modal__content.quick-add-modal__content--bulk {
+      @apply w-4/5;
+    }
+
+    .quick-add-modal__content-info.quick-add-modal__content-info--bulk {
+      @apply overflow-y-visible;
+    }
+
+    .quick-add-modal__content-info--bulk .quick-add__product-media,
+    .quick-add-modal__content-info--bulk .quick-add__product-container,
+    .quick-add-modal__content-info--bulk .quick-add__info {
+      @apply w-[17rem] h-[22rem];
+    }
+
+    .quick-add-modal__content-info--bulk-details,
+    .quick-add-modal__content-info--bulk quick-order-list {
+      @apply px-10;
+    }
+
+    quick-add-modal .product:not(.product--no-media) .product__media-wrapper {
+      @apply max-w-[45%] w-[calc(45%-var(--grid-desktop-horizontal-spacing)/2)];
+    }
+
+    quick-add-modal .product:not(.product--no-media) .product__info-wrapper {
+      @apply max-w-[54%] w-[calc(54%-var(--grid-desktop-horizontal-spacing)/2)]
+        pt-8 pl-16;
+    }
+
+    quick-add-modal .thumbnail-slider .thumbnail-list.slider--tablet-up {
+      @apply hidden;
+    }
+
+    quick-add-modal .product-media-container.constrain-height {
+      --constrained-min-height: 400px;
+    }
+  }
+
+  @screen lg {
+    .quick-add-modal__content {
+      @apply w-7/10;
+    }
+  }
+
+  @screen sm {
+    .quick-add-modal__content {
+      @apply bottom-[var(--modal-height-offset)];
+    }
+
+    .quick-add-modal__content-info.quick-add-modal__content-info--bulk {
+      --modal-padding: 1.5rem;
+    }
+
+    .quick-add-modal__content-info > * {
+      @apply max-h-full;
+    }
+
+    quick-add-modal .slider .product__media-item.grid__item {
+      @apply mx-6;
+    }
+
+    quick-add-modal .product--mobile-columns .product__media-item {
+      @apply w-[calc(100%-3rem-var(--grid-mobile-horizontal-spacing))];
+    }
+  }
+
+  @media screen and (max-width: 989px) {
+    .quick-add-modal__content-info--bulk {
+      @apply flex-col;
+    }
+
+    .quick-add-modal__content-info--bulk .quick-add__content-info__media {
+      @apply flex m-0;
+    }
+
+    .quick-add-modal__content-info--bulk quick-order-list {
+      @apply px-0;
+    }
+  }
+
+  @media screen and (min-width: 990px) {
+    .quick-add-modal__content-info--bulk .quick-add__info {
+      @apply sticky top-0 mt-[-2.5rem] pt-10 flex-col;
+    }
+  }
+
+  .quick-add-modal__content-info--bulk .quick-add__product-media,
+  .quick-add-modal__content-info--bulk .quick-add__product-container,
+  .quick-add-modal__content-info--bulk .quick-add__info {
+    @apply w-20 h-28;
+  }
+
+  .quick-add-modal__content-info--bulk .quick-add__product-container img {
+    @apply w-full h-full object-cover;
+  }
+
+  .quick-add-modal__content-info--bulk-details {
+    @apply pl-4;
+  }
+
+  .quick-add-modal__content-info--bulk-details > a:hover {
+    @apply underline underline-offset-4;
+  }
+}

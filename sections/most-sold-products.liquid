@@ -1,5 +1,8 @@
-{{ 'component-card.css' | asset_url | stylesheet_tag }}
 {{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'quick-add.css' | asset_url | stylesheet_tag }}
+<script src='{{ 'quick-add.js' | asset_url }}' defer='defer'></script>
+<script src='{{ 'product-form.js' | asset_url }}' defer='defer'></script>
 
 {%- style -%}
   .section-{{ section.id }}-padding {
@@ -28,6 +31,12 @@
   assign filtered_products_array = blank
   assign products_count = 0
 
+  # Limitar cantidad de productos
+  assign max_products = section.settings.products_count
+  if max_products == 0 or max_products == blank
+    assign max_products = 8
+  endif
+
   # Filtrar productos por tags si están configurados
   if tags_array != blank
     for product in all_products
@@ -39,7 +48,7 @@
           break
         endif
       endfor
-      
+
       if product_matches
         if filtered_products_array == blank
           assign filtered_products_array = product.handle
@@ -50,21 +59,42 @@
       endif
     endfor
   else
-    # Si no hay tags, usar todos los productos disponibles
-    for product in all_products
-      if filtered_products_array == blank
-        assign filtered_products_array = product.handle
-      else
-        assign filtered_products_array = filtered_products_array | append: '|||' | append: product.handle
-      endif
-      assign products_count = products_count | plus: 1
-    endfor
-  endif
+    # Si no hay tags, seleccionar productos de forma variada (usando índice para simular aleatoriedad)
+    # Tomar productos espaciados a lo largo del inventario para mayor variedad
+    assign total_products = all_products.size
+    assign step_size = 1
+    if total_products > max_products
+      assign step_size = total_products | divided_by: max_products
+    endif
 
-  # Limitar cantidad de productos
-  assign max_products = section.settings.products_count
-  if max_products == 0 or max_products == blank
-    assign max_products = 8
+    assign current_index = 0
+    assign products_added = 0
+
+    for product in all_products
+      if products_added < max_products
+        assign should_add = false
+        assign index_mod = current_index | modulo: step_size
+
+        # Agregar producto si coincide con el paso o si es uno de los primeros
+        if index_mod == 0 or products_added < 3
+          assign should_add = true
+        endif
+
+        if should_add
+          if filtered_products_array == blank
+            assign filtered_products_array = product.handle
+          else
+            assign filtered_products_array = filtered_products_array | append: '|||' | append: product.handle
+          endif
+          assign products_count = products_count | plus: 1
+          assign products_added = products_added | plus: 1
+        endif
+
+        assign current_index = current_index | plus: 1
+      else
+        break
+      endif
+    endfor
   endif
 -%}
 
@@ -115,7 +145,7 @@
       {%- if filtered_products_array != blank -%}
         {%- assign products_handles = filtered_products_array | split: '|||' -%}
         {%- assign products_limit = 0 -%}
-        
+
         {%- for product_handle in products_handles -%}
           {%- if products_limit < max_products -%}
             {%- assign product = blank -%}
@@ -125,25 +155,25 @@
                 {%- break -%}
               {%- endif -%}
             {%- endfor -%}
-            
+
             {%- if product != blank -%}
               {%- liquid
                 # Determinar categorías del producto
                 assign product_categories = 'all'
                 assign is_llantas_product = false
                 assign is_repuestos_product = false
-                
+
                 assign product_tags_lower = product.tags | join: ',' | downcase
                 if product_tags_lower contains 'llanta' or product_tags_lower contains 'llantas' or product_tags_lower contains 'neumatico' or product_tags_lower contains 'neumáticos'
                   assign is_llantas_product = true
                   assign product_categories = product_categories | append: ' llantas'
                 endif
-                
+
                 if product_tags_lower contains 'repuesto' or product_tags_lower contains 'repuestos' or product_tags_lower contains 'filtro' or product_tags_lower contains 'aceite' or product_tags_lower contains 'bujia' or product_tags_lower contains 'freno'
                   assign is_repuestos_product = true
                   assign product_categories = product_categories | append: ' repuestos'
                 endif
-                
+
                 if product.metafields.custom.taxonomia_producto
                   assign taxonomia = product.metafields.custom.taxonomia_producto
                   if taxonomia.reference
@@ -158,7 +188,7 @@
                   endif
                 endif
               -%}
-              
+
               <div
                 class='most-sold-product-item'
                 data-category='{{ product_categories }}'
@@ -185,6 +215,7 @@
   </div>
 </div>
 
+{{ 'most-sold-products.css' | asset_url | stylesheet_tag }}
 <script src='{{ 'most-sold-products.js' | asset_url }}' defer='defer'></script>
 
 {% schema %}
@@ -209,8 +240,7 @@
       "type": "text",
       "id": "tags_filter",
       "label": "Tags de filtrado",
-      "info": "Separa los tags por comas. Solo se mostrarán productos que tengan al menos uno de estos tags. Deja vacío para mostrar todos los productos.",
-      "default": ""
+      "info": "Separa los tags por comas. Solo se mostrarán productos que tengan al menos uno de estos tags. Deja vacío para mostrar productos aleatorios del inventario."
     },
     {
       "type": "range",
@@ -218,7 +248,6 @@
       "min": 4,
       "max": 24,
       "step": 2,
-      "unit": "productos",
       "label": "Cantidad de productos",
       "default": 8,
       "info": "Número máximo de productos a mostrar"
@@ -255,4 +284,3 @@
   ]
 }
 {% endschema %}
-

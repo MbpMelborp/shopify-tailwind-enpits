@@ -1,0 +1,56 @@
+/* ==========================================================================
+   FEATURED COLLECTION - Sección de colección destacada
+   ========================================================================== */
+
+@tailwind components;
+
+@layer components {
+  /* ==========================================================================
+     Título de la Colección - Centrado y más pequeño que rich-text__heading
+     ========================================================================== */
+  .collection__title.title-wrapper {
+    @apply mb-10 text-center;
+  }
+
+  .collection__title .title {
+    @apply text-2xl md:text-3xl font-bold text-center text-negro;
+  }
+
+  .collection__title .title:not(:only-child) {
+    @apply mb-4;
+  }
+
+  @media screen and (min-width: 990px) {
+    .collection__title--desktop-slider .title {
+      @apply mb-10;
+    }
+
+    .collection__title.title-wrapper--self-padded-tablet-down {
+      @apply px-20;
+    }
+  }
+
+  /* ==========================================================================
+     Descripción de la Colección
+     ========================================================================== */
+  .collection__description {
+    @apply text-base md:text-lg text-gray-700 max-w-2xl mx-auto text-center;
+  }
+
+  .collection__description > * {
+    @apply m-0;
+  }
+
+  /* ==========================================================================
+     Responsive Adjustments
+     ========================================================================== */
+  @media screen and (max-width: 749px) {
+    .collection__title .title {
+      @apply text-xl;
+    }
+
+    .collection__description {
+      @apply text-sm;
+    }
+  }
+}

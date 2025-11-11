@@ -1,0 +1,117 @@
+/* ==========================================================================
+   PROMO BANNERS - Sección de banners promocionales
+   ========================================================================== */
+
+/* ==========================================================================
+   Sección Principal
+   ========================================================================== */
+.promo-banners-section {
+  @apply w-full;
+}
+
+.promo-banners-container {
+  @apply w-full;
+}
+
+/* ==========================================================================
+   Desktop: Grid Layout
+   ========================================================================== */
+.promo-banners-container--desktop {
+  @apply hidden md:grid gap-12 md:max-w-[90rem] mx-auto;
+}
+
+.promo-banners-container--desktop.promo-banners-container--single {
+  @apply grid-cols-1;
+}
+
+.promo-banners-container--desktop.promo-banners-container--double {
+  @apply grid-cols-2;
+}
+
+.promo-banner-item {
+  @apply relative w-full overflow-hidden rounded-lg;
+}
+
+.promo-banner-item--fade-in {
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+.promo-banner-link {
+  @apply block w-full h-full;
+}
+
+.promo-banner-link img,
+.promo-banner-item img {
+  @apply w-full h-auto object-cover;
+}
+
+/* ==========================================================================
+   Mobile: Carousel con Touch
+   ========================================================================== */
+.promo-banners-container--mobile {
+  @apply block md:hidden;
+}
+
+.promo-banners-carousel {
+  @apply relative w-full overflow-hidden;
+}
+
+.promo-banners-track {
+  @apply flex w-full overflow-x-auto scroll-smooth;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.promo-banners-track::-webkit-scrollbar {
+  display: none;
+}
+
+.promo-banner-slide {
+  @apply flex-shrink-0 w-full;
+  scroll-snap-align: start;
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+.promo-banner-slide img {
+  @apply w-full h-auto object-cover;
+}
+
+/* ==========================================================================
+   Indicadores (Dots)
+   ========================================================================== */
+.promo-banners-indicators {
+  @apply flex justify-center items-center gap-2 mt-4;
+}
+
+.promo-banners-indicator {
+  @apply w-2 h-2 rounded-full border-0 cursor-pointer transition-all duration-300;
+  @apply bg-gray-300;
+}
+
+.promo-banners-indicator--active {
+  @apply bg-rojo w-6;
+}
+
+.promo-banners-indicator:hover {
+  @apply bg-gray-400;
+}
+
+.promo-banners-indicator--active:hover {
+  @apply bg-rojo;
+}
+
+/* ==========================================================================
+   Animación Fade-In
+   ========================================================================== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

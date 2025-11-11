@@ -2,203 +2,402 @@
    MEGA MENU SEARCH - Búsqueda inline para mega menu (completamente independiente)
    ========================================================================== */
 
-@layer components {
-  /* ==========================================================================
+.container {
+  width: 100%;
+}
+
+@media (min-width: 320px) {
+  .container {
+    max-width: 320px;
+  }
+}
+
+@media (min-width: 750px) {
+  .container {
+    max-width: 750px;
+  }
+}
+
+@media (min-width: 990px) {
+  .container {
+    max-width: 990px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .container {
+    max-width: 1440px;
+  }
+}
+
+@media (min-width: 1920px) {
+  .container {
+    max-width: 1920px;
+  }
+}
+
+/* ==========================================================================
      BASE STYLES - Estilos compartidos entre mobile y desktop
      ========================================================================== */
 
-  /* Contenedor principal del mega menu con búsqueda inline */
-  .header__search-mega-menu {
-    @apply flex justify-between items-center w-full gap-4;
+/* Contenedor principal del mega menu con búsqueda inline */
 
-    /* Sección de búsqueda inline - crece al máximo */
-    .header__search-mega-menu-search {
-      @apply flex-1 max-w-full flex items-center;
-    }
+.header__search-mega-menu {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
 
-    /* Sección de ayuda/WhatsApp - más compacta */
-    .header__search-mega-menu-help {
-      @apply flex items-center shrink-0 whitespace-nowrap gap-4;
+  /* Sección de búsqueda inline - crece al máximo */
+}
 
-      svg {
-        @apply w-8 h-8 shrink-0;
-      }
+.header__search-mega-menu .header__search-mega-menu-search {
+  display: flex;
+  max-width: 100%;
+  flex: 1 1 0%;
+  align-items: center;
+}
 
-      .header__search-mega-menu-help-text {
-        @apply flex flex-col gap-0;
+/* Sección de ayuda/WhatsApp - más compacta */
 
-        .help-text-title {
-          @apply text-white text-sm leading-tight;
-        }
+.header__search-mega-menu .header__search-mega-menu-help {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 1rem;
+  white-space: nowrap;
+}
 
-        .help-text-content {
-          @apply text-white text-lg font-normal leading-tight;
+:is(.header__search-mega-menu .header__search-mega-menu-help) svg {
+  height: 2rem;
+  width: 2rem;
+  flex-shrink: 0;
+}
 
-          a {
-            @apply font-bold text-white no-underline hover:underline;
-          }
-        }
-      }
-    }
-  }
+:is(.header__search-mega-menu .header__search-mega-menu-help)
+  .header__search-mega-menu-help-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+}
 
-  /* Layout del mega menu container */
-  .header__search-mega-menu-container {
-    @apply flex items-center justify-start gap-4 w-full flex-1 flex-col;
+:is(:is(.header__search-mega-menu .header__search-mega-menu-help)
+    .header__search-mega-menu-help-text)
+  .help-text-title {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  line-height: 1.25;
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+}
 
-    .list-menu--inline {
-      @apply shrink-0;
-    }
+:is(:is(.header__search-mega-menu .header__search-mega-menu-help)
+    .header__search-mega-menu-help-text)
+  .help-text-content {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  font-weight: 400;
+  line-height: 1.25;
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+}
 
-    .header__search-mega-menu {
-      @apply flex-1 w-full max-w-none;
-    }
-  }
+:is(:is(:is(.header__search-mega-menu .header__search-mega-menu-help)
+      .header__search-mega-menu-help-text)
+    .help-text-content)
+  a {
+  font-weight: 700;
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+  -webkit-text-decoration-line: none;
+  text-decoration-line: none;
+}
 
-  /* ==========================================================================
+:is(:is(:is(.header__search-mega-menu .header__search-mega-menu-help)
+      .header__search-mega-menu-help-text)
+    .help-text-content)
+  a:hover {
+  -webkit-text-decoration-line: underline;
+  text-decoration-line: underline;
+}
+
+/* Layout del mega menu container */
+
+.header__search-mega-menu-container .list-menu--inline {
+  flex-shrink: 0;
+}
+
+.header__search-mega-menu-container .header__search-mega-menu {
+  width: 100%;
+  max-width: none;
+  flex: 1 1 0%;
+}
+
+/* ==========================================================================
      INLINE SEARCH WRAPPER - Estilos del contenedor de búsqueda
      ========================================================================== */
 
-  .header__search-mega-menu .inline-search-wrapper {
-    @apply w-full flex flex-1;
+.header__search-mega-menu .inline-search-wrapper {
+  display: flex;
+  width: 100%;
+  flex: 1 1 0%;
 
-    /* Formulario inline */
-    .inline-search-form {
-      @apply relative w-full flex flex-1;
+  /* Formulario inline */
+}
 
-      .field {
-        @apply relative w-full m-0 flex flex-1;
-        &:before {
-          @apply hidden;
-        }
-        &:after {
-          @apply hidden;
-        }
-      }
-    }
+:is(.header__search-mega-menu .inline-search-wrapper) .inline-search-form {
+  position: relative;
+  display: flex;
+  width: 100%;
+  flex: 1 1 0%;
+}
 
-    /* Label oculto para accesibilidad */
-    .field__label {
-      @apply invisible absolute w-px h-px overflow-hidden whitespace-nowrap opacity-0 -m-px p-0 border-0;
-      @apply !hidden;
-      clip: rect(0, 0, 0, 0) !important;
-    }
+:is(:is(.header__search-mega-menu .inline-search-wrapper) .inline-search-form)
+  .field {
+  position: relative;
+  margin: 0px;
+  display: flex;
+  width: 100%;
+  flex: 1 1 0%;
+}
 
-    /* Botón de reset (oculto) */
-    .reset__button {
-      @apply !hidden;
-    }
+:is(:is(:is(.header__search-mega-menu .inline-search-wrapper)
+      .inline-search-form)
+    .field):before {
+  display: none;
+}
 
-    /* Override de estilos de Safari */
-    input::-webkit-search-decoration {
-      -webkit-appearance: none !important;
-    }
-  }
+:is(:is(:is(.header__search-mega-menu .inline-search-wrapper)
+      .inline-search-form)
+    .field):after {
+  display: none;
+}
 
-  /* ==========================================================================
+/* Label oculto para accesibilidad */
+
+:is(.header__search-mega-menu .inline-search-wrapper) .field__label {
+  visibility: hidden;
+  position: absolute;
+  margin: -1px;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  white-space: nowrap;
+  border-width: 0px;
+  padding: 0px;
+  opacity: 0;
+  display: none !important;
+  clip: rect(0, 0, 0, 0) !important;
+}
+
+/* Botón de reset (oculto) */
+
+:is(.header__search-mega-menu .inline-search-wrapper) .reset__button {
+  display: none !important;
+}
+
+/* Override de estilos de Safari */
+
+:is(.header__search-mega-menu .inline-search-wrapper)
+  input::-webkit-search-decoration {
+  -webkit-appearance: none !important;
+}
+
+/* ==========================================================================
      INPUT STYLES - Estilos del campo de búsqueda
      ========================================================================== */
 
-  .header__search-mega-menu .inline-search-wrapper {
-    /* Input de búsqueda inline - Estilos completos */
-    .inline-search-input {
-      @apply w-full flex-1 h-14 bg-blanco text-negro text-lg transition-all duration-300 pr-12 px-4 py-2 rounded-3xl outline-none border-none;
+/* Input de búsqueda inline - Estilos completos */
 
-      &::placeholder {
-        @apply text-negro/50 !important;
-      }
+:is(.header__search-mega-menu .inline-search-wrapper) .inline-search-input {
+  height: 3.5rem;
+  width: 100%;
+  flex: 1 1 0%;
+  border-radius: 1.5rem;
+  border-style: none;
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+  padding-left: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-right: 3rem;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  --tw-text-opacity: 1;
+  color: rgb(10 10 10 / var(--tw-text-opacity));
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
 
-      &:focus {
-        @apply bg-gris ring-1 ring-rojo border-transparent outline-none;
+:is(:is(.header__search-mega-menu .inline-search-wrapper)
+    .inline-search-input)::-moz-placeholder {
+  color: rgb(10 10 10 / 0.5) !important;
+}
 
-        &::placeholder {
-          @apply text-negro/30 !important;
-          color: rgba(10, 10, 10, 0.3) !important;
-        }
-      }
-    }
-  }
+:is(:is(.header__search-mega-menu .inline-search-wrapper)
+    .inline-search-input):-ms-input-placeholder {
+  color: rgb(10 10 10 / 0.5) !important;
+}
 
-  /* ==========================================================================
+:is(:is(.header__search-mega-menu .inline-search-wrapper)
+    .inline-search-input)::placeholder {
+  color: rgb(10 10 10 / 0.5) !important;
+}
+
+:is(:is(.header__search-mega-menu .inline-search-wrapper)
+    .inline-search-input):focus {
+  border-color: transparent;
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 239 239 / var(--tw-bg-opacity));
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0
+    var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0
+    calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow),
+    var(--tw-shadow, 0 0 #0000);
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(250 0 20 / var(--tw-ring-opacity));
+}
+
+:is(:is(.header__search-mega-menu .inline-search-wrapper)
+    .inline-search-input):focus::-moz-placeholder {
+  color: rgb(10 10 10 / 0.3) !important;
+  color: rgba(10, 10, 10, 0.3) !important;
+}
+
+:is(:is(.header__search-mega-menu .inline-search-wrapper)
+    .inline-search-input):focus:-ms-input-placeholder {
+  color: rgb(10 10 10 / 0.3) !important;
+  color: rgba(10, 10, 10, 0.3) !important;
+}
+
+:is(:is(.header__search-mega-menu .inline-search-wrapper)
+    .inline-search-input):focus::placeholder {
+  color: rgb(10 10 10 / 0.3) !important;
+  color: rgba(10, 10, 10, 0.3) !important;
+}
+
+/* ==========================================================================
      PREDICTIVE SEARCH RESULTS - Resultados de búsqueda predictiva
      ========================================================================== */
 
-  .header__search-mega-menu .inline-search-wrapper {
-    .inline-search-results {
-      @apply absolute top-full left-0 right-0 mt-2;
-      @apply bg-negro rounded-lg text-negro;
-      @apply max-h-96 overflow-y-auto z-50;
-    }
+:is(.header__search-mega-menu .inline-search-wrapper) .inline-search-results {
+  position: absolute;
+  top: 100%;
+  left: 0px;
+  right: 0px;
+  margin-top: 0.5rem;
+  border-radius: 0.5rem;
+  --tw-bg-opacity: 1;
+  background-color: rgb(10 10 10 / var(--tw-bg-opacity));
+  --tw-text-opacity: 1;
+  color: rgb(10 10 10 / var(--tw-text-opacity));
+  z-index: 50;
+  max-height: 24rem;
+  overflow-y: auto;
+}
 
-    /* Estados de carga y mensajes */
-    .predictive-search__loading-state {
-      @apply flex items-center justify-center w-full p-4;
-      svg {
-        @apply w-8 h-8 fill-current;
-      }
-    }
-  }
+/* Estados de carga y mensajes */
 
-  /* ==========================================================================
+:is(.header__search-mega-menu .inline-search-wrapper)
+  .predictive-search__loading-state {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+:is(:is(.header__search-mega-menu .inline-search-wrapper)
+    .predictive-search__loading-state)
+  svg {
+  height: 2rem;
+  width: 2rem;
+  fill: currentColor;
+}
+
+/* ==========================================================================
      MOBILE STYLES - Estilos específicos para dispositivos móviles
      ========================================================================== */
 
-  @media screen and (max-width: 989px) {
-    /* Ocultar búsqueda inline en mobile */
-    .header__search-mega-menu .inline-search-wrapper {
-      @apply !hidden;
-    }
-
-    /* Mostrar ícono del modal en mobile */
-    .header__search-mega-menu .inline-search-icon {
-      @apply !flex;
-    }
-
-    /* Ajustar alineación del mega menu en mobile */
-    .header__search-mega-menu {
-      @apply justify-end;
-
-      .header__search-mega-menu-search {
-        @apply flex-initial;
-      }
-    }
+@media screen and (max-width: 989px) {
+  /* Ocultar búsqueda inline en mobile */
+  .header__search-mega-menu .inline-search-wrapper {
+    display: none !important;
   }
 
-  /* ==========================================================================
+  /* Mostrar ícono del modal en mobile */
+  .header__search-mega-menu .inline-search-icon {
+    display: flex !important;
+  }
+
+  /* Ajustar alineación del mega menu en mobile */
+  .header__search-mega-menu {
+    justify-content: flex-end;
+  }
+
+  .header__search-mega-menu .header__search-mega-menu-search {
+    flex: 0 1 auto;
+  }
+}
+
+/* ==========================================================================
      DESKTOP STYLES - Estilos específicos para desktop
      ========================================================================== */
 
-  @media screen and (min-width: 990px) {
-    /* Mostrar búsqueda inline en desktop */
-    .header__search-mega-menu .header__search-mega-menu-search {
-      @apply !flex flex-1;
-    }
-
-    .header__search-mega-menu .inline-search-wrapper {
-      @apply !flex flex-1 w-full;
-      flex: 1 1 0% !important; /* Ocupar todo el ancho disponible */
-    }
-
-    /* Ocultar ícono del modal en desktop */
-    .header__search-mega-menu .inline-search-icon {
-      @apply !hidden;
-    }
-
-    /* Ocultar modal completamente en desktop */
-    .header__search-mega-menu .inline-search-modal-wrapper {
-      @apply !hidden absolute w-0 h-0 overflow-hidden pointer-events-none;
-    }
-
-    .header__search-mega-menu
-      .header__search-mega-menu-search
-      .inline-search-modal-wrapper {
-      @apply absolute w-0 h-0 overflow-hidden pointer-events-none;
-    }
-
-    /* Ajustar grid del header en desktop */
-    .header--middle-left {
-      @apply grid-cols-[auto_1fr_auto] gap-x-8;
-      grid-template-areas: 'heading navigation icons';
-    }
+@media screen and (min-width: 990px) {
+  /* Mostrar búsqueda inline en desktop */
+  .header__search-mega-menu .header__search-mega-menu-search {
+    display: flex !important;
+    flex: 1 1 0%;
   }
-} /* End @layer components */
+
+  .header__search-mega-menu .inline-search-wrapper {
+    display: flex !important;
+    width: 100%;
+    flex: 1 1 0% !important; /* Ocupar todo el ancho disponible */
+  }
+
+  /* Ocultar ícono del modal en desktop */
+  .header__search-mega-menu .inline-search-icon {
+    display: none !important;
+  }
+
+  /* Ocultar modal completamente en desktop */
+  .header__search-mega-menu .inline-search-modal-wrapper {
+    pointer-events: none;
+    position: absolute;
+    display: none !important;
+    height: 0px;
+    width: 0px;
+    overflow: hidden;
+  }
+
+  .header__search-mega-menu
+    .header__search-mega-menu-search
+    .inline-search-modal-wrapper {
+    pointer-events: none;
+    position: absolute;
+    height: 0px;
+    width: 0px;
+    overflow: hidden;
+  }
+
+  /* Ajustar grid del header en desktop */
+  .header--middle-left {
+    grid-template-columns: auto 1fr auto;
+    -moz-column-gap: 2rem;
+    column-gap: 2rem;
+    grid-template-areas: 'heading navigation icons';
+  }
+}
+
+/* End @layer components */
+
+/*# sourceMappingURL=mega-menu-search.css.map */

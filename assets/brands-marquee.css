@@ -2,38 +2,56 @@
    BRANDS MARQUEE - Marquesina infinita de marcas
    ========================================================================== */
 .section-brands-marquee {
-  @apply mx-4;
+  margin-left: 1rem;
+  margin-right: 1rem;
 }
 /* ==========================================================================
    Sección Principal
    ========================================================================== */
 .brands-marquee-section {
-  @apply relative w-full bg-black overflow-hidden rounded-3xl !pt-8 !pb-12;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 0 0 / var(--tw-bg-opacity));
+  padding-top: 2rem !important;
+  padding-bottom: 3rem !important;
 }
-
 /* ==========================================================================
    Contenedor Principal
    ========================================================================== */
 .brands-marquee-wrapper {
-  @apply relative w-full;
+  position: relative;
+  width: 100%;
 }
-
 /* ==========================================================================
    Título Visible
    ========================================================================== */
 .brands-marquee-title-wrapper {
-  @apply flex justify-center items-center w-full mb-8;
+  margin-bottom: 2rem;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
 }
-
 .brands-marquee-title {
-  @apply text-white text-xl font-bold uppercase text-center tracking-tight;
+  text-align: center;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.025em;
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
 }
-
 /* ==========================================================================
    Contenedor del Marquee
    ========================================================================== */
 .brands-marquee-container {
-  @apply relative w-full overflow-hidden;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
   mask-image: linear-gradient(
     to right,
     transparent,
@@ -49,41 +67,50 @@
     transparent
   );
 }
-
 /* ==========================================================================
    Track del Marquee (Scroll Infinito)
    ========================================================================== */
 .brands-marquee-track {
-  @apply flex items-center gap-8 whitespace-nowrap;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  white-space: nowrap;
   animation: marquee-scroll 30s linear infinite;
   will-change: transform;
 }
-
 .brands-marquee-container:hover .brands-marquee-track {
   animation-play-state: paused;
 }
-
 .brands-marquee-container:focus-within .brands-marquee-track {
   animation-play-state: paused;
 }
-
 /* ==========================================================================
    Items del Marquee (Marcas)
    ========================================================================== */
 .brands-marquee-item {
-  @apply inline-block text-white font-bold text-3xl uppercase no-underline transition-opacity duration-200;
+  display: inline-block;
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+  -webkit-text-decoration-line: none;
+  text-decoration-line: none;
+  transition-property: opacity;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
   font-family: var(--font-body-family);
   letter-spacing: 0.05em;
-
-  &:hover {
-    @apply opacity-70;
-  }
-
-  &:focus {
-    @apply outline-2 outline-offset-2 outline-white;
-  }
 }
-
+.brands-marquee-item:hover {
+  opacity: 0.7;
+}
+.brands-marquee-item:focus {
+  outline-width: 2px;
+  outline-offset: 2px;
+  outline-color: #fff;
+}
 /* ==========================================================================
    Animación de Scroll Infinito
    ========================================================================== */
@@ -95,29 +122,33 @@
     transform: translateX(-50%);
   }
 }
-
 /* ==========================================================================
    Estado Vacío
    ========================================================================== */
 .brands-marquee-empty {
-  @apply text-center py-8 text-gray-400;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  text-align: center;
+  --tw-text-opacity: 1;
+  color: rgb(156 163 175 / var(--tw-text-opacity));
 }
-
 /* ==========================================================================
    Responsive
    ========================================================================== */
 @media screen and (max-width: 749px) {
   .brands-marquee-item {
-    @apply text-lg;
+    font-size: 1.125rem;
+    line-height: 1.75rem;
   }
 
   .brands-marquee-track {
     gap: 24px;
   }
 }
-
 @media (prefers-reduced-motion: reduce) {
   .brands-marquee-track {
     animation: none;
   }
 }
+
+/*# sourceMappingURL=brands-marquee.css.map */

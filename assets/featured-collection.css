@@ -1,0 +1,139 @@
+/* ==========================================================================
+   FEATURED COLLECTION - Sección de colección destacada
+   ========================================================================== */
+
+.container {
+  width: 100%;
+}
+
+@media (min-width: 320px) {
+  .container {
+    max-width: 320px;
+  }
+}
+
+@media (min-width: 750px) {
+  .container {
+    max-width: 750px;
+  }
+}
+
+@media (min-width: 990px) {
+  .container {
+    max-width: 990px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .container {
+    max-width: 1440px;
+  }
+}
+
+@media (min-width: 1920px) {
+  .container {
+    max-width: 1920px;
+  }
+}
+
+/* ==========================================================================
+     Título de la Colección - Centrado y más pequeño que rich-text__heading
+     ========================================================================== */
+
+.collection__title.title-wrapper {
+  margin-bottom: 2.5rem;
+
+  text-align: center;
+}
+
+.collection__title .title {
+  text-align: center;
+
+  font-size: 1.5rem;
+
+  line-height: 2rem;
+
+  font-weight: 700;
+
+  --tw-text-opacity: 1;
+
+  color: rgb(10 10 10 / var(--tw-text-opacity));
+}
+
+@media (min-width: 750px) {
+  .collection__title .title {
+    font-size: 1.875rem;
+
+    line-height: 2.25rem;
+  }
+}
+
+.collection__title .title:not(:only-child) {
+  margin-bottom: 1rem;
+}
+
+@media screen and (min-width: 990px) {
+  .collection__title--desktop-slider .title {
+    margin-bottom: 2.5rem;
+  }
+
+  .collection__title.title-wrapper--self-padded-tablet-down {
+    padding-left: 5rem;
+
+    padding-right: 5rem;
+  }
+}
+
+/* ==========================================================================
+     Descripción de la Colección
+     ========================================================================== */
+
+.collection__description {
+  margin-left: auto;
+
+  margin-right: auto;
+
+  max-width: 42rem;
+
+  text-align: center;
+
+  font-size: 1rem;
+
+  line-height: 1.5rem;
+
+  --tw-text-opacity: 1;
+
+  color: rgb(55 65 81 / var(--tw-text-opacity));
+}
+
+@media (min-width: 750px) {
+  .collection__description {
+    font-size: 1.125rem;
+
+    line-height: 1.75rem;
+  }
+}
+
+.collection__description > * {
+  margin: 0px;
+}
+
+/* ==========================================================================
+     Responsive Adjustments
+     ========================================================================== */
+
+@media screen and (max-width: 749px) {
+  .collection__title .title {
+    font-size: 1.25rem;
+
+    line-height: 1.75rem;
+  }
+
+  .collection__description {
+    font-size: 0.875rem;
+
+    line-height: 1.25rem;
+  }
+}
+
+/*# sourceMappingURL=featured-collection.css.map */

@@ -1,0 +1,503 @@
+/* ==========================================================================
+   PREDICTIVE SEARCH MEGA MENU - Búsqueda predictiva específica para mega menu
+   ========================================================================== */
+
+@tailwind components;
+
+@layer components {
+  /* ==========================================================================
+     BASE STYLES - Estilos base para búsqueda predictiva
+     ========================================================================== */
+
+  /* Contenedor principal de búsqueda predictiva */
+  predictive-search-mega-menu {
+    @apply relative w-full;
+  }
+
+  /* Estilos del input de búsqueda - Mayor especificidad para sobrescribir mega-menu-search.css */
+  predictive-search-mega-menu .search__input.field__input.inline-search-input {
+    @apply w-full flex-1 h-14 bg-blanco text-negro text-lg transition-all duration-300 pr-12 px-4 py-2 rounded-3xl outline-none border-none !important;
+
+    &::placeholder {
+      @apply text-negro/50 !important;
+      color: rgba(10, 10, 10, 0.5) !important;
+      opacity: 1 !important;
+    }
+
+    &:focus {
+      @apply bg-gris ring-1 ring-rojo border-transparent outline-none !important;
+
+      &::placeholder {
+        @apply text-negro/30 !important;
+        color: rgba(10, 10, 10, 0.3) !important;
+        opacity: 1 !important;
+      }
+    }
+  }
+
+  /* Contenedor del formulario */
+  predictive-search-mega-menu .search {
+    @apply relative w-full flex flex-1;
+  }
+
+  /* Campo del formulario */
+  predictive-search-mega-menu .field {
+    @apply relative w-full m-0 flex flex-1;
+  }
+
+  /* Botón de búsqueda - Mayor especificidad */
+  predictive-search-mega-menu .search__button {
+    @apply absolute right-4 top-1/2 transform -translate-y-1/2;
+    @apply flex items-center justify-center;
+    @apply h-8 w-8 cursor-pointer rounded-md border-none;
+    @apply transition-all duration-200 ease-in-out;
+
+    .svg-wrapper {
+      @apply w-full h-full;
+
+      svg {
+        @apply w-full h-full text-rojo fill-current;
+      }
+    }
+  }
+
+  /* Dropdown de resultados predictivos */
+  predictive-search-mega-menu .predictive-search {
+    @apply hidden absolute top-full left-0 right-0 mt-2 z-50;
+    @apply max-h-96 overflow-y-auto;
+  }
+
+  /* Estados de visibilidad */
+  predictive-search-mega-menu[open] .predictive-search,
+  predictive-search-mega-menu[loading] .predictive-search {
+    @apply block;
+  }
+
+  /* ==========================================================================
+     RESULTS CONTAINER - Contenedor de resultados
+     ========================================================================== */
+
+  /* Wrapper de grupos de resultados */
+  predictive-search-mega-menu
+    .mega-menu-predictive-search__results-groups-wrapper {
+    @apply flex border-b border-gray-200 pb-4;
+  }
+
+  /* Grupo de resultados */
+  predictive-search-mega-menu .mega-menu-predictive-search__result-group {
+    @apply flex flex-col flex-1 gap-8;
+  }
+
+  /* ==========================================================================
+     HEADINGS - Títulos de secciones
+     ========================================================================== */
+
+  /* Títulos de secciones */
+  predictive-search-mega-menu .mega-menu-predictive-search__heading {
+    @apply border-b border-gray-800 mx-4 py-6 pt-6 pb-3;
+    @apply text-lg font-medium text-blanco uppercase tracking-wide;
+  }
+
+  /* ==========================================================================
+     LISTS - Listas de resultados
+     ========================================================================== */
+
+  /* Lista de resultados */
+  predictive-search-mega-menu .mega-menu-predictive-search__results-list {
+    @apply list-none p-0 m-0;
+  }
+
+  /* Items de la lista */
+  predictive-search-mega-menu .mega-menu-predictive-search__list-item {
+    @apply relative border-b border-gray-900;
+  }
+
+  /* ==========================================================================
+     ITEMS - Elementos de resultados
+     ========================================================================== */
+
+  /* Item base */
+  predictive-search-mega-menu .mega-menu-predictive-search__item {
+    @apply flex p-4 text-left no-underline w-full;
+    @apply transition-colors duration-150 ease-in-out;
+  }
+
+  /* Item con thumbnail (productos) */
+  predictive-search-mega-menu
+    .mega-menu-predictive-search__item--link-with-thumbnail {
+    @apply grid grid-cols-[6rem_1fr] gap-8;
+    grid-template-areas: 'product-image product-content';
+  }
+
+  /* Item de término de búsqueda */
+  predictive-search-mega-menu .mega-menu-predictive-search__item--term {
+    @apply justify-between items-center p-5;
+    @apply break-all leading-relaxed;
+  }
+
+  /* ==========================================================================
+     CONTENT - Contenido de los items
+     ========================================================================== */
+
+  /* Contenedor de contenido */
+  predictive-search-mega-menu .mega-menu-predictive-search__item-content {
+    @apply flex flex-col;
+    grid-area: product-content;
+  }
+
+  /* Contenido centrado */
+  predictive-search-mega-menu
+    .mega-menu-predictive-search__item-content--centered {
+    @apply justify-center;
+  }
+
+  /* Vendor (proveedor) */
+  predictive-search-mega-menu .mega-menu-predictive-search__item-vendor {
+    @apply text-xs text-gray-100 uppercase tracking-wide;
+  }
+
+  /* Título del item */
+  predictive-search-mega-menu .mega-menu-predictive-search__item-heading {
+    @apply m-0 text-base font-medium text-blanco;
+  }
+
+  /* Resultado de consulta */
+  predictive-search-mega-menu .mega-menu-predictive-search__item-query-result {
+    @apply font-bold;
+  }
+
+  /* Texto marcado en resultados */
+  predictive-search-mega-menu
+    .mega-menu-predictive-search__item-query-result
+    mark {
+    @apply bg-transparent text-gray-200 font-normal;
+  }
+
+  /* ==========================================================================
+     IMAGES - Imágenes de productos
+     ========================================================================== */
+
+  /* Imagen de producto */
+  predictive-search-mega-menu .mega-menu-predictive-search__image {
+    @apply object-contain rounded-md;
+    grid-area: product-image;
+    font-family: 'object-fit: contain';
+  }
+
+  /* ==========================================================================
+     PRICES - Precios
+     ========================================================================== */
+
+  /* Precio en resultados */
+  predictive-search-mega-menu .mega-menu-predictive-search__item .price {
+    @apply text-gray-100 text-sm mt-2;
+  }
+
+  /* Espaciado después del vendor */
+  predictive-search-mega-menu
+    .mega-menu-predictive-search__item-vendor
+    + .mega-menu-predictive-search__item-heading,
+  predictive-search-mega-menu .predictive-search .price {
+    @apply mt-2;
+  }
+
+  /* Estilos de precio con nesting */
+  predictive-search-mega-menu .price {
+    @apply mt-2;
+
+    .price__container {
+      @apply flex flex-col gap-1;
+    }
+
+    .price__regular {
+      @apply flex items-center;
+    }
+
+    .price__sale {
+      @apply flex flex-col gap-1;
+    }
+
+    .price-item {
+      @apply text-sm font-medium;
+
+      &--regular {
+        @apply text-gray-300;
+      }
+
+      &--sale {
+        @apply text-green-400 font-semibold;
+      }
+    }
+
+    /* Estados de oferta - solo mostrar precio de oferta */
+    &.price--on-sale {
+      .price__regular {
+        @apply hidden;
+      }
+
+      .price__sale {
+        @apply flex flex-col gap-1;
+
+        .price-item--regular s {
+          @apply text-gray-400 line-through text-xs;
+        }
+
+        .price-item--sale {
+          @apply text-green-400 font-semibold text-sm;
+        }
+      }
+    }
+
+    /* Precio regular sin oferta - solo mostrar precio normal */
+    &:not(.price--on-sale) {
+      .price__sale {
+        @apply hidden;
+      }
+
+      .price__regular {
+        .price-item--regular {
+          @apply text-gray-300 text-sm;
+        }
+      }
+    }
+
+    /* Ocultar precio unitario que causa el "/" extra */
+    .unit-price {
+      @apply hidden;
+    }
+  }
+
+  /* ==========================================================================
+     ICONS - Iconos
+     ========================================================================== */
+
+  /* ==========================================================================
+     STATES - Estados interactivos
+     ========================================================================== */
+
+  /* Item seleccionado */
+  predictive-search-mega-menu
+    .mega-menu-predictive-search__list-item[aria-selected='true']
+    > *,
+  predictive-search-mega-menu .mega-menu-predictive-search__list-item:hover > *,
+  predictive-search-mega-menu
+    .mega-menu-predictive-search__item[aria-selected='true'],
+  predictive-search-mega-menu .mega-menu-predictive-search__item:hover {
+    @apply text-blanco bg-gray-800;
+  }
+
+  /* Título con underline en hover */
+  predictive-search-mega-menu
+    .mega-menu-predictive-search__list-item[aria-selected='true']
+    .mega-menu-predictive-search__item-heading,
+  predictive-search-mega-menu
+    .mega-menu-predictive-search__list-item:hover
+    .mega-menu-predictive-search__item-heading {
+    @apply underline underline-offset-2;
+  }
+
+  /* Título sin underline por defecto */
+  predictive-search-mega-menu .mega-menu-predictive-search__item-heading {
+    @apply no-underline;
+  }
+
+  /* ==========================================================================
+     LOADING STATES - Estados de carga
+     ========================================================================== */
+
+  /* Spinner de carga */
+  predictive-search-mega-menu .spinner {
+    @apply w-6 h-6;
+  }
+
+  /* Estado de carga oculto por defecto */
+  predictive-search-mega-menu .mega-menu-predictive-search__loading-state {
+    @apply hidden;
+  }
+
+  /* Mostrar spinner solo cuando está cargando */
+  predictive-search-mega-menu[loading]
+    .mega-menu-predictive-search__loading-state {
+    @apply flex justify-center p-4;
+  }
+
+  /* Ocultar botón de búsqueda cuando está cargando */
+  predictive-search-mega-menu[loading]
+    .mega-menu-predictive-search__search-for-button {
+    @apply hidden;
+  }
+
+  /* Ocultar resultados cuando está cargando */
+  predictive-search-mega-menu[loading]
+    .mega-menu-predictive-search__results-groups-wrapper {
+    @apply hidden;
+  }
+
+  /* Ocultar estado de carga cuando hay resultados */
+  predictive-search-mega-menu[results]
+    .mega-menu-predictive-search__loading-state {
+    @apply hidden;
+  }
+
+  /* Ocultar loader cuando hay resultados o cuando se cierra */
+  predictive-search-mega-menu:not([loading])
+    .mega-menu-predictive-search__loading-state {
+    @apply hidden;
+  }
+
+  /* Estilos para mensaje de "no hay resultados" - Máxima especificidad */
+  #predictive-search-results-mega-menu
+    .mega-menu-predictive-search__no-results {
+    @apply flex flex-col items-center justify-center p-8 text-center;
+  }
+
+  #predictive-search-results-mega-menu
+    .mega-menu-predictive-search__no-results-icon {
+    @apply w-16 h-16 text-gray-300 mb-4;
+    svg {
+      @apply w-full h-full;
+    }
+  }
+
+  #predictive-search-results-mega-menu
+    .mega-menu-predictive-search__no-results-title {
+    @apply text-xl font-semibold text-gray-300 mb-3;
+    @apply leading-tight;
+  }
+
+  #predictive-search-results-mega-menu
+    .mega-menu-predictive-search__no-results-message {
+    @apply text-sm text-gray-400 mb-4;
+    @apply leading-relaxed max-w-sm;
+  }
+
+  /* Botón de búsqueda para término */
+
+  .mega-menu-predictive-search__search-for-button {
+    @apply block mx-2 mb-2;
+    button {
+      @apply w-full flex justify-between items-center bg-rojo hover:bg-rojo/80;
+      @apply rounded-full transition-colors duration-200;
+      @apply text-white text-xl px-8 py-3 no-underline;
+      span {
+        @apply text-blanco font-semibold;
+      }
+      svg {
+        @apply text-blanco w-6 h-6 fill-current;
+      }
+    }
+  }
+
+  /* ==========================================================================
+     MOBILE STYLES - Estilos específicos para móvil
+     ========================================================================== */
+
+  @media screen and (max-width: 749px) {
+    /* Ajustar posición en móvil */
+    predictive-search-mega-menu .predictive-search {
+      @apply right-0 left-0 top-full;
+    }
+
+    /* Cambiar dirección de grupos en móvil */
+    predictive-search-mega-menu
+      .mega-menu-predictive-search__results-groups-wrapper {
+      @apply flex-col;
+    }
+
+    /* Gap entre grupos en móvil */
+    predictive-search-mega-menu
+      .mega-menu-predictive-search__results-groups-wrapper:not(.mega-menu-predictive-search__results-groups-wrapper--no-suggestions) {
+      @apply gap-8;
+    }
+
+    /* Ajustar padding del item de término en móvil */
+    predictive-search-mega-menu .mega-menu-predictive-search__item--term {
+      @apply py-4;
+    }
+  }
+
+  /* ==========================================================================
+     DESKTOP STYLES - Estilos específicos para desktop
+     ========================================================================== */
+
+  @media screen and (min-width: 750px) {
+    /* Ajustar ancho en desktop */
+    predictive-search-mega-menu .predictive-search {
+      @apply w-full;
+    }
+
+    /* Ocultar páginas duplicadas en desktop */
+    predictive-search-mega-menu
+      .mega-menu-predictive-search__result-group:first-child
+      .mega-menu-predictive-search__pages-wrapper {
+      @apply hidden;
+    }
+
+    /* Mostrar páginas solo en el segundo grupo */
+    predictive-search-mega-menu
+      .mega-menu-predictive-search__results-groups-wrapper--no-products
+      .mega-menu-predictive-search__result-group:nth-child(2)
+      .mega-menu-predictive-search__pages-wrapper,
+    predictive-search-mega-menu
+      .mega-menu-predictive-search__result-group:last-child
+      .mega-menu-predictive-search__pages-wrapper {
+      @apply hidden;
+    }
+
+    /* Mostrar páginas en el primer grupo */
+    predictive-search-mega-menu
+      .mega-menu-predictive-search__result-group:first-child
+      .mega-menu-predictive-search__pages-wrapper {
+      @apply block;
+    }
+
+    /* Ancho fijo para el primer grupo */
+    predictive-search-mega-menu
+      .mega-menu-predictive-search__result-group:first-child {
+      @apply flex-none;
+      flex: 0 0 26.4rem;
+    }
+
+    /* Crecer cuando no hay productos */
+    predictive-search-mega-menu
+      .mega-menu-predictive-search__results-groups-wrapper--no-products
+      .mega-menu-predictive-search__result-group:first-child,
+    predictive-search-mega-menu
+      .mega-menu-predictive-search__result-group:only-child {
+      @apply flex-grow;
+    }
+  }
+
+  /* ==========================================================================
+     ACCESSIBILITY - Mejoras de accesibilidad
+     ========================================================================== */
+
+  /* Status oculto por defecto */
+  predictive-search-mega-menu .predictive-search-status {
+    @apply invisible absolute w-px h-px overflow-hidden whitespace-nowrap opacity-0;
+    @apply -m-px p-0 border-0;
+    clip: rect(0, 0, 0, 0) !important;
+  }
+
+  /* Status siempre oculto - solo para lectores de pantalla */
+  predictive-search-mega-menu .predictive-search-status[aria-hidden='false'] {
+    @apply invisible absolute w-px h-px overflow-hidden whitespace-nowrap opacity-0;
+    @apply -m-px p-0 border-0;
+    clip: rect(0, 0, 0, 0) !important;
+  }
+
+  /* ==========================================================================
+     UTILITIES - Utilidades específicas
+     ========================================================================== */
+
+  /* Ocultar elementos cuando no hay resultados */
+  predictive-search-mega-menu
+    .mega-menu-predictive-search__results-groups-wrapper--no-products {
+    @apply border-b-0;
+  }
+
+  predictive-search-mega-menu
+    .mega-menu-predictive-search__results-groups-wrapper--no-suggestions {
+    @apply border-b-0;
+  }
+} /* End @layer components */
