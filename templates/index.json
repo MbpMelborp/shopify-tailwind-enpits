@@ -202,20 +202,20 @@
         "collection-0": {
           "type": "collection",
           "settings": {
-            "collection": ""
+            "collection": "benelli"
           }
         },
         "product": {
           "type": "product",
           "settings": {
-            "product": "",
+            "product": "diamond-halo-stud-earrings-8",
             "second_image": false
           }
         },
         "collection-1": {
           "type": "collection",
           "settings": {
-            "collection": ""
+            "collection": "llantas"
           }
         }
       },
