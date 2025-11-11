@@ -167,7 +167,7 @@
 
   @screen lg {
     .quick-add-modal__content {
-      @apply w-7/10;
+      @apply w-[70%];
     }
   }
 
