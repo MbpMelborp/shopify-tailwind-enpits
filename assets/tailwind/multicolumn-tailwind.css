@@ -1,0 +1,289 @@
+/* ==========================================================================
+   MULTICOLUMN SECTION - Sección de múltiples columnas
+   ========================================================================== */
+
+@tailwind components;
+
+@layer components {
+  /* ==========================================================================
+     Título del Multicolumn - Centrado igual a featured-collection
+     ========================================================================== */
+  .multicolumn .title {
+    @apply m-0;
+  }
+
+  .multicolumn.no-heading .title {
+    @apply hidden;
+  }
+
+  .multicolumn .title-wrapper-with-link {
+    @apply mt-0 mb-10 text-center;
+  }
+
+  .multicolumn__title .title {
+    @apply text-2xl md:text-3xl font-bold text-center text-negro;
+  }
+
+  @media screen and (max-width: 749px) {
+    .multicolumn .title-wrapper-with-link {
+      @apply mb-12;
+    }
+
+    .multicolumn__title .title {
+      @apply text-xl;
+    }
+  }
+
+  @media screen and (min-width: 750px) and (max-width: 989px) {
+    .multicolumn__title {
+      @apply px-20;
+    }
+  }
+
+  @media screen and (max-width: 989px) {
+    .multicolumn .page-width {
+      @apply px-0;
+    }
+  }
+
+  /* ==========================================================================
+     Multicolumn Card Image Wrapper
+     ========================================================================== */
+  .multicolumn-card__image-wrapper--third-width {
+    width: 33%;
+  }
+
+  .multicolumn-card__image-wrapper--half-width {
+    width: 50%;
+  }
+
+  .multicolumn-list__item.center
+    .multicolumn-card__image-wrapper:not(.multicolumn-card__image-wrapper--full-width),
+  .multicolumn-list__item:only-child {
+    @apply mx-auto;
+  }
+
+  /* ==========================================================================
+     Botones
+     ========================================================================== */
+  .multicolumn .button {
+    @apply mt-6;
+  }
+
+  @media screen and (min-width: 750px) {
+    .multicolumn .button {
+      @apply mt-16;
+    }
+  }
+
+  /* ==========================================================================
+     Multicolumn List
+     ========================================================================== */
+  .multicolumn-list {
+    @apply m-0 p-0;
+  }
+
+  .multicolumn-list__item:only-child {
+    max-width: 72rem;
+  }
+
+  .multicolumn-list__item--empty {
+    @apply hidden;
+  }
+
+  @media screen and (min-width: 990px) {
+    .multicolumn-list__item--empty {
+      @apply list-item block;
+    }
+  }
+
+  /* ==========================================================================
+     Multicolumn Card Background
+     ========================================================================== */
+  .multicolumn:not(.background-none) .multicolumn-card {
+    background: rgb(var(--color-background));
+    @apply h-full;
+  }
+
+  .multicolumn.background-primary .multicolumn-card {
+    background: rgb(var(--color-background))
+      linear-gradient(
+        rgba(var(--color-foreground), 0.04),
+        rgba(var(--color-foreground), 0.04)
+      );
+  }
+
+  /* ==========================================================================
+     Multicolumn List Typography
+     ========================================================================== */
+  .multicolumn-list h3 {
+    line-height: calc(1 + 0.5 / max(1, var(--font-heading-scale)));
+  }
+
+  .multicolumn-list h3,
+  .multicolumn-list p {
+    @apply m-0;
+  }
+
+  /* ==========================================================================
+     Multicolumn Card Spacing
+     ========================================================================== */
+  .multicolumn-card-spacing {
+    @apply pt-10 mx-10;
+  }
+
+  .multicolumn-card__info > :nth-child(2) {
+    @apply mt-4;
+  }
+
+  /* ==========================================================================
+     Media Adapt
+     ========================================================================== */
+  .multicolumn-list__item.center .media--adapt,
+  .multicolumn-list__item .media--adapt .multicolumn-card__image {
+    @apply w-auto;
+  }
+
+  .multicolumn-list__item.center .media--adapt img {
+    @apply left-1/2;
+    transform: translateX(-50%);
+  }
+
+  /* ==========================================================================
+     Responsive Adjustments
+     ========================================================================== */
+  @media screen and (max-width: 749px) {
+    .multicolumn-list {
+      @apply m-0 w-full;
+    }
+
+    .multicolumn-list:not(.slider) {
+      @apply px-6;
+    }
+  }
+
+  @media screen and (min-width: 750px) and (max-width: 989px) {
+    .multicolumn-list:not(.slider) {
+      @apply px-20;
+    }
+  }
+
+  @media screen and (min-width: 750px) {
+    .multicolumn-list.slider {
+      @apply p-0;
+    }
+
+    .multicolumn-list__item,
+    .grid--4-col-desktop .multicolumn-list__item {
+      @apply pb-0;
+    }
+
+    .background-none .grid--2-col-tablet .multicolumn-list__item {
+      @apply mt-16;
+    }
+  }
+
+  /* ==========================================================================
+     Background None Styles
+     ========================================================================== */
+  .background-none .multicolumn-card-spacing {
+    @apply p-0 m-0;
+  }
+
+  .multicolumn-card__info {
+    @apply p-10;
+    p {
+      @apply text-base leading-tight text-negro;
+    }
+  }
+
+  .background-none .multicolumn-card__info {
+    @apply pt-0 px-0;
+  }
+
+  .background-none .slider .multicolumn-card__info {
+    @apply pb-0;
+  }
+
+  .background-none .multicolumn-card__image-wrapper + .multicolumn-card__info {
+    @apply pt-10;
+  }
+
+  .background-none .slider .multicolumn-card__info {
+    @apply pl-2;
+  }
+
+  .background-none
+    .slider
+    .multicolumn-card__image-wrapper
+    + .multicolumn-card__info {
+    @apply pl-6;
+  }
+
+  .background-none
+    .multicolumn-list:not(.slider)
+    .center
+    .multicolumn-card__info {
+    @apply px-10;
+  }
+
+  @media screen and (max-width: 749px) {
+    .background-none .slider .multicolumn-card__info {
+      @apply pb-4;
+    }
+
+    .multicolumn.background-none .slider.slider--mobile {
+      @apply mb-0;
+    }
+  }
+
+  @media screen and (min-width: 750px) {
+    .background-none .multicolumn-card__image-wrapper {
+      @apply mx-6;
+    }
+
+    .background-none .multicolumn-list .multicolumn-card__info,
+    .background-none
+      .multicolumn-list:not(.slider)
+      .center
+      .multicolumn-card__info {
+      @apply px-6;
+    }
+  }
+
+  /* ==========================================================================
+     Multicolumn Card
+     ========================================================================== */
+  .multicolumn-card {
+    @apply relative;
+    box-sizing: border-box;
+  }
+
+  .multicolumn-card
+    > .multicolumn-card__image-wrapper--full-width:not(.multicolumn-card-spacing) {
+    border-top-left-radius: calc(
+      var(--text-boxes-radius) - var(--text-boxes-border-width)
+    );
+    border-top-right-radius: calc(
+      var(--text-boxes-radius) - var(--text-boxes-border-width)
+    );
+    @apply overflow-hidden;
+  }
+
+  .multicolumn.background-none .multicolumn-card {
+    @apply rounded-none;
+  }
+
+  /* ==========================================================================
+     Links e Iconos
+     ========================================================================== */
+  .multicolumn-card__info .link {
+    @apply no-underline;
+    font-size: inherit;
+    @apply mt-6;
+  }
+
+  .multicolumn-card__info .icon-wrap {
+    @apply ml-3 whitespace-nowrap;
+  }
+}

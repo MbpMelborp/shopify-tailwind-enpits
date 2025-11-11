@@ -1,0 +1,363 @@
+/* ==========================================================================
+   MULTICOLUMN SECTION - Sección de múltiples columnas
+   ========================================================================== */
+
+.container {
+  width: 100%;
+}
+
+@media (min-width: 320px) {
+  .container {
+    max-width: 320px;
+  }
+}
+
+@media (min-width: 750px) {
+  .container {
+    max-width: 750px;
+  }
+}
+
+@media (min-width: 990px) {
+  .container {
+    max-width: 990px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .container {
+    max-width: 1440px;
+  }
+}
+
+@media (min-width: 1920px) {
+  .container {
+    max-width: 1920px;
+  }
+}
+
+/* ==========================================================================
+     Título del Multicolumn - Centrado igual a featured-collection
+     ========================================================================== */
+
+.multicolumn .title {
+  margin: 0px;
+}
+
+.multicolumn.no-heading .title {
+  display: none;
+}
+
+.multicolumn .title-wrapper-with-link {
+  margin-top: 0px;
+  margin-bottom: 2.5rem;
+  text-align: center;
+}
+
+.multicolumn__title .title {
+  text-align: center;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 700;
+  --tw-text-opacity: 1;
+  color: rgb(10 10 10 / var(--tw-text-opacity));
+}
+
+@media (min-width: 750px) {
+  .multicolumn__title .title {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .multicolumn .title-wrapper-with-link {
+    margin-bottom: 3rem;
+  }
+
+  .multicolumn__title .title {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
+}
+
+@media screen and (min-width: 750px) and (max-width: 989px) {
+  .multicolumn__title {
+    padding-left: 5rem;
+    padding-right: 5rem;
+  }
+}
+
+@media screen and (max-width: 989px) {
+  .multicolumn .page-width {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+}
+
+/* ==========================================================================
+     Multicolumn Card Image Wrapper
+     ========================================================================== */
+
+.multicolumn-list__item.center
+  .multicolumn-card__image-wrapper:not(.multicolumn-card__image-wrapper--full-width),
+.multicolumn-list__item:only-child {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ==========================================================================
+     Botones
+     ========================================================================== */
+
+.multicolumn .button {
+  margin-top: 1.5rem;
+}
+
+@media screen and (min-width: 750px) {
+  .multicolumn .button {
+    margin-top: 4rem;
+  }
+}
+
+/* ==========================================================================
+     Multicolumn List
+     ========================================================================== */
+
+.multicolumn-list {
+  margin: 0px;
+  padding: 0px;
+}
+
+.multicolumn-list__item:only-child {
+  max-width: 72rem;
+}
+
+.multicolumn-list__item--empty {
+  display: none;
+}
+
+@media screen and (min-width: 990px) {
+  .multicolumn-list__item--empty {
+    display: block;
+    display: list-item;
+  }
+}
+
+/* ==========================================================================
+     Multicolumn Card Background
+     ========================================================================== */
+
+.multicolumn:not(.background-none) .multicolumn-card {
+  background: rgb(var(--color-background));
+  height: 100%;
+}
+
+.multicolumn.background-primary .multicolumn-card {
+  background: rgb(var(--color-background))
+    linear-gradient(
+      rgba(var(--color-foreground), 0.04),
+      rgba(var(--color-foreground), 0.04)
+    );
+}
+
+/* ==========================================================================
+     Multicolumn List Typography
+     ========================================================================== */
+
+.multicolumn-list h3 {
+  line-height: calc(1 + 0.5 / max(1, var(--font-heading-scale)));
+}
+
+.multicolumn-list h3,
+.multicolumn-list p {
+  margin: 0px;
+}
+
+/* ==========================================================================
+     Multicolumn Card Spacing
+     ========================================================================== */
+
+.multicolumn-card-spacing {
+  margin-left: 2.5rem;
+  margin-right: 2.5rem;
+  padding-top: 2.5rem;
+}
+
+.multicolumn-card__info > :nth-child(2) {
+  margin-top: 1rem;
+}
+
+/* ==========================================================================
+     Media Adapt
+     ========================================================================== */
+
+.multicolumn-list__item.center .media--adapt,
+.multicolumn-list__item .media--adapt .multicolumn-card__image {
+  width: auto;
+}
+
+.multicolumn-list__item.center .media--adapt img {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* ==========================================================================
+     Responsive Adjustments
+     ========================================================================== */
+
+@media screen and (max-width: 749px) {
+  .multicolumn-list {
+    margin: 0px;
+    width: 100%;
+  }
+
+  .multicolumn-list:not(.slider) {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media screen and (min-width: 750px) and (max-width: 989px) {
+  .multicolumn-list:not(.slider) {
+    padding-left: 5rem;
+    padding-right: 5rem;
+  }
+}
+
+@media screen and (min-width: 750px) {
+  .multicolumn-list.slider {
+    padding: 0px;
+  }
+
+  .multicolumn-list__item,
+  .grid--4-col-desktop .multicolumn-list__item {
+    padding-bottom: 0px;
+  }
+
+  .background-none .grid--2-col-tablet .multicolumn-list__item {
+    margin-top: 4rem;
+  }
+}
+
+/* ==========================================================================
+     Background None Styles
+     ========================================================================== */
+
+.background-none .multicolumn-card-spacing {
+  margin: 0px;
+  padding: 0px;
+}
+
+.multicolumn-card__info {
+  padding: 2.5rem;
+}
+
+.multicolumn-card__info p {
+  font-size: 1rem;
+  line-height: 1.5rem;
+  line-height: 1.25;
+  --tw-text-opacity: 1;
+  color: rgb(10 10 10 / var(--tw-text-opacity));
+}
+
+.background-none .multicolumn-card__info {
+  padding-left: 0px;
+  padding-right: 0px;
+  padding-top: 0px;
+}
+
+.background-none .slider .multicolumn-card__info {
+  padding-bottom: 0px;
+}
+
+.background-none .multicolumn-card__image-wrapper + .multicolumn-card__info {
+  padding-top: 2.5rem;
+}
+
+.background-none .slider .multicolumn-card__info {
+  padding-left: 0.5rem;
+}
+
+.background-none
+  .slider
+  .multicolumn-card__image-wrapper
+  + .multicolumn-card__info {
+  padding-left: 1.5rem;
+}
+
+.background-none
+  .multicolumn-list:not(.slider)
+  .center
+  .multicolumn-card__info {
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
+}
+
+@media screen and (max-width: 749px) {
+  .background-none .slider .multicolumn-card__info {
+    padding-bottom: 1rem;
+  }
+
+  .multicolumn.background-none .slider.slider--mobile {
+    margin-bottom: 0px;
+  }
+}
+
+@media screen and (min-width: 750px) {
+  .background-none .multicolumn-card__image-wrapper {
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
+  }
+
+  .background-none .multicolumn-list .multicolumn-card__info,
+  .background-none
+    .multicolumn-list:not(.slider)
+    .center
+    .multicolumn-card__info {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+/* ==========================================================================
+     Multicolumn Card
+     ========================================================================== */
+
+.multicolumn-card {
+  position: relative;
+  box-sizing: border-box;
+}
+
+.multicolumn-card
+  > .multicolumn-card__image-wrapper--full-width:not(.multicolumn-card-spacing) {
+  border-top-left-radius: calc(
+    var(--text-boxes-radius) - var(--text-boxes-border-width)
+  );
+  border-top-right-radius: calc(
+    var(--text-boxes-radius) - var(--text-boxes-border-width)
+  );
+  overflow: hidden;
+}
+
+.multicolumn.background-none .multicolumn-card {
+  border-radius: 0px;
+}
+
+/* ==========================================================================
+     Links e Iconos
+     ========================================================================== */
+
+.multicolumn-card__info .link {
+  -webkit-text-decoration-line: none;
+  text-decoration-line: none;
+  font-size: inherit;
+  margin-top: 1.5rem;
+}
+
+.multicolumn-card__info .icon-wrap {
+  margin-left: 0.75rem;
+  white-space: nowrap;
+}
+
+/*# sourceMappingURL=multicolumn.css.map */
