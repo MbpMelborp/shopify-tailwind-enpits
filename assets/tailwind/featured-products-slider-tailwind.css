@@ -1,0 +1,620 @@
+/* ==========================================================================
+   FEATURED PRODUCTS SLIDER - Productos destacados en la jugada
+   ========================================================================== */
+
+@tailwind components;
+
+@layer components {
+  /* ==========================================================================
+     Sección Principal
+     ========================================================================== */
+  .featured-products-slider-section {
+    @apply relative w-full overflow-hidden;
+    min-height: 400px;
+  }
+
+  /* ==========================================================================
+     Hero con Imagen de Fondo
+     ========================================================================== */
+  .featured-products-slider__hero {
+    @apply absolute inset-0 w-full h-full z-0;
+    pointer-events: none;
+  }
+
+  .featured-products-slider__hero-image {
+    @apply absolute inset-0 w-full h-full;
+  }
+
+  .featured-products-slider__hero-image img {
+    @apply w-full h-full object-cover;
+  }
+
+  /* Overlay opcional para mejorar legibilidad del texto - Reducido a 30% */
+  .featured-products-slider__hero::after {
+    content: '';
+    @apply absolute inset-0;
+    background-color: rgba(255, 255, 255, 0.3);
+  }
+
+  /* ==========================================================================
+     Contenedor Principal con Contenido
+     ========================================================================== */
+  .featured-products-slider-section .page-width {
+    @apply relative z-10 mx-auto;
+    min-height: 400px;
+    max-width: var(--page-width);
+    width: 100%;
+    /* Asegurar que el contenedor no crezca más allá del max-width */
+    box-sizing: border-box;
+  }
+
+  /* ==========================================================================
+     Header con Título y Subtítulo
+     ========================================================================== */
+  .featured-products-slider__header {
+    @apply text-center mb-10 relative z-10;
+  }
+
+  .featured-products-slider__title {
+    @apply text-3xl md:text-5xl font-bold mb-4 text-negro;
+  }
+
+  .featured-products-slider__subtitle {
+    @apply text-lg md:text-2xl text-gray-700 max-w-2xl mx-auto;
+  }
+
+  @media screen and (max-width: 749px) {
+    .featured-products-slider__title {
+      @apply text-3xl;
+    }
+
+    .featured-products-slider__subtitle {
+      @apply text-lg;
+    }
+  }
+
+  /* ==========================================================================
+     Contenedor del Slider Component
+     ========================================================================== */
+  .featured-products-slider-section slider-component {
+    @apply overflow-hidden;
+  }
+
+  /* ==========================================================================
+     Lista del Slider
+     ========================================================================== */
+  .featured-products-slider__list {
+    @apply m-0 p-0 list-none;
+    display: flex;
+    width: 100%;
+  }
+
+  /* Asegurar que todos los items tengan la misma altura */
+  .featured-products-slider__list .featured-products-slider__item {
+    @apply flex;
+    align-items: stretch;
+    /* Asegurar que el item tenga la misma altura que las cards */
+    height: 100%;
+    min-height: 300px;
+    max-height: 600px;
+  }
+
+  @media screen and (min-width: 1440px) {
+    .featured-products-slider__list .featured-products-slider__item {
+      max-height: 500px;
+    }
+  }
+
+  @media screen and (min-width: 1920px) {
+    .featured-products-slider__list .featured-products-slider__item {
+      max-height: 450px;
+    }
+  }
+
+  /* ==========================================================================
+     Item del Slider
+     ========================================================================== */
+  .featured-products-slider__item {
+    @apply h-full;
+    display: flex;
+    flex: 0 0 auto;
+    width: 100%;
+    /* Asegurar que el item no crezca desproporcionadamente */
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* ==========================================================================
+     Control de Overflow en Desktop - Solo mostrar productos configurados
+     ========================================================================== */
+  @media screen and (min-width: 990px) {
+    /* El contenedor page-width debe controlar el overflow */
+    .featured-products-slider-section .page-width {
+      @apply overflow-hidden;
+      position: relative;
+    }
+
+    /* Contenedor del slider debe ocultar el overflow para que solo se vean los productos configurados */
+    .featured-products-slider-section
+      slider-component.slider-component-desktop {
+      @apply overflow-hidden;
+      width: 100%;
+      max-width: 100%;
+      position: relative;
+    }
+
+    /* Centrar el slider cuando hay 2 columnas - ajustar el margin-left del primer slide */
+    /* El margin-left original desplaza el slider hacia la izquierda, necesitamos centrarlo */
+    .featured-products-slider-section
+      slider-component.slider-component-desktop[data-columns='2']
+      .slider--desktop
+      .slider__slide:first-child {
+      /* Calcular un margin-left que centre los 2 productos */
+      /* El cálculo: (ancho disponible - ancho de 2 productos - spacing) / 2 */
+      margin-left: calc(
+        (
+            100% -
+              (
+                (
+                    (100% - var(--desktop-margin-left-first-item)) / 2 -
+                      var(--grid-desktop-horizontal-spacing) * 5
+                  ) * 2 + var(--grid-desktop-horizontal-spacing)
+              )
+          ) / 2
+      ) !important;
+      scroll-margin-left: calc(
+        (
+            100% -
+              (
+                (
+                    (100% - var(--desktop-margin-left-first-item)) / 2 -
+                      var(--grid-desktop-horizontal-spacing) * 5
+                  ) * 2 + var(--grid-desktop-horizontal-spacing)
+              )
+          ) / 2
+      ) !important;
+    }
+
+    /* Ajustar el scroll-padding-left para que coincida con el nuevo margin-left */
+    .featured-products-slider-section
+      slider-component.slider-component-desktop[data-columns='2']
+      .slider--desktop {
+      scroll-padding-left: calc(
+        (
+            100% -
+              (
+                (
+                    (100% - var(--desktop-margin-left-first-item)) / 2 -
+                      var(--grid-desktop-horizontal-spacing) * 5
+                  ) * 2 + var(--grid-desktop-horizontal-spacing)
+              )
+          ) / 2
+      );
+    }
+
+    /* Para grid de 2 columnas, usar mask-image para ocultar el tercer producto */
+    /* Usar atributo data-columns para detectar el número de columnas */
+    /* El cálculo ahora usa el nuevo margin-left centrado */
+    .featured-products-slider-section
+      slider-component.slider-component-desktop[data-columns='2'] {
+      /* Usar mask-image con un gradiente que oculte el contenido después de 2 productos */
+      /* El cálculo se basa en: nuevo margin-left centrado + (2 * ancho de producto) + spacing */
+      --centered-margin-left: calc(
+        (
+            100% -
+              (
+                (
+                    (100% - var(--desktop-margin-left-first-item)) / 2 -
+                      var(--grid-desktop-horizontal-spacing) * 5
+                  ) * 2 + var(--grid-desktop-horizontal-spacing)
+              )
+          ) / 2
+      );
+      mask-image: linear-gradient(
+        to right,
+        black 0%,
+        black
+          calc(
+            var(--centered-margin-left) +
+              (
+                (100% - var(--desktop-margin-left-first-item)) / 2 -
+                  var(--grid-desktop-horizontal-spacing) * 5
+              ) * 2 + var(--grid-desktop-horizontal-spacing)
+          ),
+        transparent
+          calc(
+            var(--centered-margin-left) +
+              (
+                (100% - var(--desktop-margin-left-first-item)) / 2 -
+                  var(--grid-desktop-horizontal-spacing) * 5
+              ) * 2 + var(--grid-desktop-horizontal-spacing) + 1px
+          )
+      );
+      -webkit-mask-image: linear-gradient(
+        to right,
+        black 0%,
+        black
+          calc(
+            var(--centered-margin-left) +
+              (
+                (100% - var(--desktop-margin-left-first-item)) / 2 -
+                  var(--grid-desktop-horizontal-spacing) * 5
+              ) * 2 + var(--grid-desktop-horizontal-spacing)
+          ),
+        transparent
+          calc(
+            var(--centered-margin-left) +
+              (
+                (100% - var(--desktop-margin-left-first-item)) / 2 -
+                  var(--grid-desktop-horizontal-spacing) * 5
+              ) * 2 + var(--grid-desktop-horizontal-spacing) + 1px
+          )
+      );
+    }
+
+    /* Para grid de 3 columnas */
+    .featured-products-slider-section
+      slider-component.slider-component-desktop[data-columns='3'] {
+      mask-image: linear-gradient(
+        to right,
+        black 0%,
+        black
+          calc(
+            var(--desktop-margin-left-first-item) +
+              (
+                (100% - var(--desktop-margin-left-first-item)) / 3 -
+                  var(--grid-desktop-horizontal-spacing) * 4
+              ) * 3 + var(--grid-desktop-horizontal-spacing) * 2
+          ),
+        transparent
+          calc(
+            var(--desktop-margin-left-first-item) +
+              (
+                (100% - var(--desktop-margin-left-first-item)) / 3 -
+                  var(--grid-desktop-horizontal-spacing) * 4
+              ) * 3 + var(--grid-desktop-horizontal-spacing) * 2 + 1px
+          )
+      );
+      -webkit-mask-image: linear-gradient(
+        to right,
+        black 0%,
+        black
+          calc(
+            var(--desktop-margin-left-first-item) +
+              (
+                (100% - var(--desktop-margin-left-first-item)) / 3 -
+                  var(--grid-desktop-horizontal-spacing) * 4
+              ) * 3 + var(--grid-desktop-horizontal-spacing) * 2
+          ),
+        transparent
+          calc(
+            var(--desktop-margin-left-first-item) +
+              (
+                (100% - var(--desktop-margin-left-first-item)) / 3 -
+                  var(--grid-desktop-horizontal-spacing) * 4
+              ) * 3 + var(--grid-desktop-horizontal-spacing) * 2 + 1px
+          )
+      );
+    }
+
+    /* Para grid de 4 columnas */
+    .featured-products-slider-section
+      slider-component.slider-component-desktop[data-columns='4'] {
+      mask-image: linear-gradient(
+        to right,
+        black 0%,
+        black
+          calc(
+            var(--desktop-margin-left-first-item) +
+              (
+                (100% - var(--desktop-margin-left-first-item)) / 4 -
+                  var(--grid-desktop-horizontal-spacing) * 3
+              ) * 4 + var(--grid-desktop-horizontal-spacing) * 3
+          ),
+        transparent
+          calc(
+            var(--desktop-margin-left-first-item) +
+              (
+                (100% - var(--desktop-margin-left-first-item)) / 4 -
+                  var(--grid-desktop-horizontal-spacing) * 3
+              ) * 4 + var(--grid-desktop-horizontal-spacing) * 3 + 1px
+          )
+      );
+      -webkit-mask-image: linear-gradient(
+        to right,
+        black 0%,
+        black
+          calc(
+            var(--desktop-margin-left-first-item) +
+              (
+                (100% - var(--desktop-margin-left-first-item)) / 4 -
+                  var(--grid-desktop-horizontal-spacing) * 3
+              ) * 4 + var(--grid-desktop-horizontal-spacing) * 3
+          ),
+        transparent
+          calc(
+            var(--desktop-margin-left-first-item) +
+              (
+                (100% - var(--desktop-margin-left-first-item)) / 4 -
+                  var(--grid-desktop-horizontal-spacing) * 3
+              ) * 4 + var(--grid-desktop-horizontal-spacing) * 3 + 1px
+          )
+      );
+    }
+  }
+
+  /* ==========================================================================
+     Card del Producto (Layout Horizontal)
+     ========================================================================== */
+  .featured-products-slider__card {
+    @apply flex flex-col md:flex-row bg-[#E4E4E4]/40 border border-gray-200 overflow-hidden shadow-sm p-6 rounded-3xl;
+    /* Aspect ratio 5:3 pero con altura máxima para evitar que crezca desproporcionadamente */
+    aspect-ratio: 5 / 3;
+    min-height: 300px;
+    max-height: 600px;
+    height: auto;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* En pantallas muy anchas, limitar el crecimiento de la altura */
+  @media screen and (min-width: 1440px) {
+    .featured-products-slider__card {
+      max-height: 500px;
+    }
+  }
+
+  @media screen and (min-width: 1920px) {
+    .featured-products-slider__card {
+      max-height: 450px;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .featured-products-slider__card {
+      @apply flex-col;
+    }
+  }
+
+  /* ==========================================================================
+     Imagen del Producto (Izquierda) - Aspect Ratio Cuadrado
+     ========================================================================== */
+  .featured-products-slider__card-image {
+    @apply w-full md:w-1/2 flex-shrink-0 relative aspect-square rounded-2xl bg-white overflow-hidden;
+    min-height: 250px;
+  }
+
+  .featured-products-slider__image-link {
+    @apply block w-full h-full;
+  }
+
+  .featured-products-slider__card-image img {
+    @apply w-full h-full object-cover aspect-square;
+  }
+
+  /* ==========================================================================
+     Contenido del Card (Derecha)
+     ========================================================================== */
+  .featured-products-slider__card-content {
+    @apply flex-1 flex flex-col p-6 md:p-8;
+    width: 100%;
+    max-width: 100%;
+    /* Asegurar que el contenido se ajuste dentro de la card */
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  @media screen and (min-width: 750px) {
+    .featured-products-slider__card-content {
+      width: 50%;
+      max-width: 50%;
+      min-width: 0;
+    }
+  }
+
+  .featured-products-slider__card-info {
+    @apply flex flex-col h-full;
+  }
+
+  /* ==========================================================================
+     Título del Producto
+     ========================================================================== */
+  .featured-products-slider__card-title {
+    @apply mb-3;
+  }
+
+  .featured-products-slider__card-title-link {
+    @apply text-xl md:text-2xl font-bold text-rojo uppercase no-underline hover:underline !leading-[1em];
+    a {
+      @apply !leading-[1em];
+    }
+  }
+
+  /* ==========================================================================
+     Descripción - Más recortada y con leading-none
+     ========================================================================== */
+  .featured-products-slider__card-description {
+    @apply text-sm md:text-base text-gray-600 mb-4 flex-1 leading-none;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.2;
+  }
+
+  /* ==========================================================================
+     Precio - Alineado a la Izquierda
+     ========================================================================== */
+  .featured-products-slider__card-price {
+    @apply mb-4 text-left;
+  }
+
+  .featured-products-slider__price {
+    @apply text-lg md:text-xl text-left;
+  }
+
+  /* Asegurar que el precio dentro del componente price también esté alineado a la izquierda */
+  .featured-products-slider__card-price .price {
+    @apply text-left;
+    justify-content: flex-start;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  /* Forzar alineación a la izquierda en los elementos de precio */
+  .featured-products-slider__card-price .price--on-sale .price__sale {
+    @apply items-start;
+    align-items: flex-start !important;
+  }
+
+  .featured-products-slider__card-price .price--on-sale .price__sale span {
+    @apply text-left;
+    text-align: left !important;
+    width: auto;
+  }
+
+  .featured-products-slider__card-price .price .price-item {
+    @apply text-left;
+    text-align: left !important;
+  }
+
+  /* ==========================================================================
+     Botón Agregar al Carrito - Usar estilos de component-card
+     ========================================================================== */
+  .featured-products-slider__button {
+    @apply mt-auto;
+  }
+
+  /* Asegurar que los botones usen los mismos estilos que component-card */
+  .featured-products-slider__button.card__quick-action-button {
+    @apply cursor-pointer flex visible opacity-100 bg-white text-black no-underline shadow-none border-0;
+    @apply w-full font-semibold py-3 px-4 flex items-center justify-between gap-3 hover:bg-gray-300 !leading-none transition-colors disabled:opacity-50 disabled:cursor-not-allowed rounded-full outline-none uppercase;
+    box-shadow: none !important;
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  .featured-products-slider__button.card__quick-action-button::before,
+  .featured-products-slider__button.card__quick-action-button::after {
+    content: none !important;
+    @apply hidden;
+  }
+
+  .featured-products-slider__button.card__quick-action-button--primary {
+    @apply font-bold;
+  }
+
+  .featured-products-slider__button.card__quick-action-button--secondary {
+    @apply font-medium;
+  }
+
+  .featured-products-slider__button .card__quick-action-text {
+    @apply flex-1 text-center text-base text-black;
+    color: #000000 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  .featured-products-slider__button.card__quick-action-button--secondary
+    .card__quick-action-text {
+    font-weight: 600;
+  }
+
+  .featured-products-slider__button .card__quick-action-icon {
+    @apply flex items-center justify-center flex-shrink-0;
+  }
+
+  .featured-products-slider__button .card__quick-action-icon svg {
+    @apply w-5 h-5;
+  }
+
+  .featured-products-slider__button .card__add-to-cart-icon {
+    @apply w-8 h-8 bg-white rounded-full flex items-center justify-center flex-shrink-0;
+    display: flex !important;
+  }
+
+  .featured-products-slider__button .card__add-to-cart-icon svg {
+    @apply w-5 h-5;
+    color: #ef4444 !important;
+    fill: #ef4444 !important;
+  }
+
+  .featured-products-slider__button.card__quick-action-button--primary:disabled
+    .card__add-to-cart-icon {
+    @apply opacity-50;
+  }
+
+  .featured-products-slider__button.card__quick-action-button
+    .loading__spinner {
+    display: none !important;
+  }
+
+  .featured-products-slider__button.card__quick-action-button.loading
+    .loading__spinner {
+    @apply flex items-center justify-center !important;
+  }
+
+  /* ==========================================================================
+     Slider Dots - Estilo personalizado (rojo activo, blanco inactivo)
+     ========================================================================== */
+  .featured-products-slider-section .slider-counter--dots {
+    @apply flex items-center justify-center gap-2;
+  }
+
+  .featured-products-slider-section .slider-counter__link--dots {
+    @apply p-2;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+  }
+
+  .featured-products-slider-section .slider-counter__link--dots .dot {
+    @apply w-3 h-3 rounded-full;
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 50%;
+    background-color: white;
+    border: none;
+    display: block;
+    transition: transform 0.2s ease-in-out;
+  }
+
+  .featured-products-slider-section
+    .slider-counter__link--active.slider-counter__link--dots
+    .dot {
+    background-color: #fa0014;
+    /* Color rojo EnPits */
+  }
+
+  .featured-products-slider-section
+    .slider-counter__link--dots:not(.slider-counter__link--active):hover
+    .dot {
+    transform: scale(1.1);
+  }
+
+  /* ==========================================================================
+     Responsive Adjustments
+     ========================================================================== */
+  @media screen and (max-width: 749px) {
+    .featured-products-slider__card-image {
+      @apply w-full;
+      min-height: 200px;
+    }
+
+    .featured-products-slider__card-content {
+      @apply p-4;
+    }
+
+    .featured-products-slider__card-title-link {
+      @apply text-lg;
+    }
+
+    .featured-products-slider__card-description {
+      @apply text-sm;
+    }
+  }
+}

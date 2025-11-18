@@ -527,6 +527,103 @@ git commit -m "Tipo: Descripción"
 
 ---
 
+## 🎨 Homologación de Estilos - Títulos e Intros de Secciones
+
+### Estándar de Títulos de Sección
+
+**Todos los títulos principales de secciones/componentes deben seguir este estándar:**
+
+```css
+/* Título Principal */
+.section-title {
+  @apply text-3xl md:text-5xl font-bold mb-4;
+}
+
+/* Mobile (max-width: 749px) */
+@media screen and (max-width: 749px) {
+  .section-title {
+    @apply text-3xl;
+  }
+}
+```
+
+**Tamaños:**
+- **Mobile** (hasta 749px): `text-3xl`
+- **Tablet/Desktop** (750px+): `text-5xl`
+
+**Ejemplos de clases:**
+- `.featured-products-slider__title`
+- `.most-sold-title`
+- `.featured-blog__highlight-title`
+
+### Estándar de Subtítulos/Intros de Sección
+
+**Todos los subtítulos o textos introductorios de secciones deben seguir este estándar:**
+
+```css
+/* Subtítulo/Intro */
+.section-subtitle {
+  @apply text-lg md:text-2xl text-gray-700 max-w-2xl mx-auto;
+}
+
+/* Mobile (max-width: 749px) */
+@media screen and (max-width: 749px) {
+  .section-subtitle {
+    @apply text-lg;
+  }
+}
+```
+
+**Tamaños:**
+- **Mobile** (hasta 749px): `text-lg`
+- **Tablet/Desktop** (750px+): `text-2xl`
+
+**Ejemplos de clases:**
+- `.featured-products-slider__subtitle`
+- `.most-sold-subtitle`
+- `.featured-blog__highlight-description`
+
+### Reglas de Homologación
+
+**Al crear una nueva sección o componente con título e intro:**
+
+1. ✅ **Usar los tamaños estándar** definidos arriba
+2. ✅ **Mantener consistencia** con otros componentes existentes
+3. ✅ **Verificar** que los tamaños coincidan con componentes similares
+4. ✅ **Aplicar responsive** con los mismos breakpoints (749px para mobile)
+
+**Ejemplo de implementación:**
+
+```css
+/* En tu archivo component-tailwind.css */
+@layer components {
+  .mi-componente__title {
+    @apply text-3xl md:text-5xl font-bold mb-4;
+  }
+
+  .mi-componente__subtitle {
+    @apply text-lg md:text-2xl text-gray-700 max-w-2xl mx-auto;
+  }
+
+  @media screen and (max-width: 749px) {
+    .mi-componente__title {
+      @apply text-3xl;
+    }
+
+    .mi-componente__subtitle {
+      @apply text-lg;
+    }
+  }
+}
+```
+
+**Componentes de referencia para verificar:**
+- `featured-products-slider-tailwind.css`
+- `most-sold-products-tailwind.css`
+- `featured-blog-tailwind.css`
+
+---
+
 ## 🔗 Referencias a Documentación
 
 ### Documentos del Proyecto

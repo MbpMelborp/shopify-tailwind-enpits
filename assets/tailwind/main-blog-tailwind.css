@@ -1,0 +1,252 @@
+/* ==========================================================================
+   MAIN BLOG - Página Principal del Blog con Sidebar
+   ========================================================================== */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  /* ==========================================================================
+     Contenedor Principal
+     ========================================================================== */
+  .main-blog {
+    @apply w-full;
+  }
+
+  /* .main-blog__container {
+  } */
+
+  /* ==========================================================================
+     Breadcrumb
+     ========================================================================== */
+  .main-blog__breadcrumb {
+    @apply mb-6 md:mb-8;
+  }
+
+  /* ==========================================================================
+     Header (Título y Descripción)
+     Nota: Los estilos base están en app-tailwind.css (.page-header)
+     ========================================================================== */
+
+  /* ==========================================================================
+     Layout con Sidebar
+     ========================================================================== */
+  .main-blog__layout {
+    @apply flex flex-col gap-6 w-full max-w-full;
+  }
+
+  @media screen and (min-width: 990px) {
+    .main-blog__layout {
+      @apply flex-row gap-8;
+    }
+  }
+
+  .main-blog__sidebar-wrapper {
+    @apply flex-shrink-0 w-full order-2;
+    max-width: 350px;
+  }
+
+  @media screen and (min-width: 990px) {
+    .main-blog__sidebar-wrapper {
+      @apply w-1/3 order-1;
+      max-width: 350px;
+    }
+  }
+
+  .main-blog__content {
+    @apply flex-1 min-w-0 w-full order-1;
+  }
+
+  @media screen and (min-width: 990px) {
+    .main-blog__content {
+      @apply flex-1 min-w-0 order-2;
+    }
+  }
+
+  /* ==========================================================================
+     Grid de Artículos - Una sola columna según Figma
+     ========================================================================== */
+  .main-blog__articles {
+    @apply flex flex-col gap-6 md:gap-8 mb-8;
+  }
+
+  .main-blog__article-item {
+    @apply w-full block;
+  }
+
+  /* Asegurar que los article cards en main-blog se muestren correctamente */
+  .main-blog__article-item .article-card-wrapper {
+    @apply w-full block;
+  }
+
+  /* Fondo oscuro para las cards de artículos según Figma */
+  .main-blog__article-item .featured-blog__article-card {
+    @apply bg-transparent;
+  }
+
+  /* ==========================================================================
+     Layout Horizontal de Artículos según Figma
+     ========================================================================== */
+  .main-blog__article-item .featured-blog__article-card {
+    @apply flex flex-col pb-8 border-t-0 border-l-0 border-r-0 border-b border-gray-200 md:flex-row w-full gap-0 md:gap-8 items-stretch bg-transparent rounded-none shadow-none overflow-visible !important;
+  }
+
+  @media screen and (min-width: 750px) {
+    .main-blog__article-item .featured-blog__article-card {
+      @apply flex-row gap-8 !important;
+    }
+  }
+
+  /* Imagen a la izquierda con aspect-video según Figma - Define la altura */
+  .main-blog__article-item .article-card__image-wrapper,
+  .main-blog__article-item .featured-blog__article-image-wrapper,
+  .main-blog__article-item .card__media {
+    @apply relative block w-full md:w-2/5 flex-shrink-0 order-1 overflow-hidden m-0 h-full !important;
+    aspect-ratio: 16 / 9 !important;
+  }
+
+  @media screen and (min-width: 750px) {
+    .main-blog__article-item .article-card__image-wrapper,
+    .main-blog__article-item .featured-blog__article-image-wrapper,
+    .main-blog__article-item .card__media {
+      @apply w-2/5 !important;
+    }
+  }
+
+  .main-blog__article-item .article-card__image-wrapper .media,
+  .main-blog__article-item .featured-blog__article-image-wrapper .media,
+  .main-blog__article-item .card__media .media {
+    @apply w-full relative p-0 !important;
+  }
+
+  .main-blog__article-item .article-card__image-wrapper img,
+  .main-blog__article-item .featured-blog__article-image-wrapper img,
+  .main-blog__article-item .card__media img {
+    @apply relative w-full object-cover block !important;
+  }
+
+  .main-blog__article-item .article-card__image,
+  .main-blog__article-item .featured-blog__article-image {
+    @apply w-full !important;
+  }
+
+  /* Contenido a la derecha con fondo blanco/transparente según Figma - Alineado a la izquierda */
+  .main-blog__article-item .card__content,
+  .main-blog__article-item .featured-blog__article-content,
+  .main-blog__article-item .card--standard > .card__content,
+  .main-blog__article-item .card--standard .card__content,
+  .main-blog__article-item .card--media .card__content,
+  .main-blog__article-item .featured-blog__article-card .card__content,
+  .main-blog__article-item
+    .featured-blog__article-card
+    .featured-blog__article-content {
+    @apply flex flex-col w-full md:w-3/5 order-2 p-6 md:p-8 bg-transparent relative items-start h-auto justify-between !important;
+    grid-template-rows: none !important;
+    grid-template-columns: none !important;
+  }
+
+  @media screen and (min-width: 750px) {
+    .main-blog__article-item .card__content,
+    .main-blog__article-item .featured-blog__article-content,
+    .main-blog__article-item .card--standard > .card__content,
+    .main-blog__article-item .card--standard .card__content,
+    .main-blog__article-item .card--media .card__content,
+    .main-blog__article-item .featured-blog__article-card .card__content,
+    .main-blog__article-item
+      .featured-blog__article-card
+      .featured-blog__article-content {
+      @apply w-3/5 px-8 md:py-0 justify-between !important;
+    }
+  }
+
+  /* Ocultar la fecha en el diseño de main-blog */
+  .main-blog__article-item .featured-blog__article-date {
+    @apply hidden !important;
+  }
+
+  /* Ajustar la información del artículo */
+  .main-blog__article-item .card__information {
+    @apply flex flex-col w-full gap-0 p-0 !important;
+  }
+
+  /* Título más grande y visible - Texto negro sobre fondo blanco - Alineado a la izquierda */
+  .main-blog__article-item .featured-blog__article-title,
+  .main-blog__article-item .card__heading {
+    @apply mb-4 text-left !important;
+  }
+
+  .main-blog__article-item .featured-blog__article-title a,
+  .main-blog__article-item .featured-blog__article-title-link,
+  .main-blog__article-item .card__heading a {
+    @apply text-xl md:text-2xl font-bold text-gray-900 text-left !important;
+    color: #1a1a1a !important;
+  }
+
+  @media screen and (min-width: 750px) {
+    .main-blog__article-item .featured-blog__article-title a,
+    .main-blog__article-item .featured-blog__article-title-link,
+    .main-blog__article-item .card__heading a {
+      @apply text-2xl !important;
+    }
+  }
+
+  /* Metadatos en una línea según Figma: FECHA | AUTOR | COMENTARIOS - Texto gris oscuro - Alineado a la izquierda */
+  .main-blog__article-item .article-card__info {
+    @apply text-sm mb-4 flex items-center gap-2 flex-wrap justify-start !important;
+    color: #666666 !important; /* Color personalizado del diseño */
+  }
+
+  .main-blog__article-item .article-card__info span {
+    @apply text-sm !important;
+    color: #666666 !important;
+  }
+
+  /* Excerpt más visible - Texto gris oscuro sobre fondo blanco - Alineado a la izquierda */
+  .main-blog__article-item .featured-blog__article-excerpt,
+  .main-blog__article-item .article-card__excerpt {
+    @apply text-base mb-6 flex-grow leading-relaxed text-left !important;
+    color: #333333 !important;
+  }
+
+  /* Botón VER MÁS redondeado full según Figma - Dentro del contenido - Alineado a la izquierda */
+  .main-blog__article-item .card__information .featured-blog__article-button,
+  .main-blog__article-item .featured-blog__article-button {
+    @apply static mt-6 px-4 py-3 bg-gray-200 text-black rounded-full font-semibold hover:bg-gray-300 transition-colors duration-200 uppercase text-base inline-flex items-center justify-center w-auto h-auto min-w-[120px] self-start !important;
+  }
+
+  /* Mostrar texto "VER MÁS" y ocultar SVG - Mismo estilo que card__quick-action-text */
+  .main-blog__article-item .featured-blog__article-button-text {
+    @apply block text-black text-base font-semibold leading-normal !important;
+  }
+
+  .main-blog__article-item .featured-blog__article-button svg {
+    @apply hidden !important;
+  }
+
+  /* ==========================================================================
+     Paginación
+     ========================================================================== */
+  .main-blog__pagination {
+    @apply mt-8 md:mt-12;
+  }
+
+  /* ==========================================================================
+     Responsive Adjustments
+     ========================================================================== */
+  @media screen and (max-width: 749px) {
+    .main-blog__layout {
+      @apply gap-6;
+    }
+
+    .main-blog__articles {
+      @apply gap-4;
+    }
+  }
+
+  @media screen and (min-width: 990px) {
+    .main-blog__sidebar-wrapper {
+      @apply sticky top-8 self-start;
+    }
+  }
+}

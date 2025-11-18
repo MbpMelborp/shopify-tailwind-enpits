@@ -1,0 +1,72 @@
+{% comment %}
+  Renders breadcrumb navigation with structured data for SEO.
+
+  Accepts:
+  - blog: {Object} Blog object (optional)
+  - article: {Object} Article object (optional)
+  - collection: {Object} Collection object (optional)
+  - product: {Object} Product object (optional)
+  Usage:
+  {% render 'breadcrumb', blog: blog %}
+  {% render 'breadcrumb', article: article, blog: blog %}
+{% endcomment %}
+
+{%- liquid
+  assign breadcrumb_items = ''
+  assign position = 1
+  assign breadcrumb_json_items = ''
+
+  # Home
+  assign home_url = routes.root_url
+  assign home_json = '{"@type":"ListItem","position":' | append: position | append: ',"name":"Home","item":"' | append: shop.url | append: home_url | append: '"}'
+  assign breadcrumb_json_items = breadcrumb_json_items | append: home_json
+  assign breadcrumb_items = breadcrumb_items | append: '<li class="breadcrumb__item"><a href="' | append: home_url | append: '" class="breadcrumb__link">Home</a></li>'
+  assign position = position | plus: 1
+
+  # Blog
+  if blog
+    assign blog_url = blog.url
+    assign blog_title = blog.title | escape
+    assign blog_json = '{"@type":"ListItem","position":' | append: position | append: ',"name":"' | append: blog_title | append: '","item":"' | append: shop.url | append: blog_url | append: '"}'
+    if breadcrumb_json_items != blank
+      assign breadcrumb_json_items = breadcrumb_json_items | append: ','
+    endif
+    assign breadcrumb_json_items = breadcrumb_json_items | append: blog_json
+
+    # Si hay un artículo, el blog es un link. Si no hay artículo, el blog es la página actual
+    if article
+      assign breadcrumb_items = breadcrumb_items | append: '<li class="breadcrumb__item"><a href="' | append: blog_url | append: '" class="breadcrumb__link">' | append: blog_title | append: '</a></li>'
+      assign position = position | plus: 1
+    else
+      assign breadcrumb_items = breadcrumb_items | append: '<li class="breadcrumb__item breadcrumb__item--current"><span class="breadcrumb__current">' | append: blog_title | append: '</span></li>'
+    endif
+  endif
+
+  # Article (current page)
+  if article
+    assign article_url = article.url
+    assign article_title = article.title | escape
+    assign article_json = '{"@type":"ListItem","position":' | append: position | append: ',"name":"' | append: article_title | append: '","item":"' | append: shop.url | append: article_url | append: '"}'
+    if breadcrumb_json_items != blank
+      assign breadcrumb_json_items = breadcrumb_json_items | append: ','
+    endif
+    assign breadcrumb_json_items = breadcrumb_json_items | append: article_json
+    assign breadcrumb_items = breadcrumb_items | append: '<li class="breadcrumb__item breadcrumb__item--current"><span class="breadcrumb__current">' | append: article_title | append: '</span></li>'
+  endif
+
+  assign breadcrumb_json = '{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[' | append: breadcrumb_json_items | append: ']}'
+-%}
+
+{{ 'breadcrumb.css' | asset_url | stylesheet_tag }}
+
+<div class='breadcrumb-wrapper '>
+  <nav class='breadcrumb page-width' aria-label='Breadcrumb'>
+    <ol class='breadcrumb__list'>
+      {{ breadcrumb_items }}
+    </ol>
+  </nav>
+</div>
+
+<script type='application/ld+json'>
+  {{ breadcrumb_json }}
+</script>

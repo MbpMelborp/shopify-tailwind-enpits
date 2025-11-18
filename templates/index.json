@@ -138,55 +138,96 @@
         "padding_bottom": 36
       }
     },
-    "multicolumn": {
-      "type": "multicolumn",
+    "featured_products_slider": {
+      "type": "featured-products-slider",
       "blocks": {
-        "column1": {
-          "type": "column",
+        "product_BaUAiw": {
+          "type": "product",
           "settings": {
-            "title": "Column",
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
-            "link_label": "",
-            "link": ""
+            "product": "diamond-halo-stud-earrings-2"
           }
         },
-        "column2": {
-          "type": "column",
+        "product_Jxf6BY": {
+          "type": "product",
           "settings": {
-            "title": "Column",
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
-            "link_label": "",
-            "link": ""
+            "product": "diamond-halo-stud-earrings-8"
           }
         },
-        "column3": {
-          "type": "column",
+        "product_8CwTpn": {
+          "type": "product",
           "settings": {
-            "title": "Column",
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
-            "link_label": "",
-            "link": ""
+            "product": "diamond-halo-stud-earrings-16"
+          }
+        },
+        "product_YE6VpT": {
+          "type": "product",
+          "settings": {
+            "product": "diamond-halo-stud-earrings-13"
           }
         }
       },
       "block_order": [
-        "column1",
-        "column2",
-        "column3"
+        "product_BaUAiw",
+        "product_Jxf6BY",
+        "product_8CwTpn",
+        "product_YE6VpT"
       ],
       "settings": {
-        "title": "",
-        "heading_size": "h1",
-        "image_width": "third",
-        "image_ratio": "adapt",
-        "columns_desktop": 3,
-        "column_alignment": "center",
-        "background_style": "none",
-        "button_label": "",
-        "button_link": "",
+        "background_image": "shopify://shop_images/enlajugada.jpg",
+        "title": "En la jugada",
+        "subtitle": "<p>Si está aquí, es porque los mecánicos y motociclistas ya lo descubrieron. No te quedes atrás.</p>",
+        "columns_desktop": 2,
+        "enable_desktop_slider": true,
+        "swipe_on_mobile": true,
         "color_scheme": "scheme-1",
-        "columns_mobile": "1",
-        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "promo_banners_8TWymK": {
+      "type": "promo-banners",
+      "blocks": {
+        "banner_Uyj9x9": {
+          "type": "banner",
+          "settings": {
+            "image": "shopify://shop_images/LLANTAS.webp",
+            "link": "shopify://collections/llantas",
+            "alt_text": "Newsletter"
+          }
+        },
+        "banner_8QUEn4": {
+          "type": "banner",
+          "settings": {
+            "image": "shopify://shop_images/NEWSLETTER.webp",
+            "link": "shopify://collections/repuestos-guayas",
+            "alt_text": "Llantas"
+          }
+        }
+      },
+      "block_order": [
+        "banner_Uyj9x9",
+        "banner_8QUEn4"
+      ],
+      "settings": {
+        "padding_top": 32,
+        "padding_bottom": 32
+      }
+    },
+    "featured_blog_8Ken6p": {
+      "type": "featured-blog",
+      "name": "t:sections.featured-blog.presets.name",
+      "settings": {
+        "highlight_title": "Hazlo como un pro",
+        "highlight_description": "<p>Porque a veces la mejor escuela es la práctica. Tutoriales técnicos, tips de expertos y todos los secretos para que hagas el trabajo bien desde la primera vez.</p>",
+        "heading_size": "h1",
+        "blog": "news",
+        "color_scheme": "",
+        "show_image": true,
+        "show_date": true,
+        "show_author": false,
+        "show_view_all": true,
+        "show_view_all_button": true,
+        "view_all_button_text": "Ver todos los artículos",
         "padding_top": 36,
         "padding_bottom": 36
       }
@@ -198,6 +239,8 @@
     "brands_marquee",
     "promo_banners",
     "most_sold_products",
-    "multicolumn"
+    "featured_products_slider",
+    "promo_banners_8TWymK",
+    "featured_blog_8Ken6p"
   ]
 }

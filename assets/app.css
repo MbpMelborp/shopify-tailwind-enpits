@@ -482,6 +482,12 @@ video {
 .isolate {
   isolation: isolate;
 }
+.mb-1 {
+  margin-bottom: 0.25rem;
+}
+.mt-1 {
+  margin-top: 0.25rem;
+}
 .mt-2 {
   margin-top: 0.5rem;
 }
@@ -525,6 +531,10 @@ video {
   -o-object-fit: cover;
   object-fit: cover;
 }
+.text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
 .font-bold {
   font-weight: 700;
 }
@@ -537,6 +547,10 @@ video {
 .italic {
   font-style: italic;
 }
+.text-red-500 {
+  --tw-text-opacity: 1;
+  color: rgb(239 68 68 / var(--tw-text-opacity));
+}
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
@@ -544,6 +558,12 @@ video {
 .no-underline {
   -webkit-text-decoration-line: none;
   text-decoration-line: none;
+}
+.opacity-80 {
+  opacity: 0.8;
+}
+.opacity-90 {
+  opacity: 0.9;
 }
 .shadow {
   --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
@@ -3489,9 +3509,67 @@ details-disclosure > details {
   color: rgb(10 10 10 / var(--tw-text-opacity));
   opacity: 0.5;
 }
+/* PAGINAS INTERIORES */
+.interior-wrapper {
+  width: 100%;
+}
+/* ==========================================================================
+   PAGE HEADER - Componente reutilizable para títulos de página
+   ========================================================================== */
+.page-header {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  text-align: center;
+}
+@media (min-width: 750px) {
+  .page-header {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+}
+.page-header__title {
+  margin-bottom: 1rem;
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-weight: 700;
+}
+@media (min-width: 750px) {
+  .page-header__title {
+    font-size: 3rem;
+    line-height: 1;
+  }
+}
+.page-header__title {
+  color: var(--color-rojo, #fa0014);
+}
+.page-header__description {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 42rem;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  --tw-text-opacity: 1;
+  color: rgb(55 65 81 / var(--tw-text-opacity));
+}
+@media (min-width: 750px) {
+  .page-header__description {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+}
+@media screen and (max-width: 749px) {
+  .page-header__title {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+  }
+
+  .page-header__description {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+  }
+}
 .hover\:underline:hover {
   -webkit-text-decoration-line: underline;
   text-decoration-line: underline;
 }
-
 /*# sourceMappingURL=app.css.map */

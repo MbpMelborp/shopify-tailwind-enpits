@@ -113,7 +113,7 @@
 }
 
 /* ==========================================================================
-     Heading (Título) - Estilo similar a most-sold-title
+     Heading (Título) - Mismo tamaño que page-header__title
      ========================================================================== */
 
 .rich-text__heading {
@@ -125,8 +125,8 @@
 
 @media (min-width: 750px) {
   .rich-text__heading {
-    font-size: 2.25rem;
-    line-height: 2.5rem;
+    font-size: 3rem;
+    line-height: 1;
   }
 }
 
@@ -136,8 +136,8 @@
 
 @media screen and (max-width: 749px) {
   .rich-text__heading {
-    font-size: 1.5rem;
-    line-height: 2rem;
+    font-size: 1.875rem;
+    line-height: 2.25rem;
   }
 }
 
@@ -171,30 +171,30 @@
 }
 
 /* ==========================================================================
-     Text (Texto enriquecido)
+     Text (Texto enriquecido) - Mismo tamaño que page-header__description
      ========================================================================== */
 
 .rich-text__text {
   margin-left: auto;
   margin-right: auto;
   max-width: 42rem;
-  font-size: 1rem;
-  line-height: 1.5rem;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
   --tw-text-opacity: 1;
   color: rgb(55 65 81 / var(--tw-text-opacity));
 }
 
 @media (min-width: 750px) {
   .rich-text__text {
-    font-size: 1.125rem;
-    line-height: 1.75rem;
+    font-size: 1.5rem;
+    line-height: 2rem;
   }
 }
 
 @media screen and (max-width: 749px) {
   .rich-text__text {
-    font-size: 0.875rem;
-    line-height: 1.25rem;
+    font-size: 1.125rem;
+    line-height: 1.75rem;
   }
 }
 
@@ -227,6 +227,63 @@
 
 .rich-text__blocks.right .rich-text__buttons {
   justify-content: flex-end;
+}
+
+/* ==========================================================================
+     Botón Primary - Mismo estilo que featured-blog__view-all-button
+     ========================================================================== */
+
+.rich-text__buttons .button--primary {
+  display: inline-block;
+  border-radius: 9999px;
+  --tw-bg-opacity: 1;
+  background-color: rgb(250 0 20 / var(--tw-bg-opacity));
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+}
+
+.rich-text__buttons .button--primary:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(185 28 28 / var(--tw-bg-opacity));
+}
+
+.rich-text__buttons .button--primary {
+  position: relative;
+  min-height: auto;
+  min-width: auto;
+}
+
+.rich-text__buttons .button--primary::before,
+.rich-text__buttons .button--primary::after {
+  display: none;
+}
+
+.rich-text__buttons .button--primary:hover {
+  --tw-scale-x: 1.05;
+  --tw-scale-y: 1.05;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y))
+    rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y))
+    scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+@media screen and (max-width: 749px) {
+  .rich-text__buttons .button--primary {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
 }
 
 /*# sourceMappingURL=rich-text.css.map */

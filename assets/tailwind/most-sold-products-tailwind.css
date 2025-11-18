@@ -11,12 +11,12 @@
 }
 
 .most-sold-title {
-  @apply text-3xl md:text-4xl font-bold mb-4;
+  @apply text-3xl md:text-5xl font-bold mb-4;
   color: var(--color-rojo, #fa0014);
 }
 
 .most-sold-subtitle {
-  @apply text-base md:text-lg text-gray-700 max-w-2xl mx-auto;
+  @apply text-lg md:text-2xl text-gray-700 max-w-2xl mx-auto;
 }
 
 /* ==========================================================================
@@ -95,11 +95,11 @@
    ========================================================================== */
 @media screen and (max-width: 749px) {
   .most-sold-title {
-    @apply text-2xl;
+    @apply text-3xl;
   }
 
   .most-sold-subtitle {
-    @apply text-sm;
+    @apply text-lg;
   }
 
   .most-sold-filters {

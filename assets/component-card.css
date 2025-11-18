@@ -80,6 +80,14 @@
   display: none;
 }
 
+/* Excepción: Mostrar card__inner para artículos del blog */
+
+.article-card .card__inner,
+.blog-articles .card__inner,
+.blog__posts .card__inner {
+  display: block !important;
+}
+
 /* Asegurar que el card tenga el estilo correcto */
 
 .card-wrapper .card {

@@ -1,9 +1,28 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
       "type": "main-blog",
       "settings": {
-        "layout": "collage",
+        "show_breadcrumb": true,
+        "title": "",
+        "description": "<p>Porque a veces la mejor escuela es la práctica. Tutoriales técnicos, tips de expertos y todos los secretos para que hagas el trabajo bien desde la primera vez.</p>",
+        "show_sidebar": true,
+        "show_banner": true,
+        "banner_image": "shopify://shop_images/banner-blog.png",
+        "banner_link": "#",
+        "show_tags": true,
+        "show_recent": true,
+        "recent_limit": 5,
+        "show_newsletter": false,
         "show_image": true,
         "image_height": "medium",
         "show_date": true,
@@ -11,9 +30,83 @@
         "padding_top": 36,
         "padding_bottom": 36
       }
+    },
+    "featured_products": {
+      "type": "featured-products-slider",
+      "blocks": {
+        "product_cUnXWi": {
+          "type": "product",
+          "settings": {
+            "product": "diamond-halo-stud-earrings-7"
+          }
+        },
+        "product_ChCjWd": {
+          "type": "product",
+          "settings": {
+            "product": "diamond-halo-stud-earrings-7"
+          }
+        },
+        "product_mNBAr8": {
+          "type": "product",
+          "settings": {
+            "product": "diamond-halo-stud-montes"
+          }
+        },
+        "product_yyjX9Y": {
+          "type": "product",
+          "settings": {
+            "product": "diamond-halo-stud-earrings-13"
+          }
+        }
+      },
+      "block_order": [
+        "product_cUnXWi",
+        "product_ChCjWd",
+        "product_mNBAr8",
+        "product_yyjX9Y"
+      ],
+      "settings": {
+        "title": "En la jugada",
+        "subtitle": "<p>Si está aquí, es porque los mecánicos y motociclistas ya lo descubrieron. No te quedes atrás.</p>",
+        "columns_desktop": 2,
+        "enable_desktop_slider": true,
+        "swipe_on_mobile": true,
+        "color_scheme": "scheme-1",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "promo_banners": {
+      "type": "promo-banners",
+      "blocks": {
+        "banner_1": {
+          "type": "banner",
+          "settings": {
+            "link": "",
+            "alt_text": ""
+          }
+        },
+        "banner_2": {
+          "type": "banner",
+          "settings": {
+            "link": "",
+            "alt_text": ""
+          }
+        }
+      },
+      "block_order": [
+        "banner_1",
+        "banner_2"
+      ],
+      "settings": {
+        "padding_top": 32,
+        "padding_bottom": 32
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "featured_products",
+    "promo_banners"
   ]
 }

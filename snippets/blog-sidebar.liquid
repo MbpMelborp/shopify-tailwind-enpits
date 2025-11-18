@@ -1,0 +1,147 @@
+{% comment %}
+  Renders blog sidebar with tags, recent articles, and newsletter.
+
+  Accepts:
+  - blog: {Object} Blog object
+  - show_banner: {Boolean} Show banner (default: false)
+  - banner_image: {Object} Banner image object
+  - banner_link: {String} Banner link URL (optional)
+  - show_tags: {Boolean} Show tags section (default: true)
+  - show_recent: {Boolean} Show recent articles (default: true)
+  - show_newsletter: {Boolean} Show newsletter (default: false)
+  - recent_limit: {Number} Number of recent articles to show (default: 5)
+
+  Usage:
+  {% render 'blog-sidebar', blog: blog %}
+{% endcomment %}
+
+{%- liquid
+  assign show_banner = show_banner | default: false
+  assign show_tags = show_tags | default: true
+  assign show_recent = show_recent | default: true
+  assign show_newsletter = show_newsletter | default: false
+  assign recent_limit = recent_limit | default: 5
+
+  # Get all tags from blog articles
+  assign all_tags = blog.all_tags
+-%}
+
+{{ 'blog-sidebar.css' | asset_url | stylesheet_tag }}
+
+<aside class='blog-sidebar'>
+  {%- comment -%} Banner Section - Solo imagen {%- endcomment -%}
+  {%- if show_banner and banner_image != blank -%}
+    <div class='blog-sidebar__banner'>
+      {%- if banner_link != blank -%}
+        <a href='{{ banner_link }}' class='blog-sidebar__banner-link'>
+          <img
+            src='{{ banner_image | image_url: width: 400 }}'
+            srcset='{{ banner_image | image_url: width: 400 }} 400w'
+            sizes='100vw'
+            loading='lazy'
+            alt='{{ banner_image.alt | escape }}'
+            class='blog-sidebar__banner-img'
+            width='400'
+            height='{{ 400 | divided_by: banner_image.aspect_ratio | round }}'
+          >
+        </a>
+      {%- else -%}
+        <img
+          src='{{ banner_image | image_url: width: 400 }}'
+          srcset='{{ banner_image | image_url: width: 400 }} 400w'
+          sizes='100vw'
+          loading='lazy'
+          alt='{{ banner_image.alt | escape }}'
+          class='blog-sidebar__banner-img'
+          width='400'
+          height='{{ 400 | divided_by: banner_image.aspect_ratio | round }}'
+        >
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} Recent Articles Section {%- endcomment -%}
+  {%- if show_recent and blog.articles.size > 0 -%}
+    {%- liquid
+      # Obtener todos los artículos y limitarlos
+      assign article_count = 0
+    -%}
+    <div class='blog-sidebar__section'>
+      <h3 class='blog-sidebar__title'>ARTÍCULOS RECENTES</h3>
+      <ul class='blog-sidebar__recent'>
+        {%- for article in blog.articles -%}
+          {%- if article_count < recent_limit -%}
+            {%- assign article_count = article_count | plus: 1 -%}
+            <li class='blog-sidebar__recent-item'>
+              <a href='{{ article.url }}' class='blog-sidebar__recent-link'>
+                <div class='blog-sidebar__recent-content'>
+                  {%- if article.image -%}
+                    <div class='blog-sidebar__recent-image'>
+                      {{
+                        article.image
+                        | image_url: width: 100
+                        | image_tag: loading: 'lazy', sizes: '100px', widths: '100', alt: article.image.alt
+                        | escape
+                      }}
+                    </div>
+                  {%- endif -%}
+                  <div class='blog-sidebar__recent-text'>
+                    <h4 class='blog-sidebar__recent-title'>{{ article.title | truncate: 50 | escape }}</h4>
+                    <time class='blog-sidebar__recent-date' datetime='{{ article.published_at | date: '%Y-%m-%d' }}'>
+                      {%- assign months = 'ene,feb,mar,abr,may,jun,jul,ago,sep,oct,nov,dic' | split: ',' -%}
+                      {%- assign day = article.published_at | date: '%d' -%}
+                      {%- assign month_index = article.published_at | date: '%-m' | minus: 1 -%}
+                      {%- assign month = months[month_index] -%}
+                      {{ day }}
+                      {{ month }}
+                    </time>
+                  </div>
+                </div>
+              </a>
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} Tags Section {%- endcomment -%}
+  {%- if show_tags and all_tags.size > 0 -%}
+    <div class='blog-sidebar__section'>
+      <h3 class='blog-sidebar__title'>BLOG TAGS</h3>
+      <ul class='blog-sidebar__tags'>
+        {%- for tag in all_tags -%}
+          <li class='blog-sidebar__tag-item'>
+            <a href='{{ blog.url }}/tagged/{{ tag | handleize }}' class='blog-sidebar__tag-link'>
+              {{ tag }}
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} Newsletter Section {%- endcomment -%}
+  {%- if show_newsletter -%}
+    <div class='blog-sidebar__section'>
+      <h3 class='blog-sidebar__title'>Newsletter</h3>
+      <p class='blog-sidebar__newsletter-text'>Suscríbete para recibir las últimas noticias y artículos.</p>
+      {%- form 'customer', class: 'blog-sidebar__newsletter-form' -%}
+        <input type='hidden' name='contact[tags]' value='newsletter'>
+        <div class='blog-sidebar__newsletter-input-wrapper'>
+          <input
+            type='email'
+            name='contact[email]'
+            class='blog-sidebar__newsletter-input'
+            placeholder='Tu email'
+            required
+            aria-label='Email'
+          >
+          <button type='submit' class='blog-sidebar__newsletter-button'>
+            {{- 'icon-arrow.svg' | inline_asset_content -}}
+          </button>
+        </div>
+      {%- endform -%}
+    </div>
+  {%- endif -%}
+</aside>

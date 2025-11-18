@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "name": "t:sections.footer.name",
   "type": "footer",
@@ -5,45 +14,86 @@
     "footer": {
       "type": "footer",
       "blocks": {
-        "footer-0": {
-          "type": "link_list",
+        "order_highlight_L3J4cj": {
+          "type": "order_highlight",
           "settings": {
-            "heading": "Quick links",
-            "menu": "footer"
+            "icon": "shopify://shop_images/ico_envio.svg",
+            "title": "ENVÍO GRATIS",
+            "description": "En compras superiores a $100.000"
           }
         },
-        "footer-1": {
-          "type": "link_list",
+        "order_highlight_WR3Yij": {
+          "type": "order_highlight",
           "settings": {
-            "heading": "Info",
-            "menu": "footer"
+            "icon": "shopify://shop_images/ico_envio.svg",
+            "title": "ENVÍO GRATIS",
+            "description": "En compras superiores a $100.000"
           }
         },
-        "footer-2": {
-          "type": "text",
+        "order_highlight_ene9WY": {
+          "type": "order_highlight",
           "settings": {
-            "heading": "Our mission",
-            "subtext": "<p>Share contact information, store details, and brand content with your customers.<\/p>"
+            "icon": "shopify://shop_images/ico_envio.svg",
+            "title": "ENVÍO GRATIS",
+            "description": "En compras superiores a $100.000"
+          }
+        },
+        "social_media_bdaXbr": {
+          "type": "social_media",
+          "settings": {
+            "name": "Facebook",
+            "url": "",
+            "icon": "shopify://shop_images/logo_facebook.svg"
+          }
+        },
+        "social_media_dnPfP4": {
+          "type": "social_media",
+          "settings": {
+            "name": "Instagram",
+            "url": "",
+            "icon": "shopify://shop_images/logo_instagram.svg"
           }
         }
       },
       "block_order": [
-        "footer-0",
-        "footer-1",
-        "footer-2"
+        "order_highlight_L3J4cj",
+        "order_highlight_WR3Yij",
+        "order_highlight_ene9WY",
+        "social_media_bdaXbr",
+        "social_media_dnPfP4"
       ],
       "settings": {
-        "color_scheme": "scheme-1",
+        "background_image": "shopify://shop_images/bg_footer.webp",
+        "background_overlay": true,
+        "background_overlay_opacity": 60,
+        "contact_title": "Llámanos cuando necesites resolver",
+        "contact_phone_label": "Teléfono",
+        "contact_phone": "+57 301 395 68 72",
+        "contact_phone_icon": "shopify://shop_images/ico_tel.svg",
+        "contact_address_label": "Dirección",
+        "contact_address": "Calle 36 # 48-14. MEDELLÍN - Colombia",
+        "contact_address_icon": "shopify://shop_images/ico_dir.svg",
+        "contact_email_label": "Email",
+        "contact_email": "enpits@enpits.com",
+        "contact_email_icon": "shopify://shop_images/ico_mail.svg",
+        "customer_service_title": "ATENCIÓN AL CLIENTE",
+        "customer_service_menu": "",
+        "internal_links_title": "EN PITS",
+        "internal_links_menu": "",
         "newsletter_enable": true,
-        "newsletter_heading": "Subscribe to our emails",
-        "show_social": true,
-        "enable_country_selector": false,
-        "enable_language_selector": false,
+        "newsletter_title": "ENTÉRATE PRIMERO",
+        "newsletter_description": "Suscríbete para recibir ofertas exclusivas y novedades de repuestos antes que nadie",
+        "newsletter_placeholder": "INGRESA TU EMAIL",
+        "footer_logo": "shopify://shop_images/logo_enpits.svg",
         "payment_enable": true,
-        "show_policy": false,
+        "payment_label": "Pago Seguro:",
+        "payment_image_1": "shopify://shop_images/pago_mercado_pago_1.webp",
+        "payment_image_2": "shopify://shop_images/image_tarjetas_1.webp",
+        "copyright_text": "Copyright © 2025 EN PITS. Todos los derechos reservados.",
         "margin_top": 48,
         "padding_top": 36,
-        "padding_bottom": 36
+        "padding_bottom": 36,
+        "color_scheme": "scheme-1"
       }
     }
   },

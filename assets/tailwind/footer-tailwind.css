@@ -1,0 +1,283 @@
+/* ==========================================================================
+   FOOTER - Footer Administrable Completo
+   ========================================================================== */
+
+@tailwind components;
+
+@layer components {
+  /* ==========================================================================
+     Footer Base
+     ========================================================================== */
+  .footer {
+    @apply relative w-full overflow-hidden bg-black;
+  }
+
+  .footer.has-background-image {
+    @apply min-h-[400px];
+  }
+
+  .footer__background-image {
+    @apply absolute inset-0 w-full h-full z-0 pointer-events-none opacity-80;
+    display: block !important;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .footer__background-overlay {
+    @apply absolute inset-0 w-full h-full z-[1] pointer-events-none;
+    display: block !important;
+  }
+
+  .footer__content-wrapper {
+    @apply relative z-10;
+  }
+
+  /* ==========================================================================
+     Sección Superior: Destacados de Pedidos
+     ========================================================================== */
+  .footer__highlights {
+    @apply grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-8 md:mb-12;
+  }
+
+  .footer__highlight-item {
+    @apply flex items-center gap-4 bg-negro rounded-lg p-4 md:p-6;
+  }
+
+  .footer__highlight-icon {
+    @apply flex-shrink-0 w-8 h-8 md:w-12 md:h-12;
+  }
+
+  .footer__highlight-icon img {
+    @apply w-full h-full object-contain;
+  }
+
+  .footer__highlight-text {
+    @apply text-white text-sm md:text-base font-medium;
+  }
+
+  /* ==========================================================================
+     Sección Media: 3 Columnas de Información
+     ========================================================================== */
+  .footer__info-section {
+    @apply grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 mb-8 md:mb-12;
+  }
+
+  /* Columna de Contacto */
+  .footer__contact-column {
+    @apply space-y-4;
+  }
+
+  .footer__contact-title {
+    @apply text-white text-base md:text-lg font-bold mb-4 uppercase;
+  }
+
+  .footer__contact-item {
+    @apply flex items-start gap-3;
+  }
+
+  .footer__contact-icon {
+    @apply flex-shrink-0 w-5 h-5 md:w-10 md:h-10;
+  }
+
+  .footer__contact-icon img {
+    @apply w-full h-full object-contain;
+  }
+
+  .footer__contact-text {
+    @apply text-white text-sm md:text-base;
+  }
+
+  .footer__contact-link {
+    @apply text-red-500 hover:text-red-400 transition-colors;
+  }
+
+  /* Columnas de Menús */
+  .footer__menu-column {
+    @apply space-y-2;
+  }
+
+  .footer__menu-title {
+    @apply text-white text-base md:text-lg font-bold mb-4;
+  }
+
+  .footer__menu-list {
+    @apply list-none space-y-2;
+  }
+
+  .footer__menu-item {
+    @apply text-white text-sm md:text-base;
+  }
+
+  .footer__menu-link {
+    @apply text-white hover:text-red-400 transition-colors no-underline;
+  }
+
+  /* ==========================================================================
+     Sección Newsletter
+     ========================================================================== */
+  .footer__newsletter-section {
+    @apply flex flex-col md:flex-row items-center justify-between gap-4 md:gap-6 mb-8 md:mb-12 p-6 md:p-8 bg-negro rounded-lg;
+  }
+
+  .footer__newsletter-content {
+    @apply flex-1;
+  }
+
+  .footer__newsletter-title {
+    @apply text-white text-lg md:text-xl font-bold mb-2;
+  }
+
+  .footer__newsletter-description {
+    @apply text-white text-sm md:text-base opacity-90;
+  }
+
+  .footer__newsletter-form-wrapper {
+    @apply flex-1 max-w-md;
+  }
+
+  .footer__newsletter-form {
+    @apply w-full;
+  }
+
+  .news-input {
+    @apply flex items-center gap-2 w-full bg-white rounded-full p-1 border border-white border-opacity-20;
+  }
+
+  .footer__newsletter-input {
+    @apply flex-1 px-4 py-3 bg-transparent rounded-full text-base text-black placeholder-gray-500 placeholder:text-sm focus:outline-none focus:ring-2 focus:ring-red-500 border-0;
+  }
+
+  .footer__newsletter-button {
+    @apply w-12 h-12 bg-red-500 hover:bg-red-600 rounded-full flex items-center justify-center text-white transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 flex-shrink-0;
+  }
+
+  .footer__newsletter-button svg {
+    @apply w-5 h-5;
+  }
+
+  /* ==========================================================================
+     Sección Logo y Redes Sociales
+     ========================================================================== */
+  .footer__brand-section {
+    @apply flex flex-col items-center justify-center gap-6 mb-8 md:mb-12;
+  }
+
+  .footer__logo {
+    @apply flex items-center justify-center;
+  }
+
+  .footer__logo img {
+    @apply max-w-32 h-auto;
+  }
+
+  .footer__social {
+    @apply flex items-center justify-center gap-4;
+  }
+
+  .footer__social-link {
+    @apply w-10 h-10 flex items-center justify-center rounded-full bg-white bg-opacity-10 hover:bg-opacity-20 transition-all;
+  }
+
+  .footer__social-link img {
+    @apply w-6 h-6 object-contain;
+  }
+
+  .footer__social-text {
+    @apply text-white text-sm font-medium;
+  }
+
+  .footer__newsletter-error,
+  .footer__newsletter-success {
+    @apply mt-2 text-sm flex items-center gap-2;
+  }
+
+  .footer__newsletter-error {
+    @apply text-red-400;
+  }
+
+  .footer__newsletter-success {
+    @apply text-green-400;
+  }
+
+  .footer__newsletter-error svg,
+  .footer__newsletter-success svg {
+    @apply w-4 h-4;
+  }
+
+  /* ==========================================================================
+     Sección Inferior: Copyright y Medios de Pago
+     ========================================================================== */
+  .footer__bottom-legals {
+    @apply bg-blanco py-6 md:pt-8 relative z-[2];
+  }
+
+  .footer__bottom-section {
+    @apply bg-blanco;
+  }
+
+  .footer__bottom-wrapper {
+    @apply flex flex-col md:flex-row items-center justify-between gap-4 md:gap-6;
+  }
+
+  .footer__copyright {
+    @apply text-negro text-sm text-center md:text-left;
+  }
+
+  .footer__payment-section {
+    @apply flex items-center gap-2 md:gap-4;
+  }
+
+  .footer__payment-label {
+    @apply text-negro text-sm font-medium mr-2;
+  }
+
+  .footer__payment-list {
+    @apply flex items-center gap-2 md:gap-3 flex-wrap;
+  }
+
+  .footer__payment-item {
+    @apply h-6 md:h-10;
+  }
+
+  .footer__payment-item img {
+    @apply w-full h-full object-contain;
+  }
+
+  /* ==========================================================================
+     Responsive Adjustments
+     ========================================================================== */
+  @media screen and (max-width: 749px) {
+    .footer__highlights {
+      @apply grid-cols-1;
+    }
+
+    .footer__info-section {
+      @apply grid-cols-1 gap-6;
+    }
+
+    .footer__newsletter-section {
+      @apply flex-col;
+    }
+
+    .footer__newsletter-form-wrapper {
+      @apply w-full max-w-none;
+    }
+
+    .footer__bottom-wrapper {
+      @apply flex-col;
+    }
+  }
+
+  @media screen and (min-width: 750px) and (max-width: 989px) {
+    .footer__info-section {
+      @apply grid-cols-3 gap-8;
+    }
+  }
+
+  @media screen and (min-width: 990px) {
+    .footer__highlights {
+      @apply grid-cols-3;
+    }
+  }
+}

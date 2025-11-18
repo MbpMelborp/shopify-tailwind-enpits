@@ -76,16 +76,16 @@
   }
 
   /* ==========================================================================
-     Heading (Título) - Estilo similar a most-sold-title
+     Heading (Título) - Mismo tamaño que page-header__title
      ========================================================================== */
   .rich-text__heading {
-    @apply text-3xl md:text-4xl font-bold mb-4;
+    @apply text-3xl md:text-5xl font-bold mb-4;
     color: var(--color-rojo, #fa0014);
   }
 
   @media screen and (max-width: 749px) {
     .rich-text__heading {
-      @apply text-2xl;
+      @apply text-3xl;
     }
   }
 
@@ -103,15 +103,15 @@
   }
 
   /* ==========================================================================
-     Text (Texto enriquecido)
+     Text (Texto enriquecido) - Mismo tamaño que page-header__description
      ========================================================================== */
   .rich-text__text {
-    @apply text-base md:text-lg text-gray-700 max-w-2xl mx-auto;
+    @apply text-lg md:text-2xl text-gray-700 max-w-2xl mx-auto;
   }
 
   @media screen and (max-width: 749px) {
     .rich-text__text {
-      @apply text-sm;
+      @apply text-lg;
     }
   }
 
@@ -139,5 +139,30 @@
 
   .rich-text__blocks.right .rich-text__buttons {
     @apply justify-end;
+  }
+
+  /* ==========================================================================
+     Botón Primary - Mismo estilo que featured-blog__view-all-button
+     ========================================================================== */
+  .rich-text__buttons .button--primary {
+    @apply inline-block px-8 py-4 bg-rojo text-white text-lg rounded-full hover:bg-red-700 transition-all duration-200;
+    position: relative;
+    min-height: auto;
+    min-width: auto;
+  }
+
+  .rich-text__buttons .button--primary::before,
+  .rich-text__buttons .button--primary::after {
+    @apply hidden;
+  }
+
+  .rich-text__buttons .button--primary:hover {
+    @apply transform scale-105;
+  }
+
+  @media screen and (max-width: 749px) {
+    .rich-text__buttons .button--primary {
+      @apply px-6 py-3 text-base;
+    }
   }
 }

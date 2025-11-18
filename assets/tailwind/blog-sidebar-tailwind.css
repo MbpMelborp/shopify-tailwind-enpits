@@ -1,0 +1,154 @@
+/* ==========================================================================
+   BLOG SIDEBAR - Sidebar del Blog
+   ========================================================================== */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  /* ==========================================================================
+     Contenedor Principal - Fondo oscuro según Figma
+     ========================================================================== */
+  .blog-sidebar {
+    @apply bg-blanco px-6 py-0 space-x-6;
+  }
+
+  @media screen and (min-width: 750px) {
+    .blog-sidebar {
+      padding: 2rem;
+    }
+  }
+
+  /* ==========================================================================
+     Banner - Solo imagen
+     ========================================================================== */
+  .blog-sidebar__banner {
+    @apply mb-6 relative overflow-hidden rounded-lg;
+    width: 100%;
+    display: block;
+  }
+
+  .blog-sidebar__banner-link {
+    @apply block w-full;
+    display: block;
+    text-decoration: none;
+  }
+
+  .blog-sidebar__banner-img {
+    @apply w-full h-auto object-cover rounded-lg;
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  /* ==========================================================================
+     Secciones - Separador
+     ========================================================================== */
+  .blog-sidebar__section {
+    @apply pb-6 border-b border-gray-200 last:border-b-0 last:pb-0;
+  }
+
+  .blog-sidebar__title {
+    @apply text-xl font-bold text-gray-900 mb-4 uppercase tracking-wide relative pb-2 border-b-rojo border-b;
+  }
+
+  /* ==========================================================================
+     Tags
+     ========================================================================== */
+  .blog-sidebar__tags {
+    @apply flex flex-wrap gap-2;
+  }
+
+  .blog-sidebar__tag-item {
+    @apply inline-block;
+  }
+
+  .blog-sidebar__tag-link {
+    @apply px-3 py-1.5 bg-white text-black rounded text-xs hover:bg-gray-200 transition-colors duration-200;
+    font-weight: 500;
+  }
+
+  /* ==========================================================================
+     Artículos Recientes
+     ========================================================================== */
+  .blog-sidebar__recent {
+    @apply space-y-4;
+  }
+
+  .blog-sidebar__recent-item {
+    @apply block;
+  }
+
+  .blog-sidebar__recent-link {
+    @apply block hover:opacity-80 transition-opacity duration-200;
+  }
+
+  .blog-sidebar__recent-content {
+    @apply flex gap-3;
+  }
+
+  .blog-sidebar__recent-image {
+    @apply flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden;
+  }
+
+  .blog-sidebar__recent-image img {
+    @apply w-full h-full object-cover;
+  }
+
+  .blog-sidebar__recent-text {
+    @apply flex-1 min-w-0;
+  }
+
+  .blog-sidebar__recent-title {
+    @apply text-lg font-semibold text-gray-900 mb-1 line-clamp-2 leading-none;
+  }
+
+  .blog-sidebar__recent-date {
+    @apply text-base text-gray-500;
+  }
+
+  /* ==========================================================================
+     Newsletter
+     ========================================================================== */
+  .blog-sidebar__newsletter-text {
+    @apply text-sm text-gray-600 mb-4;
+  }
+
+  .blog-sidebar__newsletter-form {
+    @apply w-full;
+  }
+
+  .blog-sidebar__newsletter-input-wrapper {
+    @apply flex items-center gap-2;
+  }
+
+  .blog-sidebar__newsletter-input {
+    @apply flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rojo focus:border-transparent;
+  }
+
+  .blog-sidebar__newsletter-button {
+    @apply flex-shrink-0 w-10 h-10 bg-rojo text-white rounded-lg flex items-center justify-center hover:bg-red-700 transition-colors duration-200;
+  }
+
+  .blog-sidebar__newsletter-button svg {
+    @apply w-5 h-5;
+  }
+
+  /* ==========================================================================
+     Responsive Adjustments
+     ========================================================================== */
+  @media screen and (max-width: 749px) {
+    .blog-sidebar {
+      @apply space-y-4;
+    }
+
+    .blog-sidebar__section {
+      @apply pb-4;
+    }
+
+    .blog-sidebar__title {
+      @apply text-base mb-3;
+    }
+  }
+}

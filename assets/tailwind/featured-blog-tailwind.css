@@ -1,0 +1,166 @@
+/* ==========================================================================
+   FEATURED BLOG - Blog Destacado con Grid de 2 Columnas
+   ========================================================================== */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  /* ==========================================================================
+     Bloque Destacado
+     ========================================================================== */
+  .featured-blog__highlight {
+    @apply mb-8 md:mb-12 text-center;
+  }
+
+  .featured-blog__highlight-title {
+    @apply text-3xl md:text-5xl font-bold mb-4 text-rojo;
+  }
+
+  .featured-blog__highlight-description {
+    @apply text-lg md:text-2xl text-gray-600 max-w-3xl mx-auto;
+  }
+
+  /* ==========================================================================
+     Grid de Artículos
+     ========================================================================== */
+  .featured-blog__grid {
+    @apply grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8;
+  }
+
+  /* ==========================================================================
+     Card de Artículo
+     ========================================================================== */
+  .featured-blog__article-card {
+    @apply relative flex flex-col bg-white !rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300;
+    .card__information {
+      @apply py-2 px-2 flex flex-col gap-2 md:flex-row;
+      grid-row-start: 2;
+    }
+  }
+  .featured-blog__article-content {
+    @apply !p-4;
+  }
+
+  /* Asegurar que el contenido del artículo sea visible */
+  .featured-blog__article-card .card__content {
+    @apply !relative !block !h-auto;
+  }
+
+  .featured-blog__article-image-wrapper {
+    @apply !relative !block !h-auto w-full overflow-hidden;
+  }
+
+  /* Asegurar que card__media sea visible */
+  .featured-blog__article-card .card__media {
+    @apply !relative !block !h-auto !m-0 !w-full;
+  }
+
+  .featured-blog__article-image-wrapper .media {
+    @apply !relative !block !h-auto !w-full !p-0;
+  }
+
+  .featured-blog__article-image {
+    @apply w-full h-auto object-cover;
+    @apply !relative !block !h-auto !w-full;
+  }
+
+  .featured-blog__article-image img {
+    @apply !container object-cover !relative !block !h-auto !w-full;
+  }
+  @media screen and (max-width: 749px) {
+    .featured-blog__article-image img {
+      @apply w-full h-auto object-cover;
+    }
+  }
+  .featured-blog__article-content {
+    @apply flex flex-col flex-grow p-6;
+  }
+
+  .featured-blog__article-date {
+    @apply text-sm text-gray-600 mb-3 px-2 py-4 bg-gray-100 flex flex-col divide-y items-center justify-center min-w-28 rounded-xl;
+    span {
+      @apply font-bold text-2xl text-gray-600;
+    }
+    b {
+      @apply font-bold text-lg;
+    }
+  }
+  .featured-blog__article-content-wrapper {
+    @apply flex-1 md:pr-16;
+  }
+  .featured-blog__article-title {
+    @apply font-medium mb-3 text-gray-900 text-left;
+    a {
+      @apply text-2xl md:!text-3xl font-medium mb-3 text-gray-900 text-left;
+    }
+  }
+
+  .featured-blog__article-title-link {
+    @apply hover:text-red-600 transition-colors duration-200;
+  }
+
+  .featured-blog__article-excerpt {
+    @apply text-lg text-gray-600 mb-4 flex-grow text-left;
+  }
+
+  /* ==========================================================================
+     Botón Circular Rojo
+     ========================================================================== */
+  .featured-blog__article-button {
+    @apply absolute bottom-6 right-6 w-12 h-12 bg-rojo rounded-full flex items-center justify-center text-white hover:bg-red-700 transition-colors duration-200 shadow-lg;
+  }
+
+  .featured-blog__article-button svg {
+    @apply w-6 h-6;
+  }
+
+  .featured-blog__article-button:hover {
+    @apply scale-110;
+  }
+
+  /* ==========================================================================
+     Botón "Ver Todos los Artículos"
+     ========================================================================== */
+  .featured-blog__view-all-button-wrapper {
+    @apply mt-8 md:mt-12 text-center;
+  }
+
+  .featured-blog__view-all-button {
+    @apply inline-block px-8 py-4 bg-rojo text-white text-lg rounded-full hover:bg-red-700 transition-all duration-200;
+  }
+
+  .featured-blog__view-all-button:hover {
+    @apply transform scale-105;
+  }
+
+  /* ==========================================================================
+     Responsive Adjustments
+     ========================================================================== */
+  @media screen and (max-width: 749px) {
+    .featured-blog__highlight-title {
+      @apply text-3xl;
+    }
+
+    .featured-blog__highlight-description {
+      @apply text-lg;
+    }
+
+    .featured-blog__article-content {
+      @apply p-4;
+    }
+
+    .featured-blog__article-button {
+      @apply bottom-4 right-4 w-10 h-10;
+    }
+
+    .featured-blog__article-button svg {
+      @apply w-5 h-5;
+    }
+
+    .featured-blog__view-all-button {
+      @apply px-6 py-3 text-base;
+    }
+  }
+}

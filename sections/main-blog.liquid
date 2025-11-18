@@ -1,53 +1,105 @@
 {{ 'component-article-card.css' | asset_url | stylesheet_tag }}
-{{ 'section-main-blog.css' | asset_url | stylesheet_tag }}
+{{ 'main-blog.css' | asset_url | stylesheet_tag }}
 
 {%- style -%}
   .section-{{ section.id }}-padding {
-    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
     padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
   }
 
   @media screen and (min-width: 750px) {
     .section-{{ section.id }}-padding {
-      padding-top: {{ section.settings.padding_top }}px;
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
 {%- endstyle -%}
 
-{%- paginate blog.articles by 6 -%}
-  <div class="main-blog page-width section-{{ section.id }}-padding">
-    <h1 class="title--primary{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
-      {{ blog.title | escape }}
-    </h1>
-
-    <div class="blog-articles {% if section.settings.layout == 'collage' %}blog-articles--collage{% endif %}">
-      {%- for article in blog.articles -%}
-        <div
-          class="blog-articles__article article{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-          {% if settings.animations_reveal_on_scroll %}
-            data-cascade
-            style="--animation-order: {{ forloop.index }};"
-          {% endif %}
-        >
-          {%- render 'article-card',
-            article: article,
-            media_height: section.settings.image_height,
-            media_aspect_ratio: article.image.aspect_ratio,
-            show_image: section.settings.show_image,
-            show_date: section.settings.show_date,
-            show_author: section.settings.show_author,
-            show_excerpt: true
-          -%}
+{%- liquid
+  assign blog_title = section.settings.title | default: blog.title
+  assign blog_description = section.settings.description | default: blog.description
+-%}
+<div class='interior-wrapper'>
+  <div class='main-blog section-{{ section.id }}-padding'>
+    <div class='main-blog__container'>
+      {%- comment -%} Breadcrumb {%- endcomment -%}
+      {%- if section.settings.show_breadcrumb -%}
+        <div class='main-blog__breadcrumb'>
+          {%- render 'breadcrumb', blog: blog -%}
         </div>
-      {%- endfor -%}
-    </div>
+      {%- endif -%}
 
-    {%- if paginate.pages > 1 -%}
-      {%- render 'pagination', paginate: paginate -%}
-    {%- endif -%}
+      {%- comment -%} Header con Título y Descripción {%- endcomment -%}
+      {%- if blog_title != blank or blog_description != blank -%}
+        <div class='page-width'>
+          <div class='page-header{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}'>
+            {%- if blog_title != blank -%}
+              <h1 class='page-header__title{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}'>
+                {{ blog_title | escape }}
+              </h1>
+            {%- endif -%}
+            {%- if blog_description != blank -%}
+              <div class='page-header__description rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}'>
+                {{ blog_description }}
+              </div>
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} Layout con Sidebar y Contenido {%- endcomment -%}
+      <div class='main-blog__layout page-width'>
+        {%- comment -%} Sidebar (izquierda) {%- endcomment -%}
+        {%- if section.settings.show_sidebar -%}
+          <aside class='main-blog__sidebar-wrapper'>
+            {%- render 'blog-sidebar',
+              blog: blog,
+              show_banner: section.settings.show_banner,
+              banner_image: section.settings.banner_image,
+              banner_link: section.settings.banner_link,
+              show_tags: section.settings.show_tags,
+              show_recent: section.settings.show_recent,
+              show_newsletter: section.settings.show_newsletter,
+              recent_limit: section.settings.recent_limit
+            -%}
+          </aside>
+        {%- endif -%}
+
+        {%- comment -%} Contenido Principal con Grid de Artículos (derecha) {%- endcomment -%}
+        <div class='main-blog__content'>
+          {%- paginate blog.articles by 6 -%}
+            <div class='main-blog__articles'>
+              {%- for article in blog.articles -%}
+                <div
+                  class='main-blog__article-item{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}'
+                  {% if settings.animations_reveal_on_scroll %}
+                    data-cascade
+                    style='--animation-order: {{ forloop.index }};'
+                  {% endif %}
+                >
+                  {%- render 'article-card',
+                    article: article,
+                    media_height: section.settings.image_height,
+                    media_aspect_ratio: article.image.aspect_ratio,
+                    show_image: section.settings.show_image,
+                    show_date: section.settings.show_date,
+                    show_author: section.settings.show_author,
+                    show_excerpt: true
+                  -%}
+                </div>
+              {%- endfor -%}
+            </div>
+
+            {%- comment -%} Paginación {%- endcomment -%}
+            {%- if paginate.pages > 1 -%}
+              <div class='main-blog__pagination'>
+                {%- render 'pagination', paginate: paginate -%}
+              </div>
+            {%- endif -%}
+          {%- endpaginate -%}
+        </div>
+      </div>
+    </div>
   </div>
-{%- endpaginate -%}
+</div>
 
 {% schema %}
 {
@@ -57,24 +109,82 @@
   "settings": [
     {
       "type": "header",
-      "content": "t:sections.main-blog.settings.header.content"
+      "content": "Breadcrumb y Header"
     },
     {
-      "type": "select",
-      "id": "layout",
-      "options": [
-        {
-          "value": "grid",
-          "label": "t:sections.main-blog.settings.layout.options__1.label"
-        },
-        {
-          "value": "collage",
-          "label": "t:sections.main-blog.settings.layout.options__2.label"
-        }
-      ],
-      "default": "collage",
-      "label": "t:sections.main-blog.settings.layout.label",
-      "info": "t:sections.main-blog.settings.layout.info"
+      "type": "checkbox",
+      "id": "show_breadcrumb",
+      "default": true,
+      "label": "Mostrar migas de pan"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Título personalizado",
+      "info": "Si se deja vacío, se usará el título del blog"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Descripción personalizada",
+      "info": "Si se deja vacío, se usará la descripción del blog"
+    },
+    {
+      "type": "header",
+      "content": "Sidebar"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sidebar",
+      "default": true,
+      "label": "Mostrar sidebar"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_banner",
+      "default": false,
+      "label": "Mostrar banner en sidebar"
+    },
+    {
+      "type": "image_picker",
+      "id": "banner_image",
+      "label": "Imagen del banner"
+    },
+    {
+      "type": "url",
+      "id": "banner_link",
+      "label": "Enlace del banner"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tags",
+      "default": true,
+      "label": "Mostrar categorías/tags en sidebar"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_recent",
+      "default": true,
+      "label": "Mostrar artículos recientes en sidebar"
+    },
+    {
+      "type": "range",
+      "id": "recent_limit",
+      "min": 3,
+      "max": 10,
+      "step": 1,
+      "default": 5,
+      "label": "Número de artículos recientes"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_newsletter",
+      "default": false,
+      "label": "Mostrar newsletter en sidebar"
+    },
+    {
+      "type": "header",
+      "content": "Artículos"
     },
     {
       "type": "checkbox",
@@ -118,10 +228,6 @@
       "id": "show_author",
       "default": false,
       "label": "t:sections.main-blog.settings.show_author.label"
-    },
-    {
-      "type": "paragraph",
-      "content": "t:sections.main-blog.settings.paragraph.content"
     },
     {
       "type": "header",

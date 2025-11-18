@@ -1,0 +1,63 @@
+/* ==========================================================================
+   BREADCRUMB - Migas de Pan
+   ========================================================================== */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  /* ==========================================================================
+     Contenedor Principal
+     ========================================================================== */
+  .breadcrumb-wrapper {
+    @apply w-full py-6 !bg-gris text-negro;
+  }
+  .breadcrumb {
+    @apply mb-0;
+  }
+
+  .breadcrumb__list {
+    @apply flex flex-wrap items-center gap-2 text-sm md:text-base;
+  }
+
+  /* ==========================================================================
+     Items de Breadcrumb
+     ========================================================================== */
+  .breadcrumb__item {
+    @apply flex items-center;
+  }
+
+  .breadcrumb__item:not(:last-child)::after {
+    @apply content-['/'] mx-2 text-gray-400;
+  }
+
+  .breadcrumb__link {
+    @apply text-gray-600 hover:text-rojo transition-colors duration-200;
+  }
+
+  .breadcrumb__current {
+    @apply text-gray-900 font-medium;
+  }
+
+  .breadcrumb__item--current {
+    @apply text-gray-900;
+  }
+
+  /* ==========================================================================
+     Responsive Adjustments
+     ========================================================================== */
+  @media screen and (max-width: 749px) {
+    .breadcrumb {
+      @apply mb-4;
+    }
+
+    .breadcrumb__list {
+      @apply text-xs gap-1;
+    }
+
+    .breadcrumb__item:not(:last-child)::after {
+      @apply mx-1;
+    }
+  }
+}

@@ -1872,3 +1872,34 @@ details-disclosure > details {
 .mega-menu__llantas-empty {
   @apply text-sm text-negro opacity-50 italic text-left py-4;
 }
+
+/* PAGINAS INTERIORES */
+.interior-wrapper {
+  @apply w-full;
+}
+
+/* ==========================================================================
+   PAGE HEADER - Componente reutilizable para títulos de página
+   ========================================================================== */
+.page-header {
+  @apply py-8 md:py-10 text-center;
+}
+
+.page-header__title {
+  @apply text-3xl md:text-5xl font-bold mb-4;
+  color: var(--color-rojo, #fa0014);
+}
+
+.page-header__description {
+  @apply text-lg md:text-2xl text-gray-700 max-w-2xl mx-auto;
+}
+
+@media screen and (max-width: 749px) {
+  .page-header__title {
+    @apply text-3xl;
+  }
+
+  .page-header__description {
+    @apply text-lg;
+  }
+}
