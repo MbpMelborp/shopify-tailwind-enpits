@@ -4,8 +4,8 @@
 
 Este archivo contiene reglas y guías para el desarrollo del tema de Shopify EnPits usando Tailwind CSS, Liquid, y JavaScript.
 
-**Tienda**: `enpits.myshopify.com`
-**Tema Base**: Dawn 15.2.0 + Tailwind CSS
+**Tienda**: `enpits.myshopify.com`  
+**Tema Base**: Dawn 15.2.0 + Tailwind CSS  
 **Repositorio**: `/Users/juanosoriocano/Documents/DEV/ENPITS/shopify-tailwind-enpits`
 
 ---
@@ -14,7 +14,7 @@ Este archivo contiene reglas y guías para el desarrollo del tema de Shopify EnP
 
 ```
 shopify-tailwind-enpits/
-├── assets/                    # CSS compilado, JS, imágenes, SVGs
+├── assets/
 │   ├── tailwind/              # ⭐ Archivos fuente de Tailwind (EDITAR AQUÍ)
 │   │   ├── app-tailwind.css      # Estilos globales y @tailwind directives
 │   │   ├── component-card-tailwind.css
@@ -28,7 +28,7 @@ shopify-tailwind-enpits/
 │   ├── component-card.css     # CSS compilado (auto-generado)
 │   ├── promo-banners.css      # CSS compilado (auto-generado)
 │   └── facets.js             # Lógica de filtros
-├── scripts/                   # Scripts de automatización
+├── scripts/
 │   └── build-css.js           # ⭐ Script automático de compilación CSS
 ├── config/                    # Configuración del tema
 │   ├── settings_data.json
@@ -52,7 +52,7 @@ shopify-tailwind-enpits/
 
 ---
 
-## 🎨 Tailwind CSS - Reglas de Oro
+## 🎨 Tailwind CSS - Reglas Fundamentales
 
 ### Clases de Tailwind Directas
 
@@ -96,7 +96,7 @@ x2lg: 1920px  /* Extra Large */
 <div class="w-full md:w-1/2 lg:w-1/3">
 ```
 
-### Compilar CSS
+### Compilación CSS Automática
 
 **⚠️ IMPORTANTE**: El sistema de compilación es **automático**. Detecta todos los archivos `*-tailwind.css` en `assets/tailwind/` y los compila automáticamente.
 
@@ -118,189 +118,6 @@ npm run build:css
 - Archivo fuente: `assets/tailwind/component-name-tailwind.css`
 - Archivo compilado: `assets/component-name.css`
 - Excepciones (subcarpetas): Ver `PATH_MAP` en `scripts/build-css.js`
-
----
-
-## 🔍 Filtros y Categorización - Sistema EnPits
-
-### 📚 Documentación Completa
-
-Ver: `/Users/juanosoriocano/Documents/DEV/ENPITS/API/api-access-net/docs/shopify-theme-integration.md`
-
-### Arquitectura de Filtros
-
-```
-Metaobjects (Backend)
-    ↓
-Product Metafields (Shopify)
-    ↓
-Product Tags (Sincronizados automáticamente)
-    ↓
-Shopify Facets API
-    ↓
-Frontend Filters (facets.liquid)
-```
-
-### Tipos de Metaobjetos
-
-#### 1. `compatibilidad_de_moto`
-- **Marca**: `product.metafields.custom.compatibilidad_de_moto.marca`
-- **Modelo**: `product.metafields.custom.compatibilidad_de_moto.modelo` (array)
-- **Tags generados**: `marca:["KAWASAKI"]`, `modelo:["Ninja 250"]`
-
-#### 2. `taxonomia_producto`
-- **Categoría**: `product.metafields.custom.taxonomia_producto.categoria` (repuestos, llantas, neumaticos)
-- **Línea**: `product.metafields.custom.taxonomia_producto.linea`
-- **Sublínea**: `product.metafields.custom.taxonomia_producto.sublinea`
-- **Type** (llantas): `product.metafields.custom.taxonomia_producto.type`
-- **Tube Type** (llantas): `product.metafields.custom.taxonomia_producto.tubetype`
-- **Sizes** (llantas): `product.metafields.custom.taxonomia_producto.sizes` (array)
-- **Tags generados**: 
-  - `categoria:["repuestos"]`
-  - `linea:["Filtros"]`
-  - `sublinea:["Aire"]`
-  - `llantas:type:Pistera`
-  - `llantas:tubetype:TL`
-  - `llantas:size:16"`
-
-### Formato de Tags
-
-Los tags siguen este formato:
-
-```
-marca:["KAWASAKI"]
-modelo:["Ninja 250"]
-categoria:["repuestos"]
-linea:["Filtros"]
-sublinea:["Aire"]
-llantas:type:Pistera
-llantas:tubetype:TL
-llantas:size:16"
-```
-
-### Acceso desde Liquid
-
-#### Obtener Compatibilidad (Marca/Modelo)
-
-```liquid
-{%- assign compatibilidad = product.metafields.custom.compatibilidad_de_moto -%}
-{%- if compatibilidad -%}
-  {%- assign marca = compatibilidad.marca.value -%}
-  {%- assign modelos = compatibilidad.modelo.value -%}
-  
-  <div class="mb-4">
-    <h3 class="font-bold">Compatible con:</h3>
-    <p class="text-sm">
-      Marca: {{ marca }}<br>
-      Modelos: {{ modelos | join: ', ' }}
-    </p>
-  </div>
-{%- endif -%}
-```
-
-#### Obtener Taxonomía
-
-```liquid
-{%- assign taxonomia = product.metafields.custom.taxonomia_producto -%}
-{%- if taxonomia -%}
-  {%- comment -%} Puede ser single reference o list {%- endcomment -%}
-  {%- if taxonomia.reference -%}
-    {%- assign categoria = taxonomia.reference.categoria.value -%}
-    {%- assign linea = taxonomia.reference.linea.value -%}
-    {%- assign sublinea = taxonomia.reference.sublinea.value -%}
-    
-    <div class="flex gap-2 flex-wrap">
-      <span class="px-2 py-1 bg-gray-100 rounded">
-        {{ categoria }}
-      </span>
-      {%- if linea -%}
-        <span class="px-2 py-1 bg-gray-100 rounded">
-          {{ linea }}
-        </span>
-      {%- endif -%}
-      {%- if sublinea -%}
-        <span class="px-2 py-1 bg-gray-100 rounded">
-          {{ sublinea }}
-        </span>
-      {%- endif -%}
-    </div>
-  {%- elsif taxonomia.references -%}
-    {%- comment -%} Lista de referencias {%- endcomment -%}
-    {%- for ref in taxonomia.references -%}
-      <div class="mb-2">
-        Categoría: {{ ref.categoria.value }}
-        Línea: {{ ref.linea.value }}
-      </div>
-    {%- endfor -%}
-  {%- endif -%}
-{%- endif -%}
-```
-
-#### Obtener Tags del Producto
-
-```liquid
-{%- comment -%} Tags ya están sincronizados automáticamente {%- endcomment -%}
-{%- for tag in product.tags -%}
-  {%- if tag contains 'marca:' or tag contains 'categoria:' or tag contains 'linea:' -%}
-    <span class="inline-block px-2 py-1 bg-red-100 rounded text-xs">
-      {{ tag }}
-    </span>
-  {%- endif -%}
-{%- endfor -%}
-```
-
-### Filtros en Colecciones
-
-El tema usa el snippet `facets.liquid` que se renderiza en `main-collection-product-grid.liquid`:
-
-```liquid
-{% render 'facets',
-  results: collection,
-  enable_filtering: section.settings.enable_filtering,
-  enable_sorting: section.settings.enable_sorting,
-  filter_type: section.settings.filter_type,
-  paginate: paginate
-%}
-```
-
-**Tipos de filtros disponibles:**
-- `vertical`: Sidebar de filtros
-- `horizontal`: Filtros en línea
-- `drawer`: Drawer móvil
-
-### JavaScript para Filtros
-
-El archivo `assets/facets.js` contiene la clase `FacetFiltersForm` que maneja:
-- Actualización de URL cuando se selecciona un filtro
-- Fetch de resultados filtrados sin recargar página
-- Manejo de filtros activos
-- Integración con Shopify Facets API
-
-**Uso:**
-```javascript
-// El web component <facet-filters-form> ya está configurado
-// No necesitas código adicional, funciona automáticamente
-```
-
-### Crear Filtros Personalizados
-
-Si necesitas filtros personalizados basados en metaobjetos:
-
-```liquid
-{%- comment -%} En facets.liquid o tu snippet personalizado {%- endcomment -%}
-<div class="mb-4">
-  <h3 class="font-bold mb-2">Filtrar por Marca</h3>
-  <div class="space-y-2">
-    {%- assign marcas = collection.all_tags | where: 'contains', 'marca:' -%}
-    {%- for tag in marcas -%}
-      <label class="flex items-center gap-2">
-        <input type="checkbox" value="{{ tag }}" class="marca-filter">
-        <span>{{ tag | remove: 'marca:["' | remove: '"]' }}</span>
-      </label>
-    {%- endfor -%}
-  </div>
-</div>
-```
 
 ---
 
@@ -364,7 +181,7 @@ git commit -m "Tipo: Descripción"
 - Event listeners con `defer` o `async`
 - Nombres en camelCase
 
-### CSS
+### CSS - Organización y Estructura
 
 #### 🎯 Crear un Nuevo Componente CSS
 
@@ -624,22 +441,186 @@ git commit -m "Tipo: Descripción"
 
 ---
 
-## 🔗 Referencias a Documentación
+## 🔍 Filtros y Categorización - Sistema EnPits
 
-### Documentos del Proyecto
+### 📚 Documentación Completa
 
-- **Workflow**: `WORKFLOW.md` - Guía completa de desarrollo
-- **Filtros y Categorización**: `../API/api-access-net/docs/shopify-theme-integration.md`
-- **Búsqueda Inline**: `SEARCH-INLINE-DOCS.md`
-- **Source Maps**: `SOURCE-MAPS.md`
-- **Secciones**: `SECTIONS.md`
+Ver: `/Users/juanosoriocano/Documents/DEV/ENPITS/API/api-access-net/docs/shopify-theme-integration.md`
 
-### Recursos Externos
+### Arquitectura de Filtros
 
-- [Shopify Liquid Docs](https://shopify.dev/docs/api/liquid)
-- [Shopify Themes Docs](https://shopify.dev/themes)
-- [Tailwind CSS Docs](https://tailwindcss.com/docs)
-- [Dawn Theme GitHub](https://github.com/Shopify/dawn)
+```
+Metaobjects (Backend)
+    ↓
+Product Metafields (Shopify)
+    ↓
+Product Tags (Sincronizados automáticamente)
+    ↓
+Shopify Facets API
+    ↓
+Frontend Filters (facets.liquid)
+```
+
+### Tipos de Metaobjetos
+
+#### 1. `compatibilidad_de_moto`
+- **Marca**: `product.metafields.custom.compatibilidad_de_moto.marca`
+- **Modelo**: `product.metafields.custom.compatibilidad_de_moto.modelo` (array)
+- **Tags generados**: `marca:["KAWASAKI"]`, `modelo:["Ninja 250"]`
+
+#### 2. `taxonomia_producto`
+- **Categoría**: `product.metafields.custom.taxonomia_producto.categoria` (repuestos, llantas, neumaticos)
+- **Línea**: `product.metafields.custom.taxonomia_producto.linea`
+- **Sublínea**: `product.metafields.custom.taxonomia_producto.sublinea`
+- **Type** (llantas): `product.metafields.custom.taxonomia_producto.type`
+- **Tube Type** (llantas): `product.metafields.custom.taxonomia_producto.tubetype`
+- **Sizes** (llantas): `product.metafields.custom.taxonomia_producto.sizes` (array)
+- **Tags generados**: 
+  - `categoria:["repuestos"]`
+  - `linea:["Filtros"]`
+  - `sublinea:["Aire"]`
+  - `llantas:type:Pistera`
+  - `llantas:tubetype:TL`
+  - `llantas:size:16"`
+
+### Formato de Tags
+
+Los tags siguen este formato:
+
+```
+marca:["KAWASAKI"]
+modelo:["Ninja 250"]
+categoria:["repuestos"]
+linea:["Filtros"]
+sublinea:["Aire"]
+llantas:type:Pistera
+llantas:tubetype:TL
+llantas:size:16"
+```
+
+### Acceso desde Liquid
+
+#### Obtener Compatibilidad (Marca/Modelo)
+
+```liquid
+{%- assign compatibilidad = product.metafields.custom.compatibilidad_de_moto -%}
+{%- if compatibilidad -%}
+  {%- assign marca = compatibilidad.marca.value -%}
+  {%- assign modelos = compatibilidad.modelo.value -%}
+  
+  <div class="mb-4">
+    <h3 class="font-bold">Compatible con:</h3>
+    <p class="text-sm">
+      Marca: {{ marca }}<br>
+      Modelos: {{ modelos | join: ', ' }}
+    </p>
+  </div>
+{%- endif -%}
+```
+
+#### Obtener Taxonomía
+
+```liquid
+{%- assign taxonomia = product.metafields.custom.taxonomia_producto -%}
+{%- if taxonomia -%}
+  {%- comment -%} Puede ser single reference o list {%- endcomment -%}
+  {%- if taxonomia.reference -%}
+    {%- assign categoria = taxonomia.reference.categoria.value -%}
+    {%- assign linea = taxonomia.reference.linea.value -%}
+    {%- assign sublinea = taxonomia.reference.sublinea.value -%}
+    
+    <div class="flex gap-2 flex-wrap">
+      <span class="px-2 py-1 bg-gray-100 rounded">
+        {{ categoria }}
+      </span>
+      {%- if linea -%}
+        <span class="px-2 py-1 bg-gray-100 rounded">
+          {{ linea }}
+        </span>
+      {%- endif -%}
+      {%- if sublinea -%}
+        <span class="px-2 py-1 bg-gray-100 rounded">
+          {{ sublinea }}
+        </span>
+      {%- endif -%}
+    </div>
+  {%- elsif taxonomia.references -%}
+    {%- comment -%} Lista de referencias {%- endcomment -%}
+    {%- for ref in taxonomia.references -%}
+      <div class="mb-2">
+        Categoría: {{ ref.categoria.value }}
+        Línea: {{ ref.linea.value }}
+      </div>
+    {%- endfor -%}
+  {%- endif -%}
+{%- endif -%}
+```
+
+#### Obtener Tags del Producto
+
+```liquid
+{%- comment -%} Tags ya están sincronizados automáticamente {%- endcomment -%}
+{%- for tag in product.tags -%}
+  {%- if tag contains 'marca:' or tag contains 'categoria:' or tag contains 'linea:' -%}
+    <span class="inline-block px-2 py-1 bg-red-100 rounded text-xs">
+      {{ tag }}
+    </span>
+  {%- endif -%}
+{%- endfor -%}
+```
+
+### Filtros en Colecciones
+
+El tema usa el snippet `facets.liquid` que se renderiza en `main-collection-product-grid.liquid`:
+
+```liquid
+{% render 'facets',
+  results: collection,
+  enable_filtering: section.settings.enable_filtering,
+  enable_sorting: section.settings.enable_sorting,
+  filter_type: section.settings.filter_type,
+  paginate: paginate
+%}
+```
+
+**Tipos de filtros disponibles:**
+- `vertical`: Sidebar de filtros
+- `horizontal`: Filtros en línea
+- `drawer`: Drawer móvil
+
+### JavaScript para Filtros
+
+El archivo `assets/facets.js` contiene la clase `FacetFiltersForm` que maneja:
+- Actualización de URL cuando se selecciona un filtro
+- Fetch de resultados filtrados sin recargar página
+- Manejo de filtros activos
+- Integración con Shopify Facets API
+
+**Uso:**
+```javascript
+// El web component <facet-filters-form> ya está configurado
+// No necesitas código adicional, funciona automáticamente
+```
+
+### Crear Filtros Personalizados
+
+Si necesitas filtros personalizados basados en metaobjetos:
+
+```liquid
+{%- comment -%} En facets.liquid o tu snippet personalizado {%- endcomment -%}
+<div class="mb-4">
+  <h3 class="font-bold mb-2">Filtrar por Marca</h3>
+  <div class="space-y-2">
+    {%- assign marcas = collection.all_tags | where: 'contains', 'marca:' -%}
+    {%- for tag in marcas -%}
+      <label class="flex items-center gap-2">
+        <input type="checkbox" value="{{ tag }}" class="marca-filter">
+        <span>{{ tag | remove: 'marca:["' | remove: '"]' }}</span>
+      </label>
+    {%- endfor -%}
+  </div>
+</div>
+```
 
 ---
 
@@ -768,6 +749,25 @@ shopify theme push -d --theme=140507480179
 
 ---
 
+## 🔗 Referencias a Documentación
+
+### Documentos del Proyecto
+
+- **README**: `README.md` - Documentación principal del proyecto
+- **Workflow**: `docs/WORKFLOW.md` - Guía completa de desarrollo (incluye source maps)
+- **Filtros y Categorización**: `../API/api-access-net/docs/shopify-theme-integration.md`
+- **Búsqueda Inline**: `docs/SEARCH-INLINE-DOCS.md`
+- **Secciones**: `docs/SECTIONS.md`
+
+### Recursos Externos
+
+- [Shopify Liquid Docs](https://shopify.dev/docs/api/liquid)
+- [Shopify Themes Docs](https://shopify.dev/themes)
+- [Tailwind CSS Docs](https://tailwindcss.com/docs)
+- [Dawn Theme GitHub](https://github.com/Shopify/dawn)
+
+---
+
 ## 🎓 Best Practices
 
 ### Desarrollo General
@@ -807,6 +807,5 @@ Al crear un nuevo componente CSS:
 
 ---
 
-**Última actualización**: Enero 2025
+**Última actualización**: Enero 2025  
 **Mantenido por**: Equipo EnPits
-

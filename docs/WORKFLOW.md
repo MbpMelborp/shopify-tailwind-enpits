@@ -95,22 +95,22 @@ Este comando:
 
 ## 🎨 Trabajar con Tailwind CSS
 
-### Regla de Oro: Prefijo `twcss-`
+### Regla de Oro: Clases Directas
 
-**TODAS** las clases de Tailwind deben usar el prefijo `twcss-`:
+**TODAS** las clases de Tailwind se usan **directamente**, sin prefijo:
 
 #### ✅ Correcto
 ```liquid
-<div class="twcss-flex twcss-items-center twcss-gap-4">
-  <h1 class="twcss-text-2xl twcss-font-bold">Título</h1>
-  <p class="twcss-text-gray-600">Descripción</p>
+<div class="flex items-center gap-4">
+  <h1 class="text-2xl font-bold">Título</h1>
+  <p class="text-gray-600">Descripción</p>
 </div>
 ```
 
-#### ❌ Incorrecto
+#### ❌ Incorrecto (prefijo obsoleto)
 ```liquid
-<div class="flex items-center gap-4">
-  <h1 class="text-2xl font-bold">Título</h1>
+<div class="twcss-flex twcss-items-center twcss-gap-4">
+  <h1 class="twcss-text-2xl twcss-font-bold">Título</h1>
 </div>
 ```
 
@@ -120,14 +120,14 @@ Este comando:
 
 #### ✅ Correcto
 ```liquid
-<div class="twcss-px-4 {% if mobile %}twcss-py-8{% endif %}">
-<button class="twcss-bg-blue-500 twcss-hover:bg-blue-600 ">
+<div class="px-4 {% if mobile %}py-8{% endif %}">
+<button class="bg-blue-500 hover:bg-blue-600 ">
 ```
 
 #### ❌ Incorrecto (causa errores de compilación)
 ```liquid
-<div class="twcss-px-4{% if mobile %}twcss-py-8{% endif %}">
-<button class="twcss-bg-blue-500 twcss-hover:bg-blue-600">
+<div class="px-4{% if mobile %}py-8{% endif %}">
+<button class="bg-blue-500 hover:bg-blue-600">
 ```
 
 ### Breakpoints Disponibles
@@ -142,27 +142,72 @@ x2lg: '1920px'   /* Extra Large */
 
 #### Ejemplo de Uso
 ```liquid
-<div class="twcss-w-full md:twcss-w-1/2 lg:twcss-w-1/3 xlg:twcss-w-1/4">
+<div class="w-full md:w-1/2 lg:w-1/3 xlg:w-1/4">
   Responsive box
 </div>
 ```
 
+### Source Maps para Debugging
+
+El proyecto está configurado para generar **source maps** en desarrollo, lo que permite debuggear CSS directamente desde el navegador y ver exactamente dónde están definidos los estilos en los archivos fuente.
+
+#### Comandos con Source Maps
+
+```bash
+# Desarrollo (con source maps)
+npm run dev:css           # Watch mode con source maps
+npm run build:css:dev    # Compilación única con source maps
+
+# Producción (sin source maps, minificado)
+npm run build:css        # Compilación para producción
+```
+
+#### Usar Source Maps en Chrome DevTools
+
+1. Abre Chrome DevTools (`F12` o `Cmd+Option+I`)
+2. Ve a la pestaña **Sources**
+3. Busca `app-tailwind.css` en el panel izquierdo
+4. Al inspeccionar elementos, los estilos mostrarán el archivo y línea original:
+   ```
+   .header__search-mega-menu - app-tailwind.css:1482
+   ```
+5. Click en el enlace te llevará directamente a la línea en `app-tailwind.css`
+
+#### Archivos Generados
+
+```
+assets/
+├── app.css            # CSS compilado (usar en producción)
+└── app.css.map        # Source map (solo para desarrollo)
+```
+
+⚠️ **Nota**: El archivo `app.css.map` es solo para desarrollo. No es necesario subirlo a producción.
+
+#### Ventajas de Source Maps
+
+✅ **Debugging más fácil**: Ve el código fuente original, no el compilado  
+✅ **Desarrollo rápido**: Encuentra y modifica estilos más rápido  
+✅ **Mejor organización**: Mantén tu código organizado por componentes  
+✅ **Inspección precisa**: Sabe exactamente qué línea de CSS está afectando qué elemento
+
 ### Agregar Estilos Personalizados
 
-Para estilos que usarás frecuentemente, agrega a `/assets/app-tailwind.css`:
+Para estilos que usarás frecuentemente, crea un nuevo archivo en `/assets/tailwind/`:
 
 ```css
+/* assets/tailwind/mi-componente-tailwind.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Tus componentes personalizados */
 @layer components {
   .btn-primary {
-    @apply twcss-bg-blue-500 twcss-text-white twcss-px-6 twcss-py-3 twcss-rounded-lg twcss-hover:bg-blue-600;
+    @apply bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600;
   }
 }
 ```
+
+El archivo se compilará automáticamente cuando ejecutes `npm run dev:css`.
 
 ---
 
@@ -390,9 +435,9 @@ npm run dev:css
 Ctrl + C
 npm run dev:css
 
-# 3. Verifica que uses el prefijo
-# ❌ class="flex"
-# ✅ class="twcss-flex"
+# 3. Verifica que uses clases directamente (sin prefijo)
+# ✅ class="flex"
+# ❌ class="twcss-flex" (obsoleto)
 ```
 
 ### Cambios no se reflejan en Shopify
@@ -470,7 +515,7 @@ Para iniciar desarrollo hoy:
 - [ ] Abrir Terminal 1: `npm run dev:css`
 - [ ] Abrir Terminal 2: `npm run dev:shopify`
 - [ ] Copiar URL del preview
-- [ ] Empezar a desarrollar con clases `twcss-*`
+- [ ] Empezar a desarrollar con clases de Tailwind directamente (sin prefijo)
 - [ ] Commits automáticamente formateados
 - [ ] Cuando termines: `npm run build:css`
 - [ ] Push a GitHub: `git push origin main`

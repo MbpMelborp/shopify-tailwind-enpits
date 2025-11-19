@@ -1,2 +1,5 @@
 package.json
 package-lock.json
+
+# Archivos fuente de Tailwind (solo los compilados deben estar en Shopify)
+assets/tailwind/*-tailwind.css
